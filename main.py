@@ -1,10 +1,8 @@
 from flask import Flask, request, render_template_string
 import random
+import time
 
 app = Flask(__name__)
-
-import random
-import time
 
 
 
@@ -2149,6 +2147,17 @@ conjugaisons = {
 # ============================================================
 # 2) MOTEUR D’EXERCICES
 # ============================================================
+@app.route("/")
+def index():
+    return "Le site fonctionne !"
+
+@app.route("/test")
+def test():
+    return random.choice(conjugaisons["aller"]["indicatif"]["présent"])
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=10000)
+
 pronoms = ["je", "tu", "il", "nous", "vous", "ils"]
 
 # Variables de session
