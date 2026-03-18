@@ -28,21 +28,21 @@
 
     {% if analyse %}
         <h2>Analyse</h2>
-    <p><strong>Verbe le moins réussi :</strong></p>
+    <p><strong>Verbe(s) le(s) moins réussi(s) :</strong></p>
 <ul>
 {% for verbe, nb in analyse.verbes %}
     <li>{{ verbe }} ({{ nb }} erreur{% if nb > 1 %}s{% endif %})</li>
 {% endfor %}
 </ul>
 
-    <p><strong>Mode le moins réussi :</strong></p>
+    <p><strong>Mode(s) le(s) moins réussi(s) :</strong></p>
 <ul>
 {% for mode, nb in analyse.modes %}
     <li>{{ mode }} ({{ nb }} erreur{% if nb > 1 %}s{% endif %})</li>
 {% endfor %}
 </ul>
 
-    <p><strong>Temps le moins réussi :</strong></p>
+    <p><strong>Temps le(s) moins réussi(s) :</strong></p>
 <ul>
 {% for temps, nb in analyse.temps %}
     <li>{{ temps }} ({{ nb }} erreur{% if nb > 1 %}s{% endif %})</li>
