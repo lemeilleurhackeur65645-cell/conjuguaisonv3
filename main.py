@@ -2165,26 +2165,24 @@ def generer_question():
 
     mode_lower = mode.lower()
 
-    # --- Sélection des pronoms selon le mode ---
     if mode_lower == "impératif":
         pronoms_valides = ["tu", "nous", "vous"]
-
     elif mode_lower in ["infinitif", "gérondif", "participe"]:
         pronoms_valides = ["(forme impersonnelle)"]
-
     else:
         pronoms_valides = ["je", "tu", "il", "nous", "vous", "ils"]
 
-    # --- Gestion des verbes impersonnels (ex: falloir, pleuvoir) ---
     if len(formes) == 1:
         sujet = "(forme impersonnelle)"
         idx = 0
-
     else:
         sujet = random.choice(pronoms_valides)
 
         if sujet == "(forme impersonnelle)":
             idx = 0
+        elif mode_lower == "impératif":
+            mapping_imp = {"tu": 0, "nous": 1, "vous": 2}
+            idx = mapping_imp[sujet]
         else:
             idx = ["je", "tu", "il", "nous", "vous", "ils"].index(sujet)
 
