@@ -2149,223 +2149,38 @@ conjugaisons = {
 # ============================================================
 @app.route("/")
 def index():
-    return "Le site fonctionne !"
+    return render_template("index.html")
 
-@app.route("/test")
-def test():
-    return random.choice(conjugaisons["aller"]["indicatif"]["présent"])
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=10000)
-
-pronoms = ["je", "tu", "il", "nous", "vous", "ils"]
-
-# Variables de session
-score = 0
-total = 0
-erreurs = []
-start = time.time()
-
-HTML = """
-<h2>Exercice de conjugaison</h2>
-
-<p><b>Verbes évalués dans cette session (listes 1 à 3) :</b> aller, faire, falloir, pouvoir, savoir, valoir, vouloir, appeler, jeter, peigner, plaire, pleuvoir, se taire, taire, moudre, mouler, choir, tuer, être, avoir, acquérir, seoir, devoir, cueillir, fuir, recevoir, rendre, courir, tenir, sentir, peindre.</p>
-
-<p><b>Conjugue :</b> {{ verbe }} — {{ mode }} — {{ temps }} — {{ sujet }}</p>
-
-<form method="post">
-    <input type="text" name="reponse" placeholder="Ta réponse" autofocus>
-    <input type="hidden" name="verbe" value="{{ verbe }}">
-    <input type="hidden" name="mode" value="{{ mode }}">
-    <input type="hidden" name="temps" value="{{ temps }}">
-    <input type="hidden" name="idx" value="{{ idx }}">
-    <button type="submit">Valider</button>
-</form>
-
-{% if feedback %}
-<p>{{ feedback }}</p>
-{% endif %}
-
-<hr>
-
-<a href="/">Nouvelle question</a>
-<a href="/bilan" style="margin-left:20px;">Voir le bilan</a>
-<a href="/fin" style="margin-left:20px; color:red;">Terminer la session</a>
-"""
-
-BILAN = """
-<h2>BILAN DE LA SESSION</h2>
-
-<p>Questions posées : {{ total }}</p>
-<p>Bonnes réponses : {{ score }}</p>
-<p>Taux de réussite : {{ taux }}%</p>
-<p>Temps total : {{ duree }} sec</p>
-<p>Temps moyen : {{ moyen }} sec/question</p>
-
-<h3>Détails des erreurs</h3>
-{% if erreurs %}
-<ul>
-{% for e in erreurs %}
-<li>{{ e[0] }} — {{ e[1] }} — {{ e[2] }} — {{ e[3] }} : « {{ e[4] }} » → « {{ e[5] }} »</li>
-{% endfor %}
-</ul>
-{% else %}
-<p>Aucune erreur. Bravo ! 🎉</p>
-{% endif %}
-
-<h3>Analyse</h3>
-{% if analyse %}
-<p><b>Verbes difficiles :</b> {{ analyse.verbes }}</p>
-<p><b>Modes difficiles :</b> {{ analyse.modes }}</p>
-<p><b>Temps difficiles :</b> {{ analyse.temps }}</p>
-
-<h3>Suggestion de révision</h3>
-<p>Travaille en priorité : {{ analyse.suggestion }}</p>
-{% else %}
-<p>Tu maîtrises tout ce qui t'a été proposé. Excellent travail !</p>
-{% endif %}
-
-<hr>
-<a href="/">Retour</a>
-"""
-
-@app.route("/", methods=["GET", "POST"])
-def home():
-    global score, total, erreurs
-
-    feedback = ""
+# ============================================================
+# PAGE DE CONJUGAISON
+# ============================================================
+@app.route("/conjuguer", methods=["GET", "POST"])
+def conjuguer():
+    resultat = None
+    erreur = None
 
     if request.method == "POST":
-        verbe = request.form["verbe"]
-        mode = request.form["mode"]
-        temps = request.form["temps"]
-        idx = int(request.form["idx"])
-        reponse = request.form["reponse"].strip().lower()
+        verbe = request.form.get("verbe", "").strip().lower()
+        mode = request.form.get("mode", "").strip().lower()
+        temps = request.form.get("temps", "").strip().lower()
 
-        bonne = conjugaisons[verbe][mode][temps][idx].lower()
-
-        total += 1
-
-        if reponse == bonne:
-            score += 1
-            feedback = "✔️ Correct"
+        if verbe in conjugaisons:
+            if mode in conjugaisons[verbe]:
+                if temps in conjugaisons[verbe][mode]:
+                    resultat = conjugaisons[verbe][mode][temps]
+                else:
+                    erreur = "Ce temps n'existe pas pour ce verbe."
+            else:
+                erreur = "Ce mode n'existe pas pour ce verbe."
         else:
-            feedback = f"❌ Faux. Réponse attendue : {bonne}"
-            erreurs.append((verbe, mode, temps, pronoms[idx], reponse, bonne))
+            erreur = "Verbe inconnu."
 
-    # Nouvelle question
-    verbe = random.choice(list(conjugaisons.keys()))
-    mode = random.choice(list(conjugaisons[verbe].keys()))
-    temps = random.choice(list(conjugaisons[verbe][mode].keys()))
-    formes = conjugaisons[verbe][mode][temps]
+    return render_template("conjugaison.html", resultat=resultat, erreur=erreur)
 
-    if len(formes) == 1:
-        idx = 0
-        sujet = "(forme impersonnelle)"
-    else:
-        idx = random.randint(0, len(formes) - 1)
-        sujet = pronoms[idx]
 
-    return render_template_string(
-        HTML,
-        verbe=verbe,
-        mode=mode,
-        temps=temps,
-        sujet=sujet,
-        idx=idx,
-        feedback=feedback
-    )
-
-@app.route("/bilan")
-def bilan():
-    global score, total, erreurs, start
-
-    duree = round(time.time() - start, 1)
-    moyen = round(duree / total, 2) if total else 0
-    taux = round(score / total * 100, 1) if total else 0
-
-    analyse = None
-
-    if erreurs:
-        stats_verbes = {}
-        stats_modes = {}
-        stats_temps = {}
-
-        for v, m, t, s, r, b in erreurs:
-            stats_verbes[v] = stats_verbes.get(v, 0) + 1
-            stats_modes[m] = stats_modes.get(m, 0) + 1
-            stats_temps[t] = stats_temps.get(t, 0) + 1
-
-        def top(d):
-            return sorted(d.items(), key=lambda x: x[1], reverse=True)[:3]
-
-        analyse = {
-            "verbes": top(stats_verbes),
-            "modes": top(stats_modes),
-            "temps": top(stats_temps),
-            "suggestion": f"{top(stats_verbes)[0][0]} — {top(stats_modes)[0][0]} — {top(stats_temps)[0][0]}"
-        }
-
-    return render_template_string(
-        BILAN,
-        total=total,
-        score=score,
-        taux=taux,
-        duree=duree,
-        moyen=moyen,
-        erreurs=erreurs,
-        analyse=analyse
-    )
-
-@app.route("/fin")
-def fin():
-    global score, total, erreurs, start
-
-    duree = round(time.time() - start, 1)
-    moyen = round(duree / total, 2) if total else 0
-    taux = round(score / total * 100, 1) if total else 0
-
-    analyse = None
-
-    if erreurs:
-        stats_verbes = {}
-        stats_modes = {}
-        stats_temps = {}
-
-        for v, m, t, s, r, b in erreurs:
-            stats_verbes[v] = stats_verbes.get(v, 0) + 1
-            stats_modes[m] = stats_modes.get(m, 0) + 1
-            stats_temps[t] = stats_temps.get(t, 0) + 1
-
-        def top(d):
-            return sorted(d.items(), key=lambda x: x[1], reverse=True)[:3]
-
-        analyse = {
-            "verbes": top(stats_verbes),
-            "modes": top(stats_modes),
-            "temps": top(stats_temps),
-            "suggestion": f"{top(stats_verbes)[0][0]} — {top(stats_modes)[0][0]} — {top(stats_temps)[0][0]}"
-        }
-
-    # Génération du bilan
-    bilan_html = render_template_string(
-        BILAN,
-        total=total,
-        score=score,
-        taux=taux,
-        duree=duree,
-        moyen=moyen,
-        erreurs=erreurs,
-        analyse=analyse
-    )
-
-    # Réinitialisation
-    score = 0
-    total = 0
-    erreurs = []
-    start = time.time()
-
-    return bilan_html
-
+# ============================================================
+# LANCEMENT LOCAL (Render utilise gunicorn)
+# ============================================================
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=3000)
+    app.run(host="0.0.0.0", port=10000)
