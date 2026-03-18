@@ -28,9 +28,27 @@
 
     {% if analyse %}
         <h2>Analyse</h2>
-        <p>Verbes difficiles : {{ analyse.verbes }}</p>
-        <p>Modes difficiles : {{ analyse.modes }}</p>
-        <p>Temps difficiles : {{ analyse.temps }}</p>
+    <p><strong>Verbe le moins réussi :</strong></p>
+<ul>
+{% for verbe, nb in analyse.verbes %}
+    <li>{{ verbe }} ({{ nb }} erreur{% if nb > 1 %}s{% endif %})</li>
+{% endfor %}
+</ul>
+
+    <p><strong>Mode le moins réussi :</strong></p>
+<ul>
+{% for mode, nb in analyse.modes %}
+    <li>{{ mode }} ({{ nb }} erreur{% if nb > 1 %}s{% endif %})</li>
+{% endfor %}
+</ul>
+
+    <p><strong>Temps le moins réussi :</strong></p>
+<ul>
+{% for temps, nb in analyse.temps %}
+    <li>{{ temps }} ({{ nb }} erreur{% if nb > 1 %}s{% endif %})</li>
+{% endfor %}
+</ul>
+
 
         <h3>Suggestion de révision</h3>
         <p>{{ analyse.suggestion }}</p>
