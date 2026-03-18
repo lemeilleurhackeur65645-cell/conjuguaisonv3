@@ -2,9 +2,6 @@ from flask import Flask, request, render_template, render_template_string, redir
 import random
 import time
 
-
-from conjugaisons import conjugaisons
-
 app = Flask(__name__)
 app.secret_key = "secret123"
 
@@ -2160,16 +2157,15 @@ def index():
 # ------------------------------------------------------------
 # 1) GÉNÉRATION D’UNE QUESTION (VERSION INTELLIGENTE)
 # ------------------------------------------------------------
-
 def generer_question():
     verbe = random.choice(list(conjugaisons.keys()))
     mode = random.choice(list(conjugaisons[verbe].keys()))
     temps = random.choice(list(conjugaisons[verbe][mode].keys()))
     formes = conjugaisons[verbe][mode][temps]
 
-    # --- Sélection des pronoms selon le mode ---
     mode_lower = mode.lower()
 
+    # --- Sélection des pronoms selon le mode ---
     if mode_lower == "impératif":
         pronoms_valides = ["tu", "nous", "vous"]
 
@@ -2204,7 +2200,6 @@ def generer_question():
 
 @app.route("/quiz", methods=["GET", "POST"])
 def quiz():
-    # Initialisation de la session
     if "score" not in session:
         session["score"] = 0
         session["total"] = 0
@@ -2213,7 +2208,6 @@ def quiz():
 
     feedback = None
 
-    # Vérification de la réponse précédente
     if request.method == "POST":
         rep = request.form["reponse"].strip().lower()
         bonne = session["bonne"]
@@ -2234,10 +2228,8 @@ def quiz():
                 bonne
             ))
 
-    # Génération d’une nouvelle question
     verbe, mode, temps, sujet, bonne, question = generer_question()
 
-    # Stockage pour la vérification
     session["verbe"] = verbe
     session["mode"] = mode
     session["temps"] = temps
@@ -2262,7 +2254,6 @@ def fin():
 
     erreurs = session["erreurs"]
 
-    # Analyse intelligente
     analyse = None
     if erreurs:
         stats_verbes = {}
