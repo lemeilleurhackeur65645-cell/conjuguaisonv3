@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="container">
+    <h2>{{ question }}</h2>
+
+    <form method="POST">
+        <input type="text" name="reponse" placeholder="Ta réponse…" autofocus required>
+        <button type="submit" class="btn">Valider</button>
+    </form>
+
+    {% if feedback %}
+        <p class="feedback">{{ feedback }}</p>
+    {% endif %}
+
+    <a href="/fin" class="stop">Arrêter et voir le bilan</a>
+</div>
+
+</body>
+</html>
