@@ -1,9 +1,12 @@
-from flask import Flask, request, render_template, render_template_string
+from flask import Flask, request, render_template, render_template_string, redirect, url_for, session
 import random
 import time
 
-app = Flask(__name__)
 
+from conjugaisons import conjugaisons
+
+app = Flask(__name__)
+app.secret_key = "secret123"
 
 
 # ============================================================
@@ -2152,31 +2155,146 @@ def index():
     return render_template("index.html")
 
 
-# ============================================================
-# PAGE DE CONJUGAISON
-# ============================================================
-@app.route("/conjuguer", methods=["GET", "POST"])
-def conjuguer():
-    resultat = None
-    erreur = None
 
-    if request.method == "POST":
-        verbe = request.form.get("verbe", "").strip().lower()
-        mode = request.form.get("mode", "").strip().lower()
-        temps = request.form.get("temps", "").strip().lower()
 
-        if verbe in conjugaisons:
-            if mode in conjugaisons[verbe]:
-                if temps in conjugaisons[verbe][mode]:
-                    resultat = conjugaisons[verbe][mode][temps]
-                else:
-                    erreur = "Ce temps n'existe pas pour ce verbe."
-            else:
-                erreur = "Ce mode n'existe pas pour ce verbe."
+# ------------------------------------------------------------
+# 1) GÉNÉRATION D’UNE QUESTION (VERSION INTELLIGENTE)
+# ------------------------------------------------------------
+
+def generer_question():
+    verbe = random.choice(list(conjugaisons.keys()))
+    mode = random.choice(list(conjugaisons[verbe].keys()))
+    temps = random.choice(list(conjugaisons[verbe][mode].keys()))
+    formes = conjugaisons[verbe][mode][temps]
+
+    # --- Sélection des pronoms selon le mode ---
+    mode_lower = mode.lower()
+
+    if mode_lower == "impératif":
+        pronoms_valides = ["tu", "nous", "vous"]
+
+    elif mode_lower in ["infinitif", "gérondif", "participe"]:
+        pronoms_valides = ["(forme impersonnelle)"]
+
+    else:
+        pronoms_valides = ["je", "tu", "il", "nous", "vous", "ils"]
+
+    # --- Gestion des verbes impersonnels (ex: falloir, pleuvoir) ---
+    if len(formes) == 1:
+        sujet = "(forme impersonnelle)"
+        idx = 0
+
+    else:
+        sujet = random.choice(pronoms_valides)
+
+        if sujet == "(forme impersonnelle)":
+            idx = 0
         else:
-            erreur = "Verbe inconnu."
+            idx = ["je", "tu", "il", "nous", "vous", "ils"].index(sujet)
 
-    return render_template("conjugaison.html", resultat=resultat, erreur=erreur)
+    bonne = formes[idx]
+    question = f"Conjugue : {verbe} — {mode} — {temps} — {sujet}"
+
+    return verbe, mode, temps, sujet, bonne, question
+
+
+# ------------------------------------------------------------
+# 2) ROUTE DU QUIZ
+# ------------------------------------------------------------
+
+@app.route("/quiz", methods=["GET", "POST"])
+def quiz():
+    # Initialisation de la session
+    if "score" not in session:
+        session["score"] = 0
+        session["total"] = 0
+        session["start"] = time.time()
+        session["erreurs"] = []
+
+    feedback = None
+
+    # Vérification de la réponse précédente
+    if request.method == "POST":
+        rep = request.form["reponse"].strip().lower()
+        bonne = session["bonne"]
+
+        session["total"] += 1
+
+        if rep == bonne.lower():
+            session["score"] += 1
+            feedback = "✔️ Correct"
+        else:
+            feedback = f"❌ Faux. Réponse attendue : {bonne}"
+            session["erreurs"].append((
+                session["verbe"],
+                session["mode"],
+                session["temps"],
+                session["sujet"],
+                rep,
+                bonne
+            ))
+
+    # Génération d’une nouvelle question
+    verbe, mode, temps, sujet, bonne, question = generer_question()
+
+    # Stockage pour la vérification
+    session["verbe"] = verbe
+    session["mode"] = mode
+    session["temps"] = temps
+    session["sujet"] = sujet
+    session["bonne"] = bonne
+
+    return render_template("quiz.html", question=question, feedback=feedback)
+
+
+# ------------------------------------------------------------
+# 3) ROUTE DU BILAN FINAL
+# ------------------------------------------------------------
+
+@app.route("/fin")
+def fin():
+    end = time.time()
+    duree = round(end - session["start"], 1)
+    total = session["total"]
+    score = session["score"]
+    taux = round(score / total * 100, 1) if total else 0
+    temps_moyen = round(duree / total, 2) if total else 0
+
+    erreurs = session["erreurs"]
+
+    # Analyse intelligente
+    analyse = None
+    if erreurs:
+        stats_verbes = {}
+        stats_modes = {}
+        stats_temps = {}
+
+        for v, m, t, s, r, b in erreurs:
+            stats_verbes[v] = stats_verbes.get(v, 0) + 1
+            stats_modes[m] = stats_modes.get(m, 0) + 1
+            stats_temps[t] = stats_temps.get(t, 0) + 1
+
+        def top(d):
+            return sorted(d.items(), key=lambda x: x[1], reverse=True)[:3]
+
+        analyse = {
+            "verbes": top(stats_verbes),
+            "modes": top(stats_modes),
+            "temps": top(stats_temps),
+            "suggestion": f"{top(stats_verbes)[0][0]} — {top(stats_modes)[0][0]} — {top(stats_temps)[0][0]}"
+        }
+
+    return render_template(
+        "fin.html",
+        total=total,
+        score=score,
+        taux=taux,
+        duree=duree,
+        temps_moyen=temps_moyen,
+        erreurs=erreurs,
+        analyse=analyse
+    )
+
 
 
 # ============================================================
