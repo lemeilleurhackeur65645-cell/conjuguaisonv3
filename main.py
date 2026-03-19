@@ -2152,6 +2152,10 @@ def index():
     session.clear()
     return render_template("index.html")
 
+@app.route("/changelog")
+def changelog():
+    return render_template("changelog.html")
+
 
 
 
