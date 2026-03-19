@@ -58,3 +58,8 @@ input {
     margin-top: 25px;
     color: #d00;
 }
+.changelog-entry {
+    margin-bottom: 6px;
+    padding-left: 0;
+    list-style: none;
+}
