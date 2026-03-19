@@ -63,3 +63,20 @@ input {
     padding-left: 0;
     list-style: none;
 }
+.back-button {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 8px 14px;
+    background: #f2f2f2;
+    border-radius: 6px;
+    color: #333;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: background 0.2s, color 0.2s;
+}
+
+.back-button:hover {
+    background: #e0e0e0;
+    color: #000;
+}
+
