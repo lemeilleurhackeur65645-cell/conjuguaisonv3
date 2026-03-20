@@ -2266,12 +2266,19 @@ def quiz():
     session["sujet"] = sujet
     session["bonne"] = bonne
 
-    return render_template(
-        "quiz.html",
-        question=question,
-        feedback=feedback,
-        mode=mode
-    )
+    temps_restant = None
+if mode == "evaluation":
+    temps_restant = int(session["timer"] - (time.time() - session["start"]))
+
+
+return render_template(
+    "quiz.html",
+    question=question,
+    feedback=feedback,
+    mode=mode,
+    temps_restant=temps_restant
+)
+
 
 
 
