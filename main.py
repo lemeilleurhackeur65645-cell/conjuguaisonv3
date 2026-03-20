@@ -2272,25 +2272,38 @@ def generer_question():
 
 @app.route("/quiz", methods=["GET", "POST"])
 def quiz():
-    if "score" not in session:
+    # --- Initialisation si on arrive depuis l'accueil ---
+    mode_arg = request.args.get("mode")
+    if mode_arg:
+        session.clear()
+        session["mode"] = mode_arg
         session["score"] = 0
         session["total"] = 0
         session["start"] = time.time()
         session["erreurs"] = []
 
+        if mode_arg == "evaluation":
+            session["timer"] = 5 * 60
+            session["questions_restantes"] = 10
+
+    mode = session.get("mode", "entrainement")
+
+    # --- Timer du mode évaluation ---
+    if mode == "evaluation":
+        temps_ecoule = time.time() - session["start"]
+        if temps_ecoule >= session["timer"]:
+            return redirect("/fin")
+
     feedback = None
 
+    # --- Réception de la réponse ---
     if request.method == "POST":
         rep = request.form["reponse"].strip().lower()
         bonne = session["bonne"]
 
         session["total"] += 1
 
-        if rep == bonne.lower():
-            session["score"] += 1
-            feedback = "✔️ Correct"
-        else:
-            feedback = f"❌ Faux. Réponse attendue : {bonne}"
+        if rep != bonne.lower():
             session["erreurs"].append((
                 session["verbe"],
                 session["mode"],
@@ -2299,16 +2312,28 @@ def quiz():
                 rep,
                 bonne
             ))
+        else:
+            session["score"] += 1
 
-    verbe, mode, temps, sujet, bonne, question = generer_question()
+        # Mode évaluation : pas de feedback + compteur
+        if mode == "evaluation":
+            session["questions_restantes"] -= 1
+            if session["questions_restantes"] <= 0:
+                return redirect("/fin")
+        else:
+            feedback = "✔️ Correct" if rep == bonne.lower() else f"❌ Faux. Réponse attendue : {bonne}"
+
+    # --- Nouvelle question ---
+    verbe, mode_v, temps, sujet, bonne, question = generer_question()
 
     session["verbe"] = verbe
-    session["mode"] = mode
+    session["mode"] = mode_v
     session["temps"] = temps
     session["sujet"] = sujet
     session["bonne"] = bonne
 
-    return render_template("quiz.html", question=question, feedback=feedback)
+    return render_template("quiz.html", question=question, feedback=feedback, mode=mode)
+
 
 
 # ------------------------------------------------------------
