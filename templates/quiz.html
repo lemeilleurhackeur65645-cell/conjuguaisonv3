@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <title>Quiz</title>
     <link rel="stylesheet" href="/static/style.css">
+    {% if mode == "evaluation" %}
+    <p class="timer">
+        Temps restant :
+        {{ ((session.timer - (time.time() - session.start)) // 60)|int }}:
+        {{ ((session.timer - (time.time() - session.start)) % 60)|int | string | zfill(2) }}
+    </p>
+{% endif %}
+
 </head>
 <body>
 {% if session.mode == "evaluation" %}
