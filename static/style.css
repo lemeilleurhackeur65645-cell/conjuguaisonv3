@@ -36,7 +36,7 @@ input {
     margin-top: 20px;
     font-size: 20px;
 }
-.changelog-link {
+.menu-link {
     position: fixed;
     bottom: 12px;
     right: 12px;
@@ -50,7 +50,7 @@ input {
     transition: opacity 0.2s, color 0.2s;
 }
 
-.changelog-link:hover {
+.menu-link:hover {
     opacity: 1;
     color: #000;
 }
@@ -88,20 +88,7 @@ input {
     text-align: center;
 }
 
-.menu-link {
-    font-size: 0.9rem;
-    color: #555;
-    text-decoration: none;
-    padding: 6px 12px;
-    background: #f7f7f7;
-    border-radius: 6px;
-    transition: background 0.2s, color 0.2s;
-}
 
-.menu-link:hover {
-    background: #eaeaea;
-    color: #000;
-}
 .stop-button {
     display: inline-block;
     margin-top: 20px;
