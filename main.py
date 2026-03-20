@@ -2203,21 +2203,26 @@ def generer_question():
 
 @app.route("/quiz", methods=["GET", "POST"])
 def quiz():
-    # --- Initialisation si on arrive depuis l'accueil ---
-    mode_arg = request.args.get("mode")
-    if mode_arg:
+    # Si on arrive depuis l'accueil
+    if request.method == "GET" and "mode" in request.args:
         session.clear()
-        session["mode"] = mode_arg
+
+        mode = request.args.get("mode")
+        if mode == "evaluation":
+            session["mode"] = "evaluation"
+            session["timer"] = 5 * 60
+            session["questions_restantes"] = 10
+        else:
+            session["mode"] = "entrainement"
+
         session["score"] = 0
         session["total"] = 0
         session["start"] = time.time()
         session["erreurs"] = []
 
-        if mode_arg == "evaluation":
-            session["timer"] = 5 * 60
-            session["questions_restantes"] = 10
-
+ 
     mode = session.get("mode", "entrainement")
+
 
     # --- Timer du mode évaluation ---
     if mode == "evaluation":
