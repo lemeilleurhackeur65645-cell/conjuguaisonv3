@@ -2219,9 +2219,10 @@ def quiz():
             session["timer"] = 5 * 60
             session["questions_restantes"] = 10
 
+    # Mode actuel
     mode = session.get("mode", "entrainement")
 
-    # --- Timer du mode évaluation ---
+    # --- Vérification du timer (sécurité serveur) ---
     if mode == "evaluation":
         temps_ecoule = time.time() - session["start"]
         if temps_ecoule >= session["timer"]:
@@ -2266,6 +2267,7 @@ def quiz():
     session["sujet"] = sujet
     session["bonne"] = bonne
 
+    # --- Calcul du temps restant (pour affichage) ---
     temps_restant = None
     if mode == "evaluation":
         temps_restant = int(session["timer"] - (time.time() - session["start"]))
@@ -2277,8 +2279,6 @@ def quiz():
         mode=mode,
         temps_restant=temps_restant
     )
-
-
 
 
 
