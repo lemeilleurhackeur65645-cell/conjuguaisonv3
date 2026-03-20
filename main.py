@@ -2187,7 +2187,14 @@ def question():
         bonne = session["bonne_reponse"]
 
         if reponse.strip().lower() != bonne.lower():
-            session["erreurs"].append((session["verbe"], session["mode"], session["temps"], session["pronom"], reponse, bonne))
+            session["erreurs"].append((
+                session["verbe"],
+                session["mode"],
+                session["temps"],
+                session["pronom"],
+                reponse,
+                bonne
+            ))
         else:
             session["score"] += 1
 
@@ -2201,14 +2208,21 @@ def question():
         return redirect("/question")
 
     # Génération d'une nouvelle question
-    verbe, mode_v, temps, pronom, bonne = generer_question()
+    verbe, mode_v, temps, pronom, bonne, question = generer_question()
     session["verbe"] = verbe
-    session["mode_v"] = mode_v
+    session["mode"] = mode_v          # important : même clé que dans le POST
     session["temps"] = temps
     session["pronom"] = pronom
     session["bonne_reponse"] = bonne
 
-    return render_template("question.html", verbe=verbe, mode=mode_v, temps=temps, pronom=pronom)
+    return render_template(
+        "question.html",
+        question=question,
+        mode=mode_v,
+        temps=temps,
+        pronom=pronom
+    )
+
 
 
 
