@@ -6,6 +6,9 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
+{% if session.mode == "evaluation" %}
+<p class="timer">Temps restant : {{ (session.timer - (time.time() - session.start))|int }} sec</p>
+{% endif %}
 
 <div class="container">
     <h2 class="question-text">{{ question }}</h2>
