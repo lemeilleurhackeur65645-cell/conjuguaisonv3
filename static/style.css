@@ -292,3 +292,10 @@ input:checked + .slider:before {
     transform: translateX(24px);
 }
 
+.timer {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #b30000;
+    margin-bottom: 15px;
+    text-align: center;
+}
