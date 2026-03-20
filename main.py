@@ -2209,8 +2209,9 @@ def question():
 
     # Génération d'une nouvelle question
     verbe, mode_v, temps, pronom, bonne, question = generer_question()
+
     session["verbe"] = verbe
-    session["mode"] = mode_v          # important : même clé que dans le POST
+    session["mode"] = mode_v
     session["temps"] = temps
     session["pronom"] = pronom
     session["bonne_reponse"] = bonne
@@ -2222,7 +2223,6 @@ def question():
         temps=temps,
         pronom=pronom
     )
-
 
 
 
