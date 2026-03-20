@@ -135,4 +135,55 @@ input {
     color: #222;
     font-weight: 600;
 }
+.intro {
+    margin-bottom: 20px;
+    color: #555;
+}
+
+.bilan-block p {
+    margin: 4px 0;
+}
+
+.erreurs-block {
+    margin-top: 10px;
+}
+
+.erreur-item {
+    margin-bottom: 6px;
+    color: #444;
+}
+
+.analyse-title {
+    margin-top: 20px;
+    font-weight: 600;
+    color: #222;
+}
+
+.analyse-item {
+    margin-bottom: 6px;
+    color: #444;
+}
+
+.suggestion {
+    margin-top: 10px;
+    font-style: italic;
+    color: #333;
+}
+
+.back-button {
+    display: inline-block;
+    margin-top: 30px;
+    padding: 10px 18px;
+    background: #f2f2f2;
+    border-radius: 6px;
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.2s, color 0.2s;
+}
+
+.back-button:hover {
+    background: #e0e0e0;
+    color: #000;
+}
 
