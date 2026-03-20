@@ -2155,6 +2155,61 @@ def index():
 @app.route("/changelog")
 def changelog():
     return render_template("changelog.html")
+@app.route("/start")
+def start():
+    mode = request.args.get("mode", "entrainement")
+    session.clear()
+
+    session["mode"] = mode
+    session["score"] = 0
+    session["total"] = 0
+    session["erreurs"] = []
+    session["start"] = time.time()
+
+    if mode == "evaluation":
+        session["timer"] = 5 * 60      # 5 minutes
+        session["questions_restantes"] = 10
+
+    return redirect("/question")
+    
+@app.route("/question", methods=["GET", "POST"])
+def question():
+    mode = session.get("mode", "entrainement")
+
+    # Timer pour le mode évaluation
+    if mode == "evaluation":
+        temps_ecoule = time.time() - session["start"]
+        if temps_ecoule >= session["timer"]:
+            return redirect("/fin")
+
+    if request.method == "POST":
+        reponse = request.form["reponse"]
+        bonne = session["bonne_reponse"]
+
+        if reponse.strip().lower() != bonne.lower():
+            session["erreurs"].append((session["verbe"], session["mode"], session["temps"], session["pronom"], reponse, bonne))
+        else:
+            session["score"] += 1
+
+        session["total"] += 1
+
+        if mode == "evaluation":
+            session["questions_restantes"] -= 1
+            if session["questions_restantes"] <= 0:
+                return redirect("/fin")
+
+        return redirect("/question")
+
+    # Génération d'une nouvelle question
+    verbe, mode_v, temps, pronom, bonne = generer_question()
+    session["verbe"] = verbe
+    session["mode_v"] = mode_v
+    session["temps"] = temps
+    session["pronom"] = pronom
+    session["bonne_reponse"] = bonne
+
+    return render_template("question.html", verbe=verbe, mode=mode_v, temps=temps, pronom=pronom)
+
 
 
 
