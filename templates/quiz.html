@@ -5,6 +5,28 @@
     <title>Quiz</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
+{% if mode == "evaluation" and temps_restant is not none %}
+<script>
+    let remaining = {{ temps_restant }};
+    const timerElement = document.querySelector(".timer");
+
+    function updateTimer() {
+        if (remaining <= 0) {
+            window.location.href = "/fin";
+            return;
+        }
+
+        const minutes = Math.floor(remaining / 60);
+        const seconds = String(remaining % 60).padStart(2, "0");
+
+        timerElement.textContent = `Temps restant : ${minutes}:${seconds}`;
+        remaining--;
+    }
+
+    updateTimer();
+    setInterval(updateTimer, 1000);
+</script>
+{% endif %}
 
 <body>
 
