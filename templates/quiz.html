@@ -8,7 +8,7 @@
 <body>
 
 <div class="container">
-    <h2>{{ question }}</h2>
+    <h2 class="question-text">{{ question }}</h2>
 
     <form method="POST">
         <input type="text" name="reponse" placeholder="Ta réponse…" autofocus required>
@@ -19,7 +19,8 @@
         <p class="feedback">{{ feedback }}</p>
     {% endif %}
 
-    <a href="/fin" class="stop">Arrêter et voir le bilan</a>
+    <a href="/" class="stop-button">Arrêter et voir le bilan.</a>
+
 </div>
 
 </body>
