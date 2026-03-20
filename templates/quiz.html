@@ -11,13 +11,13 @@
 <div class="container">
 
     <!-- TIMER (mode évaluation uniquement) -->
-    {% if mode == "evaluation" and session.timer is defined %}
-        <p class="timer">
-            Temps restant :
-            {{ ((session.timer - (time.time() - session.start)) // 60)|int }}:
-            {{ ((session.timer - (time.time() - session.start)) % 60)|int | string | zfill(2) }}
-        </p>
-    {% endif %}
+{% if mode == "evaluation" and temps_restant is not none %}
+    <p class="timer">
+        Temps restant :
+        {{ (temps_restant // 60)|int }}:{{ (temps_restant % 60)|int | string | zfill(2) }}
+    </p>
+{% endif %}
+
 
     <!-- BARRE DE PROGRESSION (mode évaluation uniquement) -->
     {% if mode == "evaluation" and session.questions_restantes is defined %}
