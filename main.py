@@ -2266,7 +2266,7 @@ def quiz():
     session["sujet"] = sujet
     session["bonne"] = bonne
 
-    temps_restant = None
+temps_restant = None
 if mode == "evaluation":
     temps_restant = int(session["timer"] - (time.time() - session["start"]))
 
@@ -2278,6 +2278,7 @@ return render_template(
     mode=mode,
     temps_restant=temps_restant
 )
+
 
 
 
