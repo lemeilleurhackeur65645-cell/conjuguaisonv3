@@ -11,6 +11,15 @@
         {{ ((session.timer - (time.time() - session.start)) % 60)|int | string | zfill(2) }}
     </p>
 {% endif %}
+    {% if mode == "evaluation" %}
+    <div class="progress-container">
+        <div class="progress-bar" style="width: {{ (10 - session.questions_restantes) * 10 }}%;"></div>
+    </div>
+    <p class="progress-text">
+        Question {{ 10 - session.questions_restantes + 1 }} / 10
+    </p>
+{% endif %}
+
 
 </head>
 <body>
