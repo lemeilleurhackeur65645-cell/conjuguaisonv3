@@ -320,3 +320,14 @@ input:checked + .slider:before {
     color: #444;
     margin-bottom: 15px;
 }
+.eval-badge, .timer-box {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.container {
+    text-align: center;
+}
+input[name="reponse"] {
+    text-align: center;
+}
