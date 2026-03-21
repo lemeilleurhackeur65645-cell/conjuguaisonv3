@@ -2163,60 +2163,65 @@ def changelog():
 # GÉNÉRATION D’UNE QUESTION
 # ============================================================
 def generer_question():
-    verbe = random.choice(list(conjugaisons.keys()))
-    mode_v = random.choice(list(conjugaisons[verbe].keys()))
-    temps = random.choice(list(conjugaisons[verbe][mode_v].keys()))
-    formes = conjugaisons[verbe][mode_v][temps]
+    try:
+        # 1. Choix du verbe
+        verbe = random.choice(list(conjugaisons.keys()))
+        modes = conjugaisons.get(verbe, {})
+        if not modes:
+            return generer_question()
 
-    mode_lower = mode_v.lower()
+        # 2. Choix du mode
+        mode_v = random.choice(list(modes.keys()))
+        temps_dict = modes.get(mode_v, {})
+        if not temps_dict:
+            return generer_question()
 
-    # Gestion des pronoms selon le mode
-    if mode_lower == "impératif":
-        pronoms_valides = ["tu", "nous", "vous"]
-    elif mode_lower in ["infinitif", "gérondif", "participe"]:
-        pronoms_valides = ["(forme impersonnelle)"]
-    else:
-        pronoms_valides = ["je", "tu", "il", "nous", "vous", "ils"]
+        # 3. Choix du temps
+        temps = random.choice(list(temps_dict.keys()))
+        formes = temps_dict.get(temps, [])
+        if not formes:
+            return generer_question()
 
-    # Cas impersonnel
-    if len(formes) == 1:
-        sujet = "(forme impersonnelle)"
-        idx = 0
+        mode_lower = mode_v.lower()
 
-    else:
-        sujets_possibles = []
-
-        if mode_lower == "impératif":
-            mapping_imp = {"tu": 0, "nous": 1, "vous": 2}
-            for s, i in mapping_imp.items():
-                if i < len(formes):
-                    sujets_possibles.append(s)
-        else:
-            mapping = ["je", "tu", "il", "nous", "vous", "ils"]
-            for i, s in enumerate(mapping):
-                if i < len(formes):
-                    sujets_possibles.append(s)
-
-        if not sujets_possibles:
+        # 4. Gestion des pronoms
+        if len(formes) == 1:
             sujet = "(forme impersonnelle)"
             idx = 0
+
         else:
+            if mode_lower == "impératif":
+                mapping = {"tu": 0, "nous": 1, "vous": 2}
+                sujets_possibles = [s for s, i in mapping.items() if i < len(formes)]
+            else:
+                mapping = ["je", "tu", "il", "nous", "vous", "ils"]
+                sujets_possibles = [s for i, s in enumerate(mapping) if i < len(formes)]
+
+            if not sujets_possibles:
+                return generer_question()
+
             sujet = random.choice(sujets_possibles)
+
             if mode_lower == "impératif":
                 idx = {"tu": 0, "nous": 1, "vous": 2}[sujet]
             else:
                 idx = ["je", "tu", "il", "nous", "vous", "ils"].index(sujet)
 
-    # Sécurité anti-crash
-    if idx >= len(formes):
-        return generer_question()  # relancer une nouvelle question
+        # 5. Sécurité anti-index hors limites
+        if idx >= len(formes):
+            return generer_question()
 
-    bonne = formes[idx]
-    question = f"Conjugue : {verbe} — {mode_v} — {temps} — {sujet}"
+        # 6. Récupération de la bonne réponse
+        bonne = formes[idx]
 
-    return verbe, mode_v, temps, sujet, bonne, question
+        # 7. Construction de la question
+        question = f"Conjugue : {verbe} — {mode_v} — {temps} — {sujet}"
 
+        return verbe, mode_v, temps, sujet, bonne, question
 
+    except Exception:
+        # Sécurité ultime : si quelque chose d’imprévu arrive
+        return generer_question()
 
 # ============================================================
 # MODE RÉVISION DES ERREURS
