@@ -4,21 +4,110 @@
     <meta charset="UTF-8">
     <title>Quiz</title>
     <link rel="stylesheet" href="/static/style.css">
+
+    <style>
+        /* --- BANNIÈRE MODE ÉVALUATION --- */
+        .eval-banner {
+            background: #222;
+            color: #f5f5f5;
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 15px;
+            letter-spacing: 1px;
+            border-bottom: 1px solid #444;
+            margin-bottom: 20px;
+        }
+
+        /* --- TIMER --- */
+        .timer {
+            font-size: 22px;
+            font-weight: 600;
+            color: #d9534f;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        /* --- BARRE DE PROGRESSION --- */
+        .progress-container {
+            width: 100%;
+            height: 8px;
+            background: #eee;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: #007bff;
+            transition: width 0.4s ease;
+        }
+
+        .progress-text {
+            text-align: center;
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        /* --- QUESTION --- */
+        .question-text {
+            text-align: center;
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+
+        /* --- BOUTONS --- */
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background: #0056b3;
+        }
+
+        .stop-button {
+            display: block;
+            margin-top: 25px;
+            text-align: center;
+            color: #d9534f;
+            font-size: 14px;
+        }
+
+        /* --- FEEDBACK --- */
+        .feedback {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 18px;
+        }
+    </style>
 </head>
 
 <body>
 
 <div class="container">
 
-    <!-- TIMER (mode évaluation) -->
+    <!-- BANNIÈRE MODE ÉVALUATION -->
+    {% if mode == "evaluation" %}
+        <div class="eval-banner">MODE ÉVALUATION — 10 QUESTIONS — TEMPS LIMITÉ</div>
+    {% endif %}
+
+    <!-- TIMER -->
     {% if mode == "evaluation" and temps_restant is not none %}
         <p class="timer">
-            Temps restant :
             {{ (temps_restant // 60)|int }}:{{ '%02d' % (temps_restant % 60) }}
         </p>
     {% endif %}
 
-    <!-- BARRE DE PROGRESSION (mode évaluation) -->
+    <!-- BARRE DE PROGRESSION -->
     {% if mode == "evaluation" and session.questions_restantes is defined %}
         <div class="progress-container">
             <div class="progress-bar" style="width: {{ (10 - session.questions_restantes) * 10 }}%;"></div>
@@ -41,14 +130,14 @@
         <p class="feedback">{{ feedback }}</p>
     {% endif %}
 
-{% if mode != "evaluation" %}
-    <a href="/fin" class="stop-button">Arrêter et voir le bilan.</a>
-{% endif %}
-
+    <!-- BOUTON ARRÊTER (pas en mode évaluation) -->
+    {% if mode != "evaluation" %}
+        <a href="/fin" class="stop-button">Arrêter et voir le bilan.</a>
+    {% endif %}
 
 </div>
 
-<!-- TIMER JS (doit être APRÈS .timer) -->
+<!-- TIMER JS -->
 {% if mode == "evaluation" and temps_restant is not none %}
 <script>
     let remaining = {{ temps_restant }};
@@ -65,7 +154,7 @@
         const minutes = Math.floor(remaining / 60);
         const seconds = String(remaining % 60).padStart(2, "0");
 
-        timerElement.textContent = `Temps restant : ${minutes}:${seconds}`;
+        timerElement.textContent = `${minutes}:${seconds}`;
         remaining--;
     }
 
