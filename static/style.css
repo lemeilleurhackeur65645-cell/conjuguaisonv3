@@ -331,3 +331,10 @@ input:checked + .slider:before {
 input[name="reponse"] {
     text-align: center;
 }
+.eval-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
