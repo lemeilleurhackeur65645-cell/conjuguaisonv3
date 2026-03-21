@@ -59,17 +59,19 @@
 
             <!-- Graphique premium des erreurs par mode -->
             <div class="mode-chart">
-                {% set max_mode = analyse.modes[0][1] %}
+                {% set total_modes = analyse.modes | sum(attribute=1) %}
                 {% for mode, nb in analyse.modes %}
+                {% set pct = (nb * 100 / total_modes) | round(1) %}
                     <div class="mode-row">
-                        <span class="mode-label">{{ mode }}</span>
-                        <div class="mode-bar-premium">
-                            <div class="mode-bar-fill-premium" style="width: {{ (nb * 100 // max_mode) }}%;"></div>
-                        </div>
-                        <span class="mode-value">{{ (nb * 100 // max_mode) }}%</span>
+                    <span class="mode-label">{{ mode }}</span>
+                    <div class="mode-bar-premium">
+                    <div class="mode-bar-fill-premium" style="width: {{ pct }}%;"></div>
+                    </div>
+                    <span class="mode-value">{{ pct }}%</span>
                     </div>
                 {% endfor %}
             </div>
+
 
             <p class="analyse-title">Temps le(s) moins réussi(s)</p>
             {% for temps, nb in analyse.temps %}
