@@ -119,17 +119,17 @@
 
 <div class="container center">
 
-    <!-- BADGE MODE ÉVALUATION EN HAUT -->
-    {% if mode == "evaluation" %}
-        <div class="eval-badge">Mode Évaluation</div>
-    {% endif %}
+{% if mode == "evaluation" %}
+<div class="eval-header">
+    <div class="eval-badge">Mode Évaluation</div>
 
-    <!-- TIMER EN CAPSULE -->
-    {% if mode == "evaluation" and temps_restant is not none %}
+    {% if temps_restant is not none %}
         <div class="timer-box timer">
             {{ (temps_restant // 60)|int }}:{{ '%02d' % (temps_restant % 60) }}
         </div>
     {% endif %}
+</div>
+{% endif %}
 
     <!-- BARRE DE PROGRESSION -->
     {% if mode == "evaluation" and session.questions_restantes is defined %}
