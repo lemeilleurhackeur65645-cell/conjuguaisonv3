@@ -11,12 +11,11 @@
             display: inline-block;
             background: #111;
             color: #f5f5f5;
-            padding: 6px 14px;
+            padding: 6px 16px;
             border-radius: 20px;
             font-size: 13px;
             letter-spacing: 0.5px;
-            margin: 0 auto 20px auto;
-            text-align: center;
+            margin: 10px auto 25px auto;
         }
 
         /* --- TIMER EN CAPSULE --- */
@@ -24,11 +23,11 @@
             display: inline-block;
             background: #ffe5e5;
             color: #c0392b;
-            padding: 8px 16px;
-            border-radius: 12px;
-            font-size: 18px;
-            font-weight: 600;
-            margin: 0 auto 15px auto;
+            padding: 12px 22px;
+            border-radius: 14px;
+            font-size: 26px; /* ✔ plus grand */
+            font-weight: 700;
+            margin: 0 auto 20px auto;
         }
 
         /* --- BARRE DE PROGRESSION --- */
@@ -58,29 +57,35 @@
         .question-text {
             text-align: center;
             font-size: 22px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
-        /* --- INPUT + BOUTON --- */
+        /* --- INPUT CENTRÉ + ESPACÉ --- */
         input[name="reponse"] {
-            width: 100%;
+            width: 80%; /* ✔ centré et plus élégant */
+            max-width: 350px;
+            display: block;
+            margin: 0 auto 20px auto; /* ✔ centré + espace */
             padding: 12px;
-            font-size: 16px;
+            font-size: 17px;
             border-radius: 6px;
             border: 1px solid #ccc;
-            margin-bottom: 18px; /* ✔ Ajout d’espace */
+            text-align: center; /* ✔ centrer le texte */
         }
 
+        /* --- BOUTON VALIDER --- */
         .btn {
-            width: 100%;
+            width: 80%;
+            max-width: 350px;
             padding: 12px;
             background: #007bff;
             color: white;
             border: none;
             border-radius: 6px;
-            font-size: 16px;
+            font-size: 17px;
             cursor: pointer;
-            margin-top: 5px;
+            display: block;
+            margin: 0 auto 10px auto; /* ✔ centré + espace */
         }
 
         .btn:hover {
@@ -114,7 +119,7 @@
 
 <div class="container center">
 
-    <!-- BADGE MODE ÉVALUATION -->
+    <!-- BADGE MODE ÉVALUATION EN HAUT -->
     {% if mode == "evaluation" %}
         <div class="eval-badge">Mode Évaluation</div>
     {% endif %}
