@@ -2305,16 +2305,22 @@ def quiz():
         else:
             feedback = "✔️ Correct" if rep == bonne.lower() else f"❌ Faux. Réponse attendue : {bonne}"
 
-    # --- Nouvelle question ---
+# --- Nouvelle question ---
     if mode == "revision":
-        # Si plus rien à réviser → bilan
-        if not session.get("erreurs_revision"):
-            return redirect("/fin")
+    # Si plus rien à réviser → bilan
+    if not session.get("erreurs_revision"):
+        return redirect("/fin")
 
-        verbe, mode_v, temps, sujet, _, bonne = session["erreurs_revision"].pop(0)
+    # On récupère l’erreur suivante
+        verbe, mode_v, temps, sujet, rep_faute, bonne = session["erreurs_revision"].pop(0)
+
+    # On construit la question sans recalculer idx
         question = f"Conjugue : {verbe} — {mode_v} — {temps} — {sujet}"
+
     else:
+    # Mode normal ou évaluation
         verbe, mode_v, temps, sujet, bonne, question = generer_question()
+
 
     session["verbe"] = verbe
     session["mode_verbe"] = mode_v
