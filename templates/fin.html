@@ -49,19 +49,6 @@
                     {{ verbe }} ({{ nb }} erreur{% if nb > 1 %}s{% endif %})
                 </div>
             {% endfor %}
-<!-- Graphique des erreurs par mode -->
-<div class="mode-chart">
-    {% set max_mode = analyse.modes[0][1] %}
-    {% for mode, nb in analyse.modes %}
-        <div class="mode-row">
-            <span class="mode-label">{{ mode }}</span>
-            <div class="mode-bar-premium">
-                <div class="mode-bar-fill-premium" style="width: {{ (nb * 100 // max_mode) }}%;"></div>
-            </div>
-            <span class="mode-value">{{ (nb * 100 // max_mode) }}%</span>
-        </div>
-    {% endfor %}
-</div>
 
             <p class="analyse-title">Mode(s) le(s) moins réussi(s)</p>
             {% for mode, nb in analyse.modes %}
@@ -70,12 +57,16 @@
                 </div>
             {% endfor %}
 
-            <!-- Graphique simple des erreurs par mode -->
+            <!-- Graphique premium des erreurs par mode -->
             <div class="mode-chart">
                 {% set max_mode = analyse.modes[0][1] %}
                 {% for mode, nb in analyse.modes %}
-                    <div class="mode-bar">
-                        <div class="mode-bar-fill" style="width: {{ (nb * 100 // max_mode) }}%;"></div>
+                    <div class="mode-row">
+                        <span class="mode-label">{{ mode }}</span>
+                        <div class="mode-bar-premium">
+                            <div class="mode-bar-fill-premium" style="width: {{ (nb * 100 // max_mode) }}%;"></div>
+                        </div>
+                        <span class="mode-value">{{ (nb * 100 // max_mode) }}%</span>
                     </div>
                 {% endfor %}
             </div>
@@ -94,10 +85,10 @@
     {% endif %}
 
     {% if erreurs %}
-        <a href="/revision" class="btn">Réviser mes erreurs</a>
+        <a href="/revision" class="btn-premium">Réviser mes erreurs</a>
     {% endif %}
 
-    <a href="/" class="back-button">Recommencer</a>
+    <a href="/" class="btn-premium">Recommencer</a>
 
 </div>
 </body>
