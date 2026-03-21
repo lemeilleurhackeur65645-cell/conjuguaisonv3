@@ -30,7 +30,7 @@
             {% for e in erreurs %}
                 <div class="erreur-item">
                     {{ e[0] }} — {{ e[1] }} — {{ e[2] }} — {{ e[3] }} :
-                    « {{ e[4] | e }} » → « {{ e[5] | e }} »
+                    « {{ e[4] }} » → « {{ e[5] }} »
                 </div>
             {% endfor %}
         </div>
@@ -57,6 +57,16 @@
                 </div>
             {% endfor %}
 
+            <!-- Graphique simple des erreurs par mode -->
+            <div class="mode-chart">
+                {% set max_mode = analyse.modes[0][1] %}
+                {% for mode, nb in analyse.modes %}
+                    <div class="mode-bar">
+                        <div class="mode-bar-fill" style="width: {{ (nb * 100 // max_mode) }}%;"></div>
+                    </div>
+                {% endfor %}
+            </div>
+
             <p class="analyse-title">Temps le(s) moins réussi(s)</p>
             {% for temps, nb in analyse.temps %}
                 <div class="analyse-item">
@@ -68,6 +78,10 @@
             <p class="suggestion">{{ analyse.suggestion }}</p>
 
         </div>
+    {% endif %}
+
+    {% if erreurs %}
+        <a href="/revision" class="btn">Réviser mes erreurs</a>
     {% endif %}
 
     <a href="/" class="back-button">Recommencer</a>
