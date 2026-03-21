@@ -2162,14 +2162,13 @@ def changelog():
 # ============================================================
 # GÉNÉRATION D’UNE QUESTION
 # ============================================================
-
 def generer_question():
     verbe = random.choice(list(conjugaisons.keys()))
-    mode = random.choice(list(conjugaisons[verbe].keys()))
-    temps = random.choice(list(conjugaisons[verbe][mode].keys()))
-    formes = conjugaisons[verbe][mode][temps]
+    mode_v = random.choice(list(conjugaisons[verbe].keys()))
+    temps = random.choice(list(conjugaisons[verbe][mode_v].keys()))
+    formes = conjugaisons[verbe][mode_v][temps]
 
-    mode_lower = mode.lower()
+    mode_lower = mode_v.lower()
 
     # Gestion des pronoms selon le mode
     if mode_lower == "impératif":
@@ -2183,6 +2182,7 @@ def generer_question():
     if len(formes) == 1:
         sujet = "(forme impersonnelle)"
         idx = 0
+
     else:
         sujets_possibles = []
 
@@ -2207,10 +2207,15 @@ def generer_question():
             else:
                 idx = ["je", "tu", "il", "nous", "vous", "ils"].index(sujet)
 
-    bonne = formes[idx]
-    question = f"Conjugue : {verbe} — {mode} — {temps} — {sujet}"
+    # Sécurité anti-crash
+    if idx >= len(formes):
+        return generer_question()  # relancer une nouvelle question
 
-    return verbe, mode, temps, sujet, bonne, question
+    bonne = formes[idx]
+    question = f"Conjugue : {verbe} — {mode_v} — {temps} — {sujet}"
+
+    return verbe, mode_v, temps, sujet, bonne, question
+
 
 
 # ============================================================
