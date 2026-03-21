@@ -14,15 +14,25 @@ body {
     box-shadow: 0 0 15px rgba(0,0,0,0.1);
 }
 
+/* Bouton principal */
 .btn {
     display: inline-block;
     margin-top: 20px;
     padding: 12px 25px;
-    background: #007bff;
+    background: linear-gradient(135deg, #007bff, #0056d6); /* micro-gradient */
     color: white;
     text-decoration: none;
     border-radius: 8px;
     font-size: 18px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.2s ease;
+}
+
+.btn:hover {
+    background: linear-gradient(135deg, #0066e6, #0040a8);
+    box-shadow: 0 4px 10px rgba(0, 86, 214, 0.35);
+    transform: translateY(-1px);
 }
 
 input {
@@ -32,10 +42,22 @@ input {
     font-size: 18px;
 }
 
+/* Highlight du champ de réponse */
+input[name="reponse"] {
+    text-align: center;
+}
+
+input[name="reponse"]:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
 .feedback {
     margin-top: 20px;
     font-size: 20px;
 }
+
 .menu-link {
     font-size: 0.9rem;
     color: #555;
@@ -52,27 +74,27 @@ input {
     color: #000;
 }
 
-
-
 .stop {
     display: block;
     margin-top: 25px;
     color: #d00;
 }
+
 .changelog-entry {
     margin-bottom: 6px;
     padding-left: 0;
     list-style: none;
 }
+
 .back-button {
     display: inline-block;
-    margin-top: 20px;
-    padding: 8px 14px;
+    margin-top: 30px;
+    padding: 10px 18px;
     background: #f2f2f2;
     border-radius: 6px;
     color: #333;
     text-decoration: none;
-    font-size: 0.9rem;
+    font-weight: 500;
     transition: background 0.2s, color 0.2s;
 }
 
@@ -80,24 +102,26 @@ input {
     background: #e0e0e0;
     color: #000;
 }
+
 .menu-footer {
     margin-top: 40px;
     text-align: center;
 }
 
-
+/* Bouton bilan compact */
 .stop-button {
     display: inline-block;
-    padding: 10px 18px;      
+    padding: 10px 18px;
     background: #ffe5e5;
     color: #c0392b;
-    border-radius: 8px;      
+    border-radius: 8px;
     font-size: 15px;
     text-decoration: none;
     margin-top: 25px;
-    font-weight: 600;        
-    width: auto;             
+    font-weight: 600;
+    width: auto;
 }
+
 .stop-button:hover {
     background: #ffcccc;
     color: #700;
@@ -108,11 +132,13 @@ input {
     font-weight: 500;
     margin-bottom: 20px;
 }
+
 .bilan-item {
     margin-bottom: 6px;
     font-size: 1rem;
     color: #333;
 }
+
 .bilan-title {
     font-size: 1.3rem;
     margin-top: 25px;
@@ -120,6 +146,7 @@ input {
     color: #222;
     font-weight: 600;
 }
+
 .intro {
     margin-bottom: 20px;
     color: #555;
@@ -155,20 +182,8 @@ input {
     color: #333;
 }
 
-.back-button {
-    display: inline-block;
-    margin-top: 30px;
-    padding: 10px 18px;
-    background: #f2f2f2;
-    border-radius: 6px;
-    color: #333;
-    text-decoration: none;
-    font-weight: 500;
-    transition: background 0.2s, color 0.2s;
-}
 /* Amélioration mobile */
 @media (max-width: 600px) {
-
     .container {
         padding: 20px;
         width: 100%;
@@ -199,36 +214,31 @@ input {
         text-align: center;
         padding: 12px;
         font-size: 1rem;
+    }
 
-.mode-switch {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-}
+    .mode-switch {
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+    }
 
-.mode-btn {
-    padding: 8px 14px;
-    background: #f2f2f2;
-    border-radius: 6px;
-    color: #333;
-    text-decoration: none;
-    font-size: 0.9rem;
-    transition: background 0.2s;
-}
+    .mode-btn {
+        padding: 8px 14px;
+        background: #f2f2f2;
+        border-radius: 6px;
+        color: #333;
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: background 0.2s;
+    }
 
-.mode-btn:hover {
-    background: #e0e0e0;
-}
-
+    .mode-btn:hover {
+        background: #e0e0e0;
     }
 }
 
-.back-button:hover {
-    background: #e0e0e0;
-    color: #000;
-}
-
+/* Interrupteur */
 .switch-container {
     display: flex;
     justify-content: center;
@@ -242,7 +252,6 @@ input {
     color: #444;
 }
 
-/* Interrupteur */
 .switch {
     position: relative;
     display: inline-block;
@@ -288,6 +297,7 @@ input:checked + .slider:before {
     transform: translateX(24px);
 }
 
+/* Timer en mode évaluation (classe .timer est utilisée dans quiz.html) */
 .timer {
     font-size: 1.1rem;
     font-weight: 600;
@@ -295,6 +305,32 @@ input:checked + .slider:before {
     margin-bottom: 15px;
     text-align: center;
 }
+
+/* Capsule timer + shadow */
+.timer-box {
+    background: #ffe5e5;
+    color: #c0392b;
+    padding: 14px 26px;
+    border-radius: 14px;
+    font-size: 30px;
+    font-weight: 700;
+    text-align: center;
+    display: inline-block;
+    box-shadow: 0 4px 10px rgba(192, 57, 43, 0.25);
+}
+
+/* Animation timer quand il reste peu de temps */
+@keyframes timer-pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.timer-warning {
+    animation: timer-pulse 0.8s ease-in-out infinite;
+}
+
+/* Barre de progression */
 .progress-container {
     width: 100%;
     height: 10px;
@@ -316,31 +352,50 @@ input:checked + .slider:before {
     color: #444;
     margin-bottom: 15px;
 }
-.eval-badge, .timer-box {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-}
-.container {
-    text-align: center;
-}
-input[name="reponse"] {
-    text-align: center;
-}
+
+/* Header évaluation fixe */
 .eval-header {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
     margin-bottom: 20px;
+    position: sticky;
+    top: 0;
+    background: white;
+    padding-bottom: 10px;
+    z-index: 10;
 }
-.timer-box {
-    background: #ffe5e5;
-    color: #c0392b;
-    padding: 14px 26px;
-    border-radius: 14px;
-    font-size: 30px;
-    font-weight: 700;
-    text-align: center;
+
+.eval-badge {
     display: inline-block;
+    background: #111;
+    color: #f5f5f5;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    margin-top: -10px;
+}
+
+/* Graphique des erreurs par mode */
+.mode-chart {
+    margin-top: 10px;
+}
+
+.mode-bar {
+    background: #eee;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 6px;
+}
+
+.mode-bar-fill {
+    height: 10px;
+    background: #4CAF50;
+}
+
+/* Centrage global */
+.container {
+    text-align: center;
 }
