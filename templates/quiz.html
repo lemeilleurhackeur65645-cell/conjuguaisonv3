@@ -5,12 +5,55 @@
     <title>Quiz</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
+
+<body>
+
+<div class="container">
+
+    <!-- TIMER (mode évaluation) -->
+    {% if mode == "evaluation" and temps_restant is not none %}
+        <p class="timer">
+            Temps restant :
+            {{ (temps_restant // 60)|int }}:{{ '%02d' % (temps_restant % 60) }}
+        </p>
+    {% endif %}
+
+    <!-- BARRE DE PROGRESSION (mode évaluation) -->
+    {% if mode == "evaluation" and session.questions_restantes is defined %}
+        <div class="progress-container">
+            <div class="progress-bar" style="width: {{ (10 - session.questions_restantes) * 10 }}%;"></div>
+        </div>
+        <p class="progress-text">
+            Question {{ 10 - session.questions_restantes + 1 }} / 10
+        </p>
+    {% endif %}
+
+    <!-- QUESTION -->
+    <h2 class="question-text">{{ question }}</h2>
+
+    <form method="POST">
+        <input type="text" name="reponse" placeholder="Ta réponse…" autofocus required>
+        <button type="submit" class="btn">Valider</button>
+    </form>
+
+    <!-- FEEDBACK (mode entraînement uniquement) -->
+    {% if feedback %}
+        <p class="feedback">{{ feedback }}</p>
+    {% endif %}
+
+    <a href="/fin" class="stop-button">Arrêter et voir le bilan.</a>
+
+</div>
+
+<!-- TIMER JS (doit être APRÈS .timer) -->
 {% if mode == "evaluation" and temps_restant is not none %}
 <script>
     let remaining = {{ temps_restant }};
     const timerElement = document.querySelector(".timer");
 
     function updateTimer() {
+        if (!timerElement) return;
+
         if (remaining <= 0) {
             window.location.href = "/fin";
             return;
@@ -27,41 +70,6 @@
     setInterval(updateTimer, 1000);
 </script>
 {% endif %}
-
-<body>
-
-<div class="container">
-
-    {% if mode == "evaluation" and temps_restant is not none %}
-        <p class="timer">
-            Temps restant :
-            {{ (temps_restant // 60)|int }}:{{ '%02d' % (temps_restant % 60) }}
-        </p>
-    {% endif %}
-
-    {% if mode == "evaluation" and session.questions_restantes is defined %}
-        <div class="progress-container">
-            <div class="progress-bar" style="width: {{ (10 - session.questions_restantes) * 10 }}%;"></div>
-        </div>
-        <p class="progress-text">
-            Question {{ 10 - session.questions_restantes + 1 }} / 10
-        </p>
-    {% endif %}
-
-    <h2 class="question-text">{{ question }}</h2>
-
-    <form method="POST">
-        <input type="text" name="reponse" placeholder="Ta réponse…" autofocus required>
-        <button type="submit" class="btn">Valider</button>
-    </form>
-
-    {% if feedback %}
-        <p class="feedback">{{ feedback }}</p>
-    {% endif %}
-
-    <a href="/fin" class="stop-button">Arrêter et voir le bilan.</a>
-
-</div>
 
 </body>
 </html>
