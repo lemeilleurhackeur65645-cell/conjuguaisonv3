@@ -2157,13 +2157,10 @@ def changelog():
     return render_template("changelog.html")
 
 
-
-
 # ------------------------------------------------------------
 # 1) GÉNÉRATION D’UNE QUESTION (VERSION INTELLIGENTE)
 # ------------------------------------------------------------
 def generer_question():
-    # 1) Choisir un verbe, mode, temps
     verbe = random.choice(list(conjugaisons.keys()))
     mode = random.choice(list(conjugaisons[verbe].keys()))
     temps = random.choice(list(conjugaisons[verbe][mode].keys()))
@@ -2171,7 +2168,6 @@ def generer_question():
 
     mode_lower = mode.lower()
 
-    # 2) Déterminer les pronoms possibles
     if mode_lower == "impératif":
         pronoms_valides = ["tu", "nous", "vous"]
     elif mode_lower in ["infinitif", "gérondif", "participe"]:
@@ -2179,51 +2175,63 @@ def generer_question():
     else:
         pronoms_valides = ["je", "tu", "il", "nous", "vous", "ils"]
 
-    # 3) Cas impersonnel
     if len(formes) == 1:
         sujet = "(forme impersonnelle)"
         idx = 0
-
     else:
-        # Choisir un sujet compatible
         sujets_possibles = []
-
         if mode_lower == "impératif":
             mapping_imp = {"tu": 0, "nous": 1, "vous": 2}
             for s, i in mapping_imp.items():
                 if i < len(formes):
                     sujets_possibles.append(s)
-
         else:
             mapping = ["je", "tu", "il", "nous", "vous", "ils"]
             for i, s in enumerate(mapping):
                 if i < len(formes):
                     sujets_possibles.append(s)
 
-        # Sécurité : si aucun sujet valide → fallback
         if not sujets_possibles:
             sujet = "(forme impersonnelle)"
             idx = 0
         else:
             sujet = random.choice(sujets_possibles)
-
             if mode_lower == "impératif":
                 idx = {"tu": 0, "nous": 1, "vous": 2}[sujet]
             else:
                 idx = ["je", "tu", "il", "nous", "vous", "ils"].index(sujet)
 
-    # 4) Récupérer la bonne réponse
     bonne = formes[idx]
-
-    # 5) Construire la question
     question = f"Conjugue : {verbe} — {mode} — {temps} — {sujet}"
 
     return verbe, mode, temps, sujet, bonne, question
 
+
+# ------------------------------------------------------------
+# 2bis) MODE RÉVISION DES ERREURS
+# ------------------------------------------------------------
+@app.route("/revision")
+def revision():
+    # Si aucune erreur, retour à l'accueil
+    if "erreurs" not in session or not session["erreurs"]:
+        return redirect("/")
+
+    # On prépare une session dédiée à la révision
+    session["mode"] = "revision"
+    session["score"] = 0
+    session["total"] = 0
+    session["start"] = time.time()
+
+    # Copie des erreurs à réviser
+    # e = (verbe, mode_verbe, temps, sujet, rep, bonne)
+    session["erreurs_revision"] = session["erreurs"][:]
+
+    return redirect("/quiz")
+
+
 # ------------------------------------------------------------
 # 2) ROUTE DU QUIZ
 # ------------------------------------------------------------
-
 @app.route("/quiz", methods=["GET", "POST"])
 def quiz():
     # --- Initialisation si on arrive depuis l'accueil ---
@@ -2231,7 +2239,7 @@ def quiz():
         session.clear()
 
         mode = request.args.get("mode")
-        session["mode"] = mode  # mode du QUIZ (entrainement / evaluation)
+        session["mode"] = mode  # entrainement / evaluation
 
         session["score"] = 0
         session["total"] = 0
@@ -2242,7 +2250,6 @@ def quiz():
             session["timer"] = 5 * 60
             session["questions_restantes"] = 10
 
-    # Mode actuel du QUIZ
     mode = session.get("mode", "entrainement")
 
     # --- Sécurité : s'assurer que les clés existent ---
@@ -2278,7 +2285,7 @@ def quiz():
         if rep != bonne.lower():
             session["erreurs"].append((
                 session["verbe"],
-                session["mode_verbe"],   # ✔ mode grammatical du verbe
+                session["mode_verbe"],
                 session["temps"],
                 session["sujet"],
                 rep,
@@ -2287,20 +2294,30 @@ def quiz():
         else:
             session["score"] += 1
 
-        # Mode évaluation : pas de feedback + compteur
         if mode == "evaluation":
             session["questions_restantes"] -= 1
             if session["questions_restantes"] <= 0:
                 return redirect("/fin")
+        elif mode == "revision":
+            # On passe à l'erreur suivante, pas de feedback pour l'instant
+            if not session.get("erreurs_revision"):
+                return redirect("/fin")
         else:
-            # Mode entraînement : feedback immédiat
             feedback = "✔️ Correct" if rep == bonne.lower() else f"❌ Faux. Réponse attendue : {bonne}"
 
     # --- Nouvelle question ---
-    verbe, mode_v, temps, sujet, bonne, question = generer_question()
+    if mode == "revision":
+        # Si plus rien à réviser → bilan
+        if not session.get("erreurs_revision"):
+            return redirect("/fin")
+
+        verbe, mode_v, temps, sujet, _, bonne = session["erreurs_revision"].pop(0)
+        question = f"Conjugue : {verbe} — {mode_v} — {temps} — {sujet}"
+    else:
+        verbe, mode_v, temps, sujet, bonne, question = generer_question()
 
     session["verbe"] = verbe
-    session["mode_verbe"] = mode_v   # ✔ NE PAS ÉCRASER session["mode"]
+    session["mode_verbe"] = mode_v
     session["temps"] = temps
     session["sujet"] = sujet
     session["bonne"] = bonne
@@ -2314,7 +2331,7 @@ def quiz():
         "quiz.html",
         question=question,
         feedback=feedback,
-        mode=mode,               # mode du quiz
+        mode=mode,
         temps_restant=temps_restant
     )
 
@@ -2322,7 +2339,6 @@ def quiz():
 # ------------------------------------------------------------
 # 3) ROUTE DU BILAN FINAL
 # ------------------------------------------------------------
-
 @app.route("/fin")
 def fin():
     end = time.time()
@@ -2332,7 +2348,7 @@ def fin():
     taux = round(score / total * 100, 1) if total else 0
     temps_moyen = round(duree / total, 2) if total else 0
 
-    erreurs = session["erreurs"]
+    erreurs = session.get("erreurs", [])
 
     analyse = None
     if erreurs:
@@ -2355,6 +2371,10 @@ def fin():
             "suggestion": f"{top(stats_verbes)[0][0]} — {top(stats_modes)[0][0]} — {top(stats_temps)[0][0]}"
         }
 
+        total_erreurs = len(erreurs)
+    else:
+        total_erreurs = 0
+
     return render_template(
         "fin.html",
         total=total,
@@ -2363,9 +2383,9 @@ def fin():
         duree=duree,
         temps_moyen=temps_moyen,
         erreurs=erreurs,
-        analyse=analyse
+        analyse=analyse,
+        total_erreurs=total_erreurs
     )
-
 
 
 # ============================================================
