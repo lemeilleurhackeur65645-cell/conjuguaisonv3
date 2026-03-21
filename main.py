@@ -5,7 +5,6 @@ import time
 app = Flask(__name__)
 app.secret_key = "secret123"
 
-from conjugaisons import conjugaisons
 # ============================================================
 # 1) STRUCTURE BESCHERELLE
 # ============================================================
