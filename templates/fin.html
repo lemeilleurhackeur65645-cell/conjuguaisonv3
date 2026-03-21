@@ -57,18 +57,18 @@
                 </div>
             {% endfor %}
 
-            <!-- Graphique premium des erreurs par mode -->
+
             <div class="mode-chart">
-                {% set total_modes = analyse.modes | sum(attribute=1) %}
-                {% for mode, nb in analyse.modes %}
-                {% set pct = (nb * 100 / total_modes) | round(1) %}
-                    <div class="mode-row">
-                    <span class="mode-label">{{ mode }}</span>
-                    <div class="mode-bar-premium">
-                    <div class="mode-bar-fill-premium" style="width: {{ pct }}%;"></div>
-                    </div>
-                    <span class="mode-value">{{ pct }}%</span>
-                    </div>
+              {% set total_modes = analyse.modes | map(attribute=1) | sum %}
+              {% for mode, nb in analyse.modes %}
+              {% set pct = (nb * 100 / total_modes) | round(0, 'floor') %}
+                   <div class="mode-row">
+                   <span class="mode-label">{{ mode }}</span>
+                   <div class="mode-bar-premium">
+                   <div class="mode-bar-fill-premium" style="width: {{ pct }}%;"></div>
+                   </div>
+                   <span class="mode-value">{{ pct }}%</span>
+                   </div>
                 {% endfor %}
             </div>
 
