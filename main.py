@@ -2163,6 +2163,7 @@ def changelog():
 # 1) GÉNÉRATION D’UNE QUESTION (VERSION INTELLIGENTE)
 # ------------------------------------------------------------
 def generer_question():
+    # 1) Choisir un verbe, mode, temps
     verbe = random.choice(list(conjugaisons.keys()))
     mode = random.choice(list(conjugaisons[verbe].keys()))
     temps = random.choice(list(conjugaisons[verbe][mode].keys()))
@@ -2170,6 +2171,7 @@ def generer_question():
 
     mode_lower = mode.lower()
 
+    # 2) Déterminer les pronoms possibles
     if mode_lower == "impératif":
         pronoms_valides = ["tu", "nous", "vous"]
     elif mode_lower in ["infinitif", "gérondif", "participe"]:
@@ -2177,25 +2179,46 @@ def generer_question():
     else:
         pronoms_valides = ["je", "tu", "il", "nous", "vous", "ils"]
 
+    # 3) Cas impersonnel
     if len(formes) == 1:
         sujet = "(forme impersonnelle)"
         idx = 0
+
     else:
-        sujet = random.choice(pronoms_valides)
+        # Choisir un sujet compatible
+        sujets_possibles = []
 
-        if sujet == "(forme impersonnelle)":
-            idx = 0
-        elif mode_lower == "impératif":
+        if mode_lower == "impératif":
             mapping_imp = {"tu": 0, "nous": 1, "vous": 2}
-            idx = mapping_imp[sujet]
-        else:
-            idx = ["je", "tu", "il", "nous", "vous", "ils"].index(sujet)
+            for s, i in mapping_imp.items():
+                if i < len(formes):
+                    sujets_possibles.append(s)
 
+        else:
+            mapping = ["je", "tu", "il", "nous", "vous", "ils"]
+            for i, s in enumerate(mapping):
+                if i < len(formes):
+                    sujets_possibles.append(s)
+
+        # Sécurité : si aucun sujet valide → fallback
+        if not sujets_possibles:
+            sujet = "(forme impersonnelle)"
+            idx = 0
+        else:
+            sujet = random.choice(sujets_possibles)
+
+            if mode_lower == "impératif":
+                idx = {"tu": 0, "nous": 1, "vous": 2}[sujet]
+            else:
+                idx = ["je", "tu", "il", "nous", "vous", "ils"].index(sujet)
+
+    # 4) Récupérer la bonne réponse
     bonne = formes[idx]
+
+    # 5) Construire la question
     question = f"Conjugue : {verbe} — {mode} — {temps} — {sujet}"
 
     return verbe, mode, temps, sujet, bonne, question
-
 
 # ------------------------------------------------------------
 # 2) ROUTE DU QUIZ
