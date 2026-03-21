@@ -2208,7 +2208,7 @@ def quiz():
         session.clear()
 
         mode = request.args.get("mode")
-        session["mode"] = mode
+        session["mode"] = mode  # mode du QUIZ (entrainement / evaluation)
 
         session["score"] = 0
         session["total"] = 0
@@ -2219,7 +2219,7 @@ def quiz():
             session["timer"] = 5 * 60
             session["questions_restantes"] = 10
 
-    # Mode actuel
+    # Mode actuel du QUIZ
     mode = session.get("mode", "entrainement")
 
     # --- Sécurité : s'assurer que les clés existent ---
@@ -2255,7 +2255,7 @@ def quiz():
         if rep != bonne.lower():
             session["erreurs"].append((
                 session["verbe"],
-                session["mode"],
+                session["mode_verbe"],   # ✔ mode grammatical du verbe
                 session["temps"],
                 session["sujet"],
                 rep,
@@ -2277,7 +2277,7 @@ def quiz():
     verbe, mode_v, temps, sujet, bonne, question = generer_question()
 
     session["verbe"] = verbe
-    session["mode"] = mode_v
+    session["mode_verbe"] = mode_v   # ✔ NE PAS ÉCRASER session["mode"]
     session["temps"] = temps
     session["sujet"] = sujet
     session["bonne"] = bonne
@@ -2291,10 +2291,9 @@ def quiz():
         "quiz.html",
         question=question,
         feedback=feedback,
-        mode=mode,
+        mode=mode,               # mode du quiz
         temps_restant=temps_restant
     )
-
 
 
 # ------------------------------------------------------------
