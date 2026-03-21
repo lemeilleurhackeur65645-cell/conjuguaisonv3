@@ -41,7 +41,10 @@
         <p class="feedback">{{ feedback }}</p>
     {% endif %}
 
+{% if mode != "evaluation" %}
     <a href="/fin" class="stop-button">Arrêter et voir le bilan.</a>
+{% endif %}
+
 
 </div>
 
