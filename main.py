@@ -2222,6 +2222,21 @@ def quiz():
     # Mode actuel
     mode = session.get("mode", "entrainement")
 
+    # --- Sécurité : s'assurer que les clés existent ---
+    if "score" not in session:
+        session["score"] = 0
+    if "total" not in session:
+        session["total"] = 0
+    if "erreurs" not in session:
+        session["erreurs"] = []
+    if "start" not in session:
+        session["start"] = time.time()
+    if mode == "evaluation":
+        if "timer" not in session:
+            session["timer"] = 5 * 60
+        if "questions_restantes" not in session:
+            session["questions_restantes"] = 10
+
     # --- Vérification du timer (sécurité serveur) ---
     if mode == "evaluation":
         temps_ecoule = time.time() - session["start"]
@@ -2279,7 +2294,6 @@ def quiz():
         mode=mode,
         temps_restant=temps_restant
     )
-
 
 
 
