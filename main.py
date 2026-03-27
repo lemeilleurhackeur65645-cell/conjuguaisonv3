@@ -2231,9 +2231,9 @@ def generer_question():
 
         return verbe, mode_v, temps, sujet, bonne, question
 
-        except Exception:
+    except Exception:
         # Sécurité ultime : si quelque chose d’imprévu arrive
-            return generer_question()
+        return generer_question()
 
 # ============================================================
 # MODE RÉVISION DES ERREURS
