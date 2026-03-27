@@ -2214,7 +2214,7 @@ def generer_question():
         # 6. Récupération de la bonne réponse
         bonne = formes[idx]
 
-    # Remplacement des pronoms par leur description
+        # Remplacement des pronoms par leur description
         mapping_desc = {
             "je": "1re personne du singulier",
             "tu": "2e personne du singulier",
