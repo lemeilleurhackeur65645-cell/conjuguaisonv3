@@ -2213,11 +2213,6 @@ def generer_question():
 
         # 6. Récupération de la bonne réponse
         bonne = formes[idx]
-    # 5. Sécurité anti-index hors limites
-    if idx >= len(formes):
-        return generer_question()
-
-    bonne = formes[idx]
 
     # Remplacement des pronoms par leur description
     mapping_desc = {
