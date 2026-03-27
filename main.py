@@ -2215,25 +2215,25 @@ def generer_question():
         bonne = formes[idx]
 
     # Remplacement des pronoms par leur description
-    mapping_desc = {
-        "je": "1re personne du singulier",
-        "tu": "2e personne du singulier",
-        "il": "3e personne du singulier",
-        "nous": "1re personne du pluriel",
-        "vous": "2e personne du pluriel",
-        "ils": "3e personne du pluriel",
-        "(forme impersonnelle)": "(forme impersonnelle)"
-    }
+        mapping_desc = {
+            "je": "1re personne du singulier",
+            "tu": "2e personne du singulier",
+            "il": "3e personne du singulier",
+            "nous": "1re personne du pluriel",
+            "vous": "2e personne du pluriel",
+            "ils": "3e personne du pluriel",
+            "(forme impersonnelle)": "(forme impersonnelle)"
+        }
 
-    sujet_affiche = mapping_desc.get(sujet, sujet)
+        sujet_affiche = mapping_desc.get(sujet, sujet)
 
-    question = f"Conjugue : {verbe} — {mode_v} — {temps} — {sujet_affiche}"
+        question = f"Conjugue : {verbe} — {mode_v} — {temps} — {sujet_affiche}"
 
-    return verbe, mode_v, temps, sujet, bonne, question
+        return verbe, mode_v, temps, sujet, bonne, question
 
-    except Exception:
+        except Exception:
         # Sécurité ultime : si quelque chose d’imprévu arrive
-        return generer_question()
+            return generer_question()
 
 # ============================================================
 # MODE RÉVISION DES ERREURS
