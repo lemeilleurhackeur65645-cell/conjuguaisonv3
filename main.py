@@ -2213,11 +2213,28 @@ def generer_question():
 
         # 6. Récupération de la bonne réponse
         bonne = formes[idx]
+    # 5. Sécurité anti-index hors limites
+    if idx >= len(formes):
+        return generer_question()
 
-        # 7. Construction de la question
-        question = f"Conjugue : {verbe} — {mode_v} — {temps} — {sujet}"
+    bonne = formes[idx]
 
-        return verbe, mode_v, temps, sujet, bonne, question
+    # Remplacement des pronoms par leur description
+    mapping_desc = {
+        "je": "1re personne du singulier",
+        "tu": "2e personne du singulier",
+        "il": "3e personne du singulier",
+        "nous": "1re personne du pluriel",
+        "vous": "2e personne du pluriel",
+        "ils": "3e personne du pluriel",
+        "(forme impersonnelle)": "(forme impersonnelle)"
+    }
+
+    sujet_affiche = mapping_desc.get(sujet, sujet)
+
+    question = f"Conjugue : {verbe} — {mode_v} — {temps} — {sujet_affiche}"
+
+    return verbe, mode_v, temps, sujet, bonne, question
 
     except Exception:
         # Sécurité ultime : si quelque chose d’imprévu arrive
