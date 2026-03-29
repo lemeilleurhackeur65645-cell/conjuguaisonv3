@@ -74,3 +74,17 @@ verbChips.forEach(chip => {
         updateListState("all");
     });
 });
+document.querySelectorAll('.chip').forEach(chip => {
+    const input = chip.querySelector('input');
+    if (!input) return;
+
+    // état initial
+    if (input.checked) chip.classList.add('active');
+
+    chip.addEventListener('click', () => {
+        // petit délai pour laisser le checkbox se mettre à jour
+        setTimeout(() => {
+            chip.classList.toggle('active', input.checked);
+        }, 0);
+    });
+});
