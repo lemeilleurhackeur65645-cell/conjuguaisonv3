@@ -2169,59 +2169,77 @@ def cible():
 # ============================================================
 # GÉNÉRATION D’UNE QUESTION
 # ============================================================
-def generer_question():
+def generer_question(modes=None, temps=None, personnes=None, verbes=None):
     try:
-        # 1. Choix du verbe
-        verbe = random.choice(list(conjugaisons.keys()))
-        modes = conjugaisons.get(verbe, {})
-        if not modes:
-            return generer_question()
+        # 1. Sélection du verbe
+        if verbes:
+            candidats_verbes = [v for v in verbes if v in conjugaisons]
+            if not candidats_verbes:
+                return generer_question(modes, temps, personnes, verbes)
+            verbe = random.choice(candidats_verbes)
+        else:
+            verbe = random.choice(list(conjugaisons.keys()))
 
-        # 2. Choix du mode
-        mode_v = random.choice(list(modes.keys()))
-        temps_dict = modes.get(mode_v, {})
+        modes_dict = conjugaisons.get(verbe, {})
+        if not modes_dict:
+            return generer_question(modes, temps, personnes, verbes)
+
+        # 2. Sélection du mode
+        if modes:
+            candidats_modes = [m for m in modes if m in modes_dict]
+            if not candidats_modes:
+                return generer_question(modes, temps, personnes, verbes)
+            mode_v = random.choice(candidats_modes)
+        else:
+            mode_v = random.choice(list(modes_dict.keys()))
+
+        temps_dict = modes_dict.get(mode_v, {})
         if not temps_dict:
-            return generer_question()
+            return generer_question(modes, temps, personnes, verbes)
 
-        # 3. Choix du temps
-        temps = random.choice(list(temps_dict.keys()))
-        formes = temps_dict.get(temps, [])
+        # 3. Sélection du temps
+        if temps:
+            candidats_temps = [t for t in temps if t in temps_dict]
+            if not candidats_temps:
+                return generer_question(modes, temps, personnes, verbes)
+            temps_sel = random.choice(candidats_temps)
+        else:
+            temps_sel = random.choice(list(temps_dict.keys()))
+
+        formes = temps_dict.get(temps_sel, [])
         if not formes:
-            return generer_question()
+            return generer_question(modes, temps, personnes, verbes)
 
         mode_lower = mode_v.lower()
 
-        # 4. Gestion des pronoms
+        # 4. Sélection de la personne
         if len(formes) == 1:
             sujet = "(forme impersonnelle)"
             idx = 0
 
         else:
-            if mode_lower == "impératif":
-                mapping = {"tu": 0, "nous": 1, "vous": 2}
-                sujets_possibles = [s for s, i in mapping.items() if i < len(formes)]
+            mapping = ["je", "tu", "il", "nous", "vous", "ils"]
+
+            # Filtrage si l'utilisateur a choisi des personnes
+            if personnes:
+                sujets_possibles = [mapping[p] for p in personnes if p < len(formes)]
             else:
-                mapping = ["je", "tu", "il", "nous", "vous", "ils"]
                 sujets_possibles = [s for i, s in enumerate(mapping) if i < len(formes)]
 
             if not sujets_possibles:
-                return generer_question()
+                return generer_question(modes, temps, personnes, verbes)
 
             sujet = random.choice(sujets_possibles)
-
-            if mode_lower == "impératif":
-                idx = {"tu": 0, "nous": 1, "vous": 2}[sujet]
-            else:
-                idx = ["je", "tu", "il", "nous", "vous", "ils"].index(sujet)
+            idx = mapping.index(sujet)
 
         # 5. Sécurité anti-index hors limites
         if idx >= len(formes):
-            return generer_question()
+            return generer_question(modes, temps, personnes, verbes)
 
-        # 6. Récupération de la bonne réponse
+        # 6. Bonne réponse
         bonne = formes[idx]
 
-        # Remplacement des pronoms par leur description
+        # 7. Description des personnes
         mapping_desc = {
             "je": "1re personne du singulier",
             "tu": "2e personne du singulier",
@@ -2234,13 +2252,12 @@ def generer_question():
 
         sujet_affiche = mapping_desc.get(sujet, sujet)
 
-        question = f"Conjugue : {verbe} — {mode_v} — {temps} — {sujet_affiche}"
+        question = f"Conjugue : {verbe} — {mode_v} — {temps_sel} — {sujet_affiche}"
 
-        return verbe, mode_v, temps, sujet, bonne, question
+        return verbe, mode_v, temps_sel, sujet, bonne, question
 
     except Exception:
-        # Sécurité ultime : si quelque chose d’imprévu arrive
-        return generer_question()
+        return generer_question(modes, temps, personnes, verbes)
 
 # ============================================================
 # MODE RÉVISION DES ERREURS
