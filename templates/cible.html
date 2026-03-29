@@ -100,16 +100,36 @@
 
         <!-- VERBES (par listes, on branchera tes vraies listes) -->
         <div class="section disabled" id="sec-verbes">
-            <h2>Verbes</h2>
-            <div class="chips">
-                {% for liste_id, label in listes_verbes %}
-                <label class="chip">
-                    <input type="checkbox" name="listes_verbes" value="{{ liste_id }}">
-                    {{ label }}
-                </label>
-                {% endfor %}
-            </div>
-        </div>
+    <h2>Verbes</h2>
+
+    <!-- Boutons de listes -->
+    <div class="chips" id="list-buttons">
+        {% for liste_id, verbes in listes.items() %}
+        <label class="chip list-chip" data-liste="{{ liste_id }}">
+            <input type="checkbox" name="listes_verbes" value="{{ liste_id }}">
+            {{ liste_id|capitalize }}
+        </label>
+        {% endfor %}
+
+        <label class="chip list-chip" data-liste="all">
+            <input type="checkbox" name="listes_verbes" value="all">
+            Tous les verbes
+        </label>
+    </div>
+
+    <!-- Tous les verbes -->
+    <div class="chips" id="verbes-container">
+        {% for liste_id, verbes in listes.items() %}
+            {% for v in verbes %}
+            <label class="chip verb-chip" data-liste="{{ liste_id }}">
+                <input type="checkbox" name="verbes" value="{{ v }}">
+                {{ v }}
+            </label>
+            {% endfor %}
+        {% endfor %}
+    </div>
+</div>
+
 
         <button class="start-btn">Commencer</button>
     </form>
