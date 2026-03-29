@@ -14,37 +14,11 @@
             text-align: center;
             margin-bottom: 25px;
         }
-        .section {
-            margin-bottom: 30px;
-        }
         .section h2 {
             font-size: 1.2rem;
             margin-bottom: 10px;
         }
-        .chips {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-        .chip {
-            border-radius: 999px;
-            border: 1px solid #ddd;
-            padding: 6px 12px;
-            cursor: pointer;
-            font-size: 0.95rem;
-            transition: 0.15s;
-        }
-        .chip input {
-            display: none;
-        }
-        .chip.active {
-            background: #007bff;
-            color: #fff;
-            border-color: #007bff;
-        }
-        .section.disabled {
-            opacity: 0.4;
-            pointer-events: none;
+        
         }
         .start-btn {
             width: 100%;
@@ -70,12 +44,13 @@
             <div class="chips">
                 {% for m in modes %}
                 <label class="chip">
-                    <input type="checkbox" name="modes" value="{{ m }}">
-                    {{ m }}
+                <input type="checkbox" name="modes" value="{{ m }}">
+                {{ m }}
                 </label>
-                {% endfor %}
+            {% endfor %}
             </div>
         </div>
+
 
         <!-- TEMPS (activé seulement si au moins un mode) -->
         <div class="section disabled" id="sec-temps">
