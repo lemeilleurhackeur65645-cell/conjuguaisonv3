@@ -4,139 +4,187 @@
     <meta charset="UTF-8">
     <title>Révision ciblée</title>
     <link rel="stylesheet" href="/static/style.css">
-
     <style>
-        body {
+        .page {
             max-width: 900px;
-            margin: auto;
-            padding: 40px;
-            font-family: Inter, sans-serif;
-            color: #222;
+            margin: 40px auto;
+            font-family: Inter, system-ui, sans-serif;
         }
-
         h1 {
             text-align: center;
-            font-weight: 700;
+            margin-bottom: 25px;
+        }
+        .section {
             margin-bottom: 30px;
         }
-
-        .section {
-            margin-bottom: 35px;
-        }
-
         .section h2 {
-            font-size: 1.3rem;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #eee;
-            padding-bottom: 5px;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 12px;
-        }
-
-        label {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        label:hover {
-            background: #f7f7f7;
-        }
-
-        input[type="checkbox"] {
-            transform: scale(1.2);
-        }
-
-        .start-btn {
-            display: block;
-            width: 100%;
-            padding: 15px;
             font-size: 1.2rem;
-            background: #007bff;
-            color: white;
-            border: none;
-            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .chip {
+            border-radius: 999px;
+            border: 1px solid #ddd;
+            padding: 6px 12px;
             cursor: pointer;
-            transition: 0.2s;
+            font-size: 0.95rem;
+            transition: 0.15s;
         }
-
-        .start-btn:hover {
-            background: #005fcc;
+        .chip input {
+            display: none;
         }
-
-        .verbes-input {
+        .chip.active {
+            background: #007bff;
+            color: #fff;
+            border-color: #007bff;
+        }
+        .section.disabled {
+            opacity: 0.4;
+            pointer-events: none;
+        }
+        .start-btn {
             width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            font-size: 1rem;
+            padding: 14px;
+            border-radius: 10px;
+            border: none;
+            background: #007bff;
+            color: #fff;
+            font-size: 1.1rem;
+            cursor: pointer;
         }
     </style>
 </head>
-
 <body>
+<div class="page">
+    <h1>Révision ciblée</h1>
 
-<h1>Révision ciblée</h1>
+    <form action="/cible_start" method="POST" id="cible-form">
 
-<form action="/cible_start" method="POST">
-
-    <!-- MODES -->
-    <div class="section">
-        <h2>Modes</h2>
-        <div class="grid">
-            {% for m in modes %}
-            <label>
-                <input type="checkbox" name="modes" value="{{ m }}">
-                {{ m }}
-            </label>
-            {% endfor %}
+        <!-- MODES -->
+        <div class="section" id="sec-modes">
+            <h2>Modes</h2>
+            <div class="chips">
+                {% for m in modes %}
+                <label class="chip">
+                    <input type="checkbox" name="modes" value="{{ m }}">
+                    {{ m }}
+                </label>
+                {% endfor %}
+            </div>
         </div>
-    </div>
 
-    <!-- TEMPS -->
-    <div class="section">
-        <h2>Temps</h2>
-        <div class="grid">
-            {% for t in temps %}
-            <label>
-                <input type="checkbox" name="temps" value="{{ t }}">
-                {{ t }}
-            </label>
-            {% endfor %}
+        <!-- TEMPS (activé seulement si au moins un mode) -->
+        <div class="section disabled" id="sec-temps">
+            <h2>Temps</h2>
+            <div class="chips" id="temps-container">
+                <!-- rempli dynamiquement en JS -->
+            </div>
         </div>
-    </div>
 
-    <!-- PERSONNES -->
-    <div class="section">
-        <h2>Personnes</h2>
-        <div class="grid">
-            <label><input type="checkbox" name="personnes" value="0"> 1re pers. singulier</label>
-            <label><input type="checkbox" name="personnes" value="1"> 2e pers. singulier</label>
-            <label><input type="checkbox" name="personnes" value="2"> 3e pers. singulier</label>
-            <label><input type="checkbox" name="personnes" value="3"> 1re pers. pluriel</label>
-            <label><input type="checkbox" name="personnes" value="4"> 2e pers. pluriel</label>
-            <label><input type="checkbox" name="personnes" value="5"> 3e pers. pluriel</label>
+        <!-- PERSONNES -->
+        <div class="section disabled" id="sec-personnes">
+            <h2>Personnes</h2>
+            <div class="chips">
+                <label class="chip"><input type="checkbox" name="personnes" value="0">1re pers. sing.</label>
+                <label class="chip"><input type="checkbox" name="personnes" value="1">2e pers. sing.</label>
+                <label class="chip"><input type="checkbox" name="personnes" value="2">3e pers. sing.</label>
+                <label class="chip"><input type="checkbox" name="personnes" value="3">1re pers. plur.</label>
+                <label class="chip"><input type="checkbox" name="personnes" value="4">2e pers. plur.</label>
+                <label class="chip"><input type="checkbox" name="personnes" value="5">3e pers. plur.</label>
+            </div>
         </div>
-    </div>
 
-    <!-- VERBES -->
-    <div class="section">
-        <h2>Verbes (séparés par virgule)</h2>
-        <input class="verbes-input" type="text" name="verbes" placeholder="ex : aller, finir, prendre">
-    </div>
+        <!-- VERBES (par listes, on branchera tes vraies listes) -->
+        <div class="section disabled" id="sec-verbes">
+            <h2>Verbes</h2>
+            <div class="chips">
+                {% for liste_id, label in listes_verbes %}
+                <label class="chip">
+                    <input type="checkbox" name="listes_verbes" value="{{ liste_id }}">
+                    {{ label }}
+                </label>
+                {% endfor %}
+            </div>
+        </div>
 
-    <button class="start-btn">Commencer</button>
+        <button class="start-btn">Commencer</button>
+    </form>
+</div>
 
-</form>
+<script>
+    // Activation visuelle des chips
+    document.querySelectorAll('.chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+            chip.classList.toggle('active');
+        });
+    });
 
+    const secModes = document.getElementById('sec-modes');
+    const secTemps = document.getElementById('sec-temps');
+    const secPers = document.getElementById('sec-personnes');
+    const secVerbes = document.getElementById('sec-verbes');
+    const tempsContainer = document.getElementById('temps-container');
+
+    const modesInputs = secModes.querySelectorAll('input[name="modes"]');
+
+    // données envoyées par Flask : mapping mode -> liste de temps valides
+    const modesTemps = {{ modes_temps_json|safe }};
+
+    function updateTemps() {
+        const modesChoisis = Array.from(modesInputs)
+            .filter(i => i.checked)
+            .map(i => i.value);
+
+        if (!modesChoisis.length) {
+            secTemps.classList.add('disabled');
+            secPers.classList.add('disabled');
+            secVerbes.classList.add('disabled');
+            tempsContainer.innerHTML = "";
+            return;
+        }
+
+        // activer section temps
+        secTemps.classList.remove('disabled');
+
+        // construire la liste des temps possibles (union des temps des modes choisis)
+        const tempsSet = new Set();
+        modesChoisis.forEach(m => {
+            (modesTemps[m] || []).forEach(t => tempsSet.add(t));
+        });
+
+        tempsContainer.innerHTML = "";
+        Array.from(tempsSet).sort().forEach(t => {
+            const label = document.createElement('label');
+            label.className = 'chip';
+            label.innerHTML = `<input type="checkbox" name="temps" value="${t}">${t}`;
+            label.addEventListener('click', () => label.classList.toggle('active'));
+            tempsContainer.appendChild(label);
+        });
+    }
+
+    modesInputs.forEach(i => i.addEventListener('change', updateTemps));
+
+    // activer personnes quand au moins un temps est choisi
+    document.addEventListener('change', () => {
+        const tempsChecked = document.querySelectorAll('#sec-temps input[name="temps"]:checked').length;
+        if (tempsChecked) {
+            secPers.classList.remove('disabled');
+        } else {
+            secPers.classList.add('disabled');
+            secVerbes.classList.add('disabled');
+        }
+
+        const persChecked = document.querySelectorAll('#sec-personnes input[name="personnes"]:checked').length;
+        if (persChecked) {
+            secVerbes.classList.remove('disabled');
+        } else {
+            secVerbes.classList.add('disabled');
+        }
+    });
+</script>
 </body>
 </html>
