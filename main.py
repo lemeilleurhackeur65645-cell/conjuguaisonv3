@@ -2160,11 +2160,31 @@ def changelog():
 
 @app.route("/cible")
 def cible():
-    # Extraire tous les modes et temps disponibles
-    modes = sorted({m for v in conjugaisons.values() for m in v.keys()})
-    temps = sorted({t for v in conjugaisons.values() for m in v.values() for t in m.keys()})
+    modes = sorted(conjugaisons.keys())  
 
-    return render_template("cible.html", modes=modes, temps=temps)
+    # mapping mode -> temps valides
+    modes_temps = {}
+    for v in conjugaisons.values():
+        for mode, temps_dict in v.items():
+            modes_temps.setdefault(mode, set())
+            for t in temps_dict.keys():
+                modes_temps[mode].add(t)
+
+    modes_temps = {m: sorted(list(ts)) for m, ts in modes_temps.items()}
+
+    # listes de verbes (à brancher avec tes vraies listes)
+    listes_verbes = [
+        ("liste1", "Liste 1"),
+        ("liste2", "Liste 2"),
+        ("liste3", "Liste 3"),
+    ]
+
+    return render_template(
+        "cible.html",
+        modes=sorted(modes_temps.keys()),
+        modes_temps_json=json.dumps(modes_temps, ensure_ascii=False),
+        listes_verbes=listes_verbes
+    )
 
 # ============================================================
 # GÉNÉRATION D’UNE QUESTION
