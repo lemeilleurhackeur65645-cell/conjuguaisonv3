@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Révision ciblée</title>
+    <link rel="stylesheet" href="/static/style.css">
+
+    <style>
+        body {
+            max-width: 900px;
+            margin: auto;
+            padding: 40px;
+            font-family: Inter, sans-serif;
+            color: #222;
+        }
+
+        h1 {
+            text-align: center;
+            font-weight: 700;
+            margin-bottom: 30px;
+        }
+
+        .section {
+            margin-bottom: 35px;
+        }
+
+        .section h2 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 5px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 12px;
+        }
+
+        label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        label:hover {
+            background: #f7f7f7;
+        }
+
+        input[type="checkbox"] {
+            transform: scale(1.2);
+        }
+
+        .start-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            font-size: 1.2rem;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .start-btn:hover {
+            background: #005fcc;
+        }
+
+        .verbes-input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Révision ciblée</h1>
+
+<form action="/cible_start" method="POST">
+
+    <!-- MODES -->
+    <div class="section">
+        <h2>Modes</h2>
+        <div class="grid">
+            {% for m in modes %}
+            <label>
+                <input type="checkbox" name="modes" value="{{ m }}">
+                {{ m }}
+            </label>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- TEMPS -->
+    <div class="section">
+        <h2>Temps</h2>
+        <div class="grid">
+            {% for t in temps %}
+            <label>
+                <input type="checkbox" name="temps" value="{{ t }}">
+                {{ t }}
+            </label>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- PERSONNES -->
+    <div class="section">
+        <h2>Personnes</h2>
+        <div class="grid">
+            <label><input type="checkbox" name="personnes" value="0"> 1re pers. singulier</label>
+            <label><input type="checkbox" name="personnes" value="1"> 2e pers. singulier</label>
+            <label><input type="checkbox" name="personnes" value="2"> 3e pers. singulier</label>
+            <label><input type="checkbox" name="personnes" value="3"> 1re pers. pluriel</label>
+            <label><input type="checkbox" name="personnes" value="4"> 2e pers. pluriel</label>
+            <label><input type="checkbox" name="personnes" value="5"> 3e pers. pluriel</label>
+        </div>
+    </div>
+
+    <!-- VERBES -->
+    <div class="section">
+        <h2>Verbes (séparés par virgule)</h2>
+        <input class="verbes-input" type="text" name="verbes" placeholder="ex : aller, finir, prendre">
+    </div>
+
+    <button class="start-btn">Commencer</button>
+
+</form>
+
+</body>
+</html>
