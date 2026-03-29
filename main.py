@@ -2158,6 +2158,13 @@ def index():
 def changelog():
     return render_template("changelog.html")
 
+@app.route("/cible")
+def cible():
+    # Extraire tous les modes et temps disponibles
+    modes = sorted({m for v in conjugaisons.values() for m in v.keys()})
+    temps = sorted({t for v in conjugaisons.values() for m in v.values() for t in m.keys()})
+
+    return render_template("cible.html", modes=modes, temps=temps)
 
 # ============================================================
 # GÉNÉRATION D’UNE QUESTION
@@ -2254,6 +2261,21 @@ def revision():
 
     return redirect("/quiz")
 
+@app.route("/cible_start", methods=["POST"])
+def cible_start():
+    session.clear()
+    session["mode"] = "cible"
+
+    session["cible_modes"] = request.form.getlist("modes")
+    session["cible_temps"] = request.form.getlist("temps")
+    session["cible_personnes"] = list(map(int, request.form.getlist("personnes")))
+    session["cible_verbes"] = [v.strip() for v in request.form["verbes"].split(",") if v.strip()]
+
+    session["score"] = 0
+    session["total"] = 0
+    session["start"] = time.time()
+
+    return redirect("/quiz")
 
 # ============================================================
 # ROUTE DU QUIZ
