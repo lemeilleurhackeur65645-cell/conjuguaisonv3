@@ -2143,23 +2143,6 @@ conjugaisons = {
 
 } 
 
-LISTES_VERBES = {
-    "liste1": [
-        "être", "avoir", "aller", "faire", "falloir",
-        "pouvoir", "savoir", "valoir", "vouloir",
-        "appeler", "jeter"
-    ],
-    "liste2": [
-        "peindre", "peigner", "plaire", "pleuvoir",
-        "se taire", "taire", "moudre", "mouler",
-        "choir", "tuer"
-    ],
-    "liste3": [
-        "acquérir", "seoir", "devoir", "cueillir",
-        "fuir", "recevoir", "rendre", "courir",
-        "tenir", "sentir"
-    ]
-}
 
 # ============================================================
 # ROUTES DE BASE
@@ -2177,9 +2160,10 @@ def changelog():
 
 @app.route("/cible")
 def cible():
-    modes = sorted(conjugaisons.keys())  
+    # --- 1. Modes disponibles ---
+    modes = sorted({m for v in conjugaisons.values() for m in v.keys()})
 
-    # mapping mode -> temps valides
+    # --- 2. Mapping mode -> temps valides ---
     modes_temps = {}
     for v in conjugaisons.values():
         for mode, temps_dict in v.items():
@@ -2187,20 +2171,37 @@ def cible():
             for t in temps_dict.keys():
                 modes_temps[mode].add(t)
 
+    # Convertir en listes triées
     modes_temps = {m: sorted(list(ts)) for m, ts in modes_temps.items()}
 
-    # listes de verbes (à brancher avec tes vraies listes)
-    listes_verbes = [
-        ("liste1", "Liste 1"),
-        ("liste2", "Liste 2"),
-        ("liste3", "Liste 3"),
-    ]
+    # --- 3. Tes listes de verbes ---
+    LISTES_VERBES = {
+        "liste1": [
+            "être", "avoir", "aller", "faire", "falloir",
+            "pouvoir", "savoir", "valoir", "vouloir",
+            "appeler", "jeter"
+        ],
+        "liste2": [
+            "peindre", "peigner", "plaire", "pleuvoir",
+            "se taire", "taire", "moudre", "mouler",
+            "choir", "tuer"
+        ],
+        "liste3": [
+            "acquérir", "seoir", "devoir", "cueillir",
+            "fuir", "recevoir", "rendre", "courir",
+            "tenir", "sentir"
+        ]
+    }
+
+    # --- 4. Tous les verbes à plat (pour affichage individuel) ---
+    tous_les_verbes = sorted({v for lst in LISTES_VERBES.values() for v in lst})
 
     return render_template(
         "cible.html",
-        modes=sorted(modes_temps.keys()),
+        modes=modes,
         modes_temps_json=json.dumps(modes_temps, ensure_ascii=False),
-        listes_verbes=listes_verbes
+        listes=LISTES_VERBES,
+        tous_les_verbes=tous_les_verbes
     )
 
 # ============================================================
