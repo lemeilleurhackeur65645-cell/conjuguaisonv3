@@ -480,3 +480,44 @@ input:checked + .slider:before {
     color: #007bff;
     border: 1px solid #007bff;
 }
+.section {
+    margin-bottom: 30px;
+    opacity: 1;
+    transition: opacity 0.2s;
+}
+
+.section.disabled {
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+}
+
+.chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 140px;
+    padding: 10px 16px;
+    border-radius: 999px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: 0.15s;
+    background: #fff;
+}
+
+.chip input {
+    display: none;
+}
+
+.chip.active {
+    background: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}
