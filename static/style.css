@@ -463,3 +463,20 @@ input:checked + .slider:before {
     box-shadow: 0 4px 10px rgba(0, 86, 214, 0.35);
     transform: translateY(-1px);
 }
+.buttons-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.btn.primary {
+    background: #007bff;
+    color: #fff;
+}
+
+.btn.ghost {
+    background: transparent;
+    color: #007bff;
+    border: 1px solid #007bff;
+}
