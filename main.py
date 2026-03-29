@@ -2143,6 +2143,23 @@ conjugaisons = {
 
 } 
 
+LISTES_VERBES = {
+    "liste1": [
+        "être", "avoir", "aller", "faire", "falloir",
+        "pouvoir", "savoir", "valoir", "vouloir",
+        "appeler", "jeter"
+    ],
+    "liste2": [
+        "peindre", "peigner", "plaire", "pleuvoir",
+        "se taire", "taire", "moudre", "mouler",
+        "choir", "tuer"
+    ],
+    "liste3": [
+        "acquérir", "seoir", "devoir", "cueillir",
+        "fuir", "recevoir", "rendre", "courir",
+        "tenir", "sentir"
+    ]
+}
 
 # ============================================================
 # ROUTES DE BASE
