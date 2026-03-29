@@ -2358,8 +2358,16 @@ def quiz():
         verbe, mode_v, temps, sujet, rep_faute, bonne = session["erreurs_revision"].pop(0)
         question = f"Conjugue : {verbe} — {mode_v} — {temps} — {sujet}"
 
+    elif mode == "cible":
+        verbe, mode_v, temps, sujet, bonne, question = generer_question(
+            modes=session["cible_modes"],
+            temps=session["cible_temps"],
+            personnes=session["cible_personnes"],
+            verbes=session["cible_verbes"]
+        )
     else:
         verbe, mode_v, temps, sujet, bonne, question = generer_question()
+
 
     # --- Stockage ---
     session["verbe"] = verbe
