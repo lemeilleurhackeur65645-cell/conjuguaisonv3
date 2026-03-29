@@ -88,3 +88,31 @@ document.querySelectorAll('.chip').forEach(chip => {
         }, 0);
     });
 });
+const secModes = document.getElementById('sec-modes');
+const secTemps = document.getElementById('sec-temps');
+const secPers  = document.getElementById('sec-personnes');
+const secVerbes = document.getElementById('sec-verbes');
+
+function hasChecked(selector) {
+    return document.querySelectorAll(selector + ' input[type="checkbox"]:checked').length > 0;
+}
+
+function updateSectionsLock() {
+    const modesOk = hasChecked('#sec-modes');
+    const tempsOk = hasChecked('#sec-temps');
+    const persOk  = hasChecked('#sec-personnes');
+
+    secTemps.classList.toggle('disabled', !modesOk);
+    secPers.classList.toggle('disabled', !modesOk || !tempsOk);
+    secVerbes.classList.toggle('disabled', !modesOk || !tempsOk || !persOk);
+}
+
+// on écoute tous les changements de checkbox
+document.addEventListener('change', (e) => {
+    if (e.target.matches('input[type="checkbox"]')) {
+        updateSectionsLock();
+    }
+});
+
+// état initial
+updateSectionsLock();
