@@ -116,3 +116,16 @@ document.addEventListener('change', (e) => {
 
 // état initial
 updateSectionsLock();
+document.querySelectorAll('.chip').forEach(chip => {
+    const input = chip.querySelector('input');
+    if (!input) return;
+
+    // état initial
+    chip.classList.toggle('active', input.checked);
+
+    chip.addEventListener('click', () => {
+        setTimeout(() => {
+            chip.classList.toggle('active', input.checked);
+        }, 0);
+    });
+});
