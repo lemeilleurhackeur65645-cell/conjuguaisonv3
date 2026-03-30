@@ -521,3 +521,47 @@ input:checked + .slider:before {
     color: #fff;
     border-color: #007bff;
 }
+.section {
+    margin-bottom: 35px;
+    opacity: 1;
+    transition: opacity 0.25s ease;
+}
+
+.section.disabled {
+    opacity: 0.25;
+    pointer-events: none;
+}
+
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px;
+}
+
+.chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 160px;
+    padding: 14px 20px;
+    border-radius: 14px;
+    border: 2px solid #d0d0d0;
+    background: #fafafa;
+    font-size: 1.05rem;
+    cursor: pointer;
+    transition: 0.25s ease;
+    user-select: none;
+}
+
+.chip input {
+    display: none;
+}
+
+.chip.active {
+    background: #007bff;
+    border-color: #007bff;
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.35);
+    transform: translateY(-2px);
+}
