@@ -129,3 +129,24 @@ document.querySelectorAll('.chip').forEach(chip => {
         }, 0);
     });
 });
+const secModes = document.getElementById('sec-modes');
+const secTemps = document.getElementById('sec-temps');
+const secPers  = document.getElementById('sec-personnes');
+const secVerbes = document.getElementById('sec-verbes');
+
+function hasChecked(sectionId) {
+    return document.querySelectorAll(`#${sectionId} input[type="checkbox"]:checked`).length > 0;
+}
+
+function updateLocks() {
+    const modesOK = hasChecked('sec-modes');
+    const tempsOK = hasChecked('sec-temps');
+    const persOK  = hasChecked('sec-personnes');
+
+    secTemps.classList.toggle('disabled', !modesOK);
+    secPers.classList.toggle('disabled', !modesOK || !tempsOK);
+    secVerbes.classList.toggle('disabled', !modesOK || !tempsOK || !persOK);
+}
+
+document.addEventListener('change', updateLocks);
+updateLocks();
