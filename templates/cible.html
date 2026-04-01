@@ -4,37 +4,130 @@
     <meta charset="UTF-8">
     <title>Révision ciblée</title>
     <link rel="stylesheet" href="/static/style.css">
-    <style>
-        .chip { display: inline-block; padding: 8px 15px; border: 1px solid #ddd; border-radius: 20px; cursor: pointer; margin: 5px; background: white; }
-        .chip.active { background: #007bff; color: white; border-color: #007bff; }
-        .chip input { display: none; }
-    </style>
 </head>
 <body>
-<div class="container" style="width: 600px;">
+<div class="page">
     <h1>Révision ciblée</h1>
-    <form action="/cible_start" method="POST">
-        <div class="section">
-            <h3>Modes</h3>
-            {% for m in modes %}
-            <label class="chip">
-                <input type="checkbox" name="modes" value="{{ m }}"> {{ m }}
-            </label>
-            {% endfor %}
+
+    <form action="/cible_start" method="POST" id="cible-form">
+        <div class="section" id="sec-modes">
+            <h2>Modes</h2>
+            <div class="chips">
+                {% for m in modes %}
+                <label class="chip">
+                    <input type="checkbox" name="modes" value="{{ m }}"> {{ m }}
+                </label>
+                {% endfor %}
+            </div>
         </div>
 
-        <button type="submit" class="btn" style="width:100%">Lancer la session</button>
-        <a href="/" class="back-button">Annuler</a>
+        <div class="section disabled" id="sec-temps">
+            <h2>Temps</h2>
+            <div class="chips" id="temps-container"></div>
+        </div>
+
+        <div class="section disabled" id="sec-personnes">
+            <h2>Personnes</h2>
+            <div class="chips">
+                {% for i, text in [(0,'1re S'), (1,'2e S'), (2,'3e S'), (3,'1re P'), (4,'2e P'), (5,'3e P')] %}
+                <label class="chip"><input type="checkbox" name="personnes" value="{{ i }}"> {{ text }}</label>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="section disabled" id="sec-verbes">
+            <h2>Verbes</h2>
+            <div class="chips" style="border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 15px;">
+                {% for liste_id, verbes in listes.items() %}
+                <label class="chip list-chip" data-liste="{{ liste_id }}">
+                    <input type="checkbox" name="listes_verbes" value="{{ liste_id }}"> {{ liste_id|capitalize }}
+                </label>
+                {% endfor %}
+                <label class="chip list-chip" data-liste="all">
+                    <input type="checkbox" name="listes_verbes" value="all"> Tous
+                </label>
+            </div>
+
+            <div class="chips" id="verbes-container">
+                {% for liste_id, verbes in listes.items() %}
+                    {% for v in verbes %}
+                    <label class="chip verb-chip" data-liste="{{ liste_id }}">
+                        <input type="checkbox" name="verbes" value="{{ v }}"> {{ v }}
+                    </label>
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <button type="submit" class="start-btn">Commencer</button>
     </form>
 </div>
 
 <script>
-    // Le petit script simple pour les couleurs des chips
+    // --- Logique des Temps & Sections (Ton main.py data) ---
+    const modesTemps = {{ modes_temps_json|safe }};
+    const modesInputs = document.querySelectorAll('#sec-modes input');
+    
+    function updateTemps() {
+        const selected = Array.from(modesInputs).filter(i => i.checked).map(i => i.value);
+        const container = document.getElementById('temps-container');
+        container.innerHTML = "";
+        
+        if (selected.length > 0) {
+            const tempsSet = new Set();
+            selected.forEach(m => modesTemps[m]?.forEach(t => tempsSet.add(t)));
+            Array.from(tempsSet).sort().forEach(t => {
+                const label = document.createElement('label');
+                label.className = 'chip';
+                label.innerHTML = `<input type="checkbox" name="temps" value="${t}">${t}`;
+                label.onclick = () => {
+                    const inp = label.querySelector('input');
+                    setTimeout(() => { label.classList.toggle('active', inp.checked); updateLocks(); }, 10);
+                };
+                container.appendChild(label);
+            });
+        }
+        updateLocks();
+    }
+    modesInputs.forEach(i => i.onchange = updateTemps);
+
+    // --- Logique des Verbes (Ton cible.js) ---
+    const verbChips = document.querySelectorAll(".verb-chip");
+    const listChips = document.querySelectorAll(".list-chip");
+
+    listChips.forEach(chip => {
+        chip.onclick = () => {
+            const inp = chip.querySelector('input');
+            const listId = chip.dataset.liste;
+            setTimeout(() => {
+                const isChecked = inp.checked;
+                chip.classList.toggle('active', isChecked);
+                
+                const targets = listId === "all" ? verbChips : document.querySelectorAll(`.verb-chip[data-liste="${listId}"]`);
+                targets.forEach(v => {
+                    const vInp = v.querySelector('input');
+                    vInp.checked = isChecked;
+                    v.classList.toggle('active', isChecked);
+                });
+            }, 10);
+        };
+    });
+
+    // --- Verrouillage des sections ---
+    function updateLocks() {
+        const mOk = document.querySelectorAll('#sec-modes input:checked').length > 0;
+        const tOk = document.querySelectorAll('#sec-temps input:checked').length > 0;
+        const pOk = document.querySelectorAll('#sec-personnes input:checked').length > 0;
+        
+        document.getElementById('sec-temps').classList.toggle('disabled', !mOk);
+        document.getElementById('sec-personnes').classList.toggle('disabled', !mOk || !tOk);
+        document.getElementById('sec-verbes').classList.toggle('disabled', !mOk || !tOk || !pOk);
+    }
+
+    // Initialisation visuelle globale
     document.querySelectorAll('.chip').forEach(c => {
-        c.addEventListener('click', () => {
-            const input = c.querySelector('input');
-            setTimeout(() => { c.classList.toggle('active', input.checked); }, 50);
-        });
+        const inp = c.querySelector('input');
+        if(inp) c.onclick = () => setTimeout(() => { c.classList.toggle('active', inp.checked); updateLocks(); }, 10);
     });
 </script>
 </body>
