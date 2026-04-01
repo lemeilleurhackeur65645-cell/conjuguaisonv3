@@ -37,7 +37,7 @@
     {% else %}
         <p>Aucune erreur. Bravo ! 🎉</p>
     {% endif %}
-
+    
     {% if analyse %}
         <h2>Analyse</h2>
 
@@ -85,9 +85,10 @@
             <p class="suggestion">{{ analyse.suggestion }}</p>
 
         </div>
-   <div class="bilan-actions">
+       <div class="bilan-actions">
     {% if erreurs %}
         <a href="/revision" class="btn">Réessayer mes erreurs</a>
+    {% endif %}
     {% endif %}
     
     <a href="/quiz" class="btn">Recommencer</a>
