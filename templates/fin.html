@@ -38,7 +38,7 @@
         <p>Aucune erreur. Bravo ! 🎉</p>
     {% endif %}
 
-    {% if analyse %}
+    {% if erreurs %}
         <h2>Analyse</h2>
 
         <div class="analyse-section">
@@ -60,7 +60,7 @@
             {% endfor %}
 
             <!-- BARRES DE PROGRESSION PAR MODE -->
-            {% if analyse.modes %}
+            {% if erreurs %}
                 <div class="mode-chart">
 
                     {% set total_err_modes = 0 %}
