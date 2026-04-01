@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Bilan</title>
+    <title>Bilan de session</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
 
@@ -23,74 +23,61 @@
         <p><strong>Temps moyen :</strong> {{ temps_moyen }} sec/question</p>
     </div>
 
+    <hr style="border: 0; border-top: 1px solid #eee; margin: 25px 0;">
+
     <h2>Détails des erreurs</h2>
 
     {% if erreurs %}
-        <div class="erreurs-block">
+        <div class="erreurs-block" style="text-align: left; background: #fff5f5; padding: 15px; border-radius: 12px; margin-bottom: 20px;">
             {% for e in erreurs %}
-                <div class="erreur-item">
-                    {{ e[0] }} — {{ e[1] }} — {{ e[2] }} — {{ e[3] }} :
-                    « {{ e[4] }} » → « {{ e[5] }} »
+                <div class="erreur-item" style="font-size: 0.9rem; margin-bottom: 8px; color: #c0392b;">
+                    <strong>{{ e[0] }}</strong> ({{ e[1] }} {{ e[2] }}) : 
+                    <span style="text-decoration: line-through; opacity: 0.6;">{{ e[4] }}</span> → <strong>{{ e[5] }}</strong>
                 </div>
             {% endfor %}
         </div>
     {% else %}
-        <p>Aucune erreur. Bravo ! 🎉</p>
+        <p style="color: #27ae60; font-weight: 600;">Aucune erreur. Bravo ! 🎉</p>
     {% endif %}
 
     {% if analyse %}
         <h2>Analyse</h2>
 
         <div class="analyse-section">
+            <p class="analyse-title">Points à surveiller</p>
+            
+            {% if analyse.verbes %}
+                <div class="analyse-item">Verbes : <em>{{ analyse.verbes | map(attribute=0) | join(', ') }}</em></div>
+            {% endif %}
 
-            <p class="analyse-title">Verbe(s) le(s) moins réussi(s)</p>
-            {% for verbe, nb in analyse.verbes %}
-                <div class="analyse-item">
-                    {{ verbe }} ({{ nb }} erreur{% if nb > 1 %}s{% endif %})
-                </div>
-            {% endfor %}
-
-            <p class="analyse-title">Mode(s) le(s) moins réussi(s)</p>
-            {% for mode, nb in analyse.modes %}
-                <div class="analyse-item">
-                    {{ mode }} ({{ nb }} erreur{% if nb > 1 %}s{% endif %})
-                </div>
-            {% endfor %}
-
-
-            <div class="mode-chart">
-              {% set total_modes = analyse.modes | map(attribute=1) | sum %}
-              {% for mode, nb in analyse.modes %}
-              {% set pct = (nb * 100 / total_modes) | round(0, 'floor') %}
-                   <div class="mode-row">
-                   <span class="mode-label">{{ mode }}</span>
-                   <div class="mode-bar-premium">
-                   <div class="mode-bar-fill-premium" style="width: {{ pct }}%;"></div>
-                   </div>
-                   <span class="mode-value">{{ pct }}%</span>
-                   </div>
+            <div class="mode-chart" style="margin: 20px 0;">
+                {% set total_modes = analyse.modes | map(attribute=1) | sum %}
+                {% for mode, nb in analyse.modes %}
+                    {% set pct = (nb * 100 / total_modes) | round(0, 'floor') if total_modes > 0 else 0 %}
+                    <div class="mode-row" style="display: flex; align-items: center; margin-bottom: 10px;">
+                        <span class="mode-label" style="width: 100px; text-align: left; font-size: 0.85rem;">{{ mode }}</span>
+                        <div class="mode-bar-premium" style="flex-grow: 1; height: 8px; background: #eef2f7; border-radius: 4px; margin: 0 10px; position: relative; overflow: hidden;">
+                            <div class="mode-bar-fill-premium" style="width: {{ pct }}%; height: 100%; background: linear-gradient(90deg, #007bff, #0056d6); border-radius: 4px;"></div>
+                        </div>
+                        <span class="mode-value" style="font-size: 0.85rem; font-weight: 600;">{{ pct }}%</span>
+                    </div>
                 {% endfor %}
             </div>
 
-
-            <p class="analyse-title">Temps le(s) moins réussi(s)</p>
-            {% for temps, nb in analyse.temps %}
-                <div class="analyse-item">
-                    {{ temps }} ({{ nb }} erreur{% if nb > 1 %}s{% endif %})
-                </div>
-            {% endfor %}
-
-            <h3>Suggestion de révision</h3>
-            <p class="suggestion">{{ analyse.suggestion }}</p>
-
+            <p class="suggestion" style="background: #f8fbff; padding: 12px; border-radius: 10px; border-left: 4px solid #007bff; font-style: italic;">
+                {{ analyse.suggestion }}
+            </p>
         </div>
     {% endif %}
 
-    {% if erreurs %}
-        <a href="/revision" class="btn-premium">Réviser mes erreurs</a>
-    {% endif %}
-
-    <a href="/" class="btn-premium">Recommencer</a>
+    <div style="margin-top: 35px; display: flex; flex-direction: column; gap: 10px;">
+        {% if erreurs %}
+            <a href="/revision" class="btn">Réviser mes erreurs</a>
+        {% endif %}
+        
+        <a href="/quiz" class="btn">Recommencer une session</a>
+        <a href="/" class="btn btn-secondary">Retour au menu principal</a>
+    </div>
 
 </div>
 </body>
