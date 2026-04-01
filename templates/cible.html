@@ -4,78 +4,36 @@
     <meta charset="UTF-8">
     <title>Révision ciblée</title>
     <link rel="stylesheet" href="/static/style.css">
+    <style>
+        .chip { display: inline-block; padding: 8px 15px; border: 1px solid #ddd; border-radius: 20px; cursor: pointer; margin: 5px; background: white; }
+        .chip.active { background: #007bff; color: white; border-color: #007bff; }
+        .chip input { display: none; }
+    </style>
 </head>
 <body>
-<div class="container-large">
+<div class="container" style="width: 600px;">
     <h1>Révision ciblée</h1>
-    <p class="intro">Sélectionnez vos critères pour une session personnalisée.</p>
-
-    <form action="/cible_start" method="POST" id="cible-form">
-
-        <div class="section" id="sec-modes">
-            <h2>Modes</h2>
-            <div class="chips">
-                {% for m in modes %}
-                <label class="chip">
-                    <input type="radio" name="modes" value="{{ m }}">
-                    <span>{{ m }}</span>
-                </label>
-                {% endfor %}
-            </div>
+    <form action="/cible_start" method="POST">
+        <div class="section">
+            <h3>Modes</h3>
+            {% for m in modes %}
+            <label class="chip">
+                <input type="checkbox" name="modes" value="{{ m }}"> {{ m }}
+            </label>
+            {% endfor %}
         </div>
 
-        <div class="section disabled" id="sec-temps">
-            <h2>Temps</h2>
-            <div class="chips" id="temps-container">
-                </div>
-        </div>
-
-        <div class="section disabled" id="sec-personnes">
-            <h2>Personnes</h2>
-            <div class="chips">
-                {% for i, label in [(0,'1re pers. sing.'), (1,'2e pers. sing.'), (2,'3e pers. sing.'), (3,'1re pers. plur.'), (4,'2e pers. plur.'), (5,'3e pers. plur.')] %}
-                <label class="chip">
-                    <input type="checkbox" name="personnes" value="{{ i }}">
-                    <span>{{ label }}</span>
-                </label>
-                {% endfor %}
-            </div>
-        </div>
-
-        <div class="section disabled" id="sec-verbes">
-            <h2>Verbes</h2>
-            <div class="chips">
-                {% for liste_id, verbes in listes.items() %}
-                    {% for v in verbes %}
-                    <label class="chip verb-chip">
-                        <input type="checkbox" name="verbes" value="{{ v }}">
-                        <span>{{ v }}</span>
-                    </label>
-                    {% endfor %}
-                {% endfor %}
-            </div>
-        </div>
-
-        <div style="margin-top: 30px; text-align: center;">
-            <button type="submit" class="btn">Commencer l'exercice</button>
-            <a href="/" class="btn btn-secondary">Retour au menu</a>
-        </div>
+        <button type="submit" class="btn" style="width:100%">Lancer la session</button>
+        <a href="/" class="back-button">Annuler</a>
     </form>
 </div>
 
 <script>
-    // Script simple pour gérer l'activation visuelle
-    document.querySelectorAll('.chip').forEach(chip => {
-        chip.addEventListener('click', () => {
-            // Pour les radios (modes), on retire l'active des frères
-            if (chip.querySelector('input').type === 'radio') {
-                chip.parentElement.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-            }
-            // Toggle de la classe active
-            setTimeout(() => {
-                const input = chip.querySelector('input');
-                chip.classList.toggle('active', input.checked || (input.type === 'radio' && input.checked));
-            }, 10);
+    // Le petit script simple pour les couleurs des chips
+    document.querySelectorAll('.chip').forEach(c => {
+        c.addEventListener('click', () => {
+            const input = c.querySelector('input');
+            setTimeout(() => { c.classList.toggle('active', input.checked); }, 50);
         });
     });
 </script>
