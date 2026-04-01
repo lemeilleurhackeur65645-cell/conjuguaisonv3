@@ -6,18 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/style.css">
 </head>
+
 <body>
 
 <div class="container" style="width: 550px;">
 
-    <!-- Titre + intro -->
+    <!-- TITRE -->
     <h1 class="bilan-title">Bilan de ta session</h1>
 
+    <!-- INTRO -->
     <p class="intro">
         Ce bilan reprend les résultats de ta session pour t'aider à visualiser tes réussites et tes points d'amélioration.
     </p>
 
-    <!-- Bloc récapitulatif -->
+    <!-- BLOC RÉCAP -->
     <div class="bilan-block">
         <p class="bilan-item"><strong>Questions posées :</strong> {{ total }}</p>
         <p class="bilan-item"><strong>Bonnes réponses :</strong> {{ score }}</p>
@@ -25,7 +27,7 @@
         <p class="bilan-item"><strong>Temps total :</strong> {{ duree }} sec</p>
     </div>
 
-    <!-- Barre de progression globale -->
+    <!-- PROGRESSION GLOBALE (présente dans l’ancien) -->
     <div class="progress-text">
         Progression globale : {{ taux }}%
     </div>
@@ -35,8 +37,9 @@
 
     <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 25px 0;">
 
-    <!-- Erreurs détaillées -->
+    <!-- ERREURS -->
     <h2 class="analyse-title">Tes erreurs</h2>
+
     {% if erreurs %}
         <div class="erreurs-block">
             {% for e in erreurs %}
@@ -50,9 +53,10 @@
         <p style="color: #10b981; font-weight: 600;">Aucune erreur. Bravo ! 🎉</p>
     {% endif %}
 
-    <!-- Analyse + graphique par mode -->
+    <!-- ANALYSE -->
     {% if analyse %}
         <h2 class="analyse-title">Analyse des résultats</h2>
+
         <div class="analyse-section">
 
             {% if analyse.verbes %}
@@ -69,38 +73,37 @@
                 </p>
             {% endif %}
 
-            <!-- Graphique des erreurs par mode -->
-            <div class="mode-chart" style="margin: 20px 0;">
+            <!-- GRAPHIQUE PAR MODE (présent dans l’ancien) -->
+            <div class="mode-chart">
                 {% set total_err_modes = analyse.modes | map(attribute=1) | sum %}
                 {% for mode, nb in analyse.modes %}
                     {% set pct = (nb * 100 / total_err_modes) | round(0, 'floor') if total_err_modes > 0 else 0 %}
-                    <div class="mode-row" style="display: flex; align-items: center; margin-bottom: 8px;">
-                        <span class="mode-label" style="width: 110px; text-align: left; font-size: 0.85rem;">
-                            {{ mode }}
-                        </span>
-                        <div class="mode-bar-premium" style="flex-grow: 1; height: 10px; background: #eef2f7; border-radius: 5px; margin: 0 10px; overflow: hidden;">
-                            <div class="mode-bar-fill-premium" style="width: {{ pct }}%; height: 100%; background: linear-gradient(90deg, #10b981, #007bff); border-radius: 5px;"></div>
+                    <div class="mode-row">
+                        <span class="mode-label">{{ mode }}</span>
+                        <div class="mode-bar-premium">
+                            <div class="mode-bar-fill-premium" style="width: {{ pct }}%;"></div>
                         </div>
-                        <span class="mode-value" style="width: 40px; font-size: 0.85rem; font-weight: 600;">
-                            {{ pct }}%
-                        </span>
+                        <span class="mode-value">{{ pct }}%</span>
                     </div>
                 {% endfor %}
             </div>
 
+            <!-- SUGGESTION -->
             <p class="suggestion">
                 {{ analyse.suggestion }}
             </p>
+
         </div>
     {% endif %}
 
-    <!-- Actions de fin de session -->
+    <!-- ACTIONS -->
     <div style="margin-top: 35px; display: flex; flex-direction: column; gap: 12px;">
+
         {% if erreurs %}
             <a href="/revision" class="btn">Réessayer mes erreurs</a>
         {% endif %}
 
-        <a href="/quiz" class="btn" style="background: #007bff;">Nouvelle session</a>
+        <a href="/quiz" class="btn">Nouvelle session</a>
         <a href="/" class="back-button">Retour au menu principal</a>
     </div>
 
