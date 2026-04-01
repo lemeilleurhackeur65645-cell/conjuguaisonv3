@@ -85,13 +85,14 @@
             <p class="suggestion">{{ analyse.suggestion }}</p>
 
         </div>
-    {% endif %}
-
+   <div class="bilan-actions">
     {% if erreurs %}
-        <a href="/revision" class="btn-premium">Réviser mes erreurs</a>
+        <a href="/revision" class="btn">Réessayer mes erreurs</a>
     {% endif %}
-
-    <a href="/" class="btn-premium">Recommencer</a>
+    
+    <a href="/quiz" class="btn">Recommencer</a>
+    <a href="/" class="back-button">Retour au menu principal</a>
+    </div>
 
 </div>
 </body>
