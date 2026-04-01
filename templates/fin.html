@@ -2,34 +2,84 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Bilan</title>
+    <title>Bilan de session</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-<div class="container">
-    <h1>Bilan de la session</h1>
-    
+<div class="container" style="width: 550px;"> <h1 class="bilan-title">Bilan de ta session</h1>
+
+    <p class="intro">
+        Ce bilan reprend les résultats de ta session pour t'aider à visualiser tes réussites et tes points d'amélioration.
+    </p>
+
     <div class="bilan-block">
-        <p><strong>Questions posées :</strong> {{ total }}</p>
-        <p><strong>Bonnes réponses :</strong> {{ score }}</p>
-        <p><strong>Taux de réussite :</strong> {{ taux }}%</p>
+        <p class="bilan-item"><strong>Questions posées :</strong> {{ total }}</p>
+        <p class="bilan-item"><strong>Bonnes réponses :</strong> {{ score }}</p>
+        <p class="bilan-item"><strong>Taux de réussite :</strong> {{ taux }}%</p>
+        <p class="bilan-item"><strong>Temps total :</strong> {{ duree }} sec</p>
     </div>
 
-    <h2>Détails des erreurs</h2>
+    <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 25px 0;">
+
+    <h2 class="analyse-title">Tes erreurs</h2>
     {% if erreurs %}
         <div class="erreurs-block">
             {% for e in erreurs %}
-                <div class="erreur-item">{{ e[0] }} : « {{ e[4] }} » → « {{ e[5] }} »</div>
+                <div class="erreur-item">
+                    <strong>{{ e[0] }}</strong> ({{ e[1] }} {{ e[2] }}) : 
+                    « {{ e[4] }} » → <strong>{{ e[5] }}</strong>
+                </div>
             {% endfor %}
         </div>
     {% else %}
-        <p>Aucune erreur. Bravo ! 🎉</p>
+        <p style="color: #10b981; font-weight: 600;">Aucune erreur. Bravo ! 🎉</p>
     {% endif %}
 
-    <div style="margin-top: 30px;">
-        <a href="/quiz" class="btn">Recommencer</a>
-        <a href="/" class="btn btn-secondary">Retour au menu</a>
+    {% if analyse %}
+        <h2 class="analyse-title">Analyse des résultats</h2>
+        <div class="analyse-section">
+            
+            {% if analyse.verbes %}
+                <p class="analyse-item"><strong>Verbe(s) le(s) moins réussi(s) :</strong> 
+                    {{ analyse.verbes | map(attribute=0) | join(', ') }}
+                </p>
+            {% endif %}
+
+            {% if analyse.modes %}
+                <p class="analyse-item"><strong>Mode(s) le(s) moins réussi(s) :</strong> 
+                    {{ analyse.modes | map(attribute=0) | join(', ') }}
+                </p>
+            {% endif %}
+
+            <div class="mode-chart" style="margin: 20px 0;">
+                {% set total_err_modes = analyse.modes | map(attribute=1) | sum %}
+                {% for mode, nb in analyse.modes %}
+                    {% set pct = (nb * 100 / total_err_modes) | round(0, 'floor') if total_err_modes > 0 else 0 %}
+                    <div class="mode-row" style="display: flex; align-items: center; margin-bottom: 8px;">
+                        <span class="mode-label" style="width: 110px; text-align: left; font-size: 0.85rem;">{{ mode }}</span>
+                        <div class="mode-bar-premium" style="flex-grow: 1; height: 10px; background: #eef2f7; border-radius: 5px; margin: 0 10px; overflow: hidden;">
+                            <div class="mode-bar-fill-premium" style="width: {{ pct }}%; height: 100%; background: linear-gradient(90deg, #10b981, #007bff); border-radius: 5px;"></div>
+                        </div>
+                        <span class="mode-value" style="width: 40px; font-size: 0.85rem; font-weight: 600;">{{ pct }}%</span>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <p class="suggestion">
+                {{ analyse.suggestion }}
+            </p>
+        </div>
+    {% endif %}
+
+    <div style="margin-top: 35px; display: flex; flex-direction: column; gap: 12px;">
+        {% if erreurs %}
+            <a href="/revision" class="btn">Réessayer mes erreurs</a>
+        {% endif %}
+        
+        <a href="/quiz" class="btn" style="background: #007bff;">Nouvelle session</a>
+        <a href="/" class="back-button">Retour au menu principal</a>
     </div>
+
 </div>
 </body>
 </html>
