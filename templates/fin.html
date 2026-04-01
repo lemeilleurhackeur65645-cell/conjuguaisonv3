@@ -3,15 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title>Bilan de session</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-<div class="container" style="width: 550px;"> <h1 class="bilan-title">Bilan de ta session</h1>
+
+<div class="container" style="width: 550px;">
+
+    <!-- Titre + intro -->
+    <h1 class="bilan-title">Bilan de ta session</h1>
 
     <p class="intro">
         Ce bilan reprend les résultats de ta session pour t'aider à visualiser tes réussites et tes points d'amélioration.
     </p>
 
+    <!-- Bloc récapitulatif -->
     <div class="bilan-block">
         <p class="bilan-item"><strong>Questions posées :</strong> {{ total }}</p>
         <p class="bilan-item"><strong>Bonnes réponses :</strong> {{ score }}</p>
@@ -19,14 +25,23 @@
         <p class="bilan-item"><strong>Temps total :</strong> {{ duree }} sec</p>
     </div>
 
+    <!-- Barre de progression globale -->
+    <div class="progress-text">
+        Progression globale : {{ taux }}%
+    </div>
+    <div class="progress-container">
+        <div class="progress-bar" style="width: {{ taux }}%;"></div>
+    </div>
+
     <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 25px 0;">
 
+    <!-- Erreurs détaillées -->
     <h2 class="analyse-title">Tes erreurs</h2>
     {% if erreurs %}
         <div class="erreurs-block">
             {% for e in erreurs %}
                 <div class="erreur-item">
-                    <strong>{{ e[0] }}</strong> ({{ e[1] }} {{ e[2] }}) : 
+                    <strong>{{ e[0] }}</strong> ({{ e[1] }} {{ e[2] }}) :
                     « {{ e[4] }} » → <strong>{{ e[5] }}</strong>
                 </div>
             {% endfor %}
@@ -35,32 +50,40 @@
         <p style="color: #10b981; font-weight: 600;">Aucune erreur. Bravo ! 🎉</p>
     {% endif %}
 
+    <!-- Analyse + graphique par mode -->
     {% if analyse %}
         <h2 class="analyse-title">Analyse des résultats</h2>
         <div class="analyse-section">
-            
+
             {% if analyse.verbes %}
-                <p class="analyse-item"><strong>Verbe(s) le(s) moins réussi(s) :</strong> 
+                <p class="analyse-item">
+                    <strong>Verbe(s) le(s) moins réussi(s) :</strong>
                     {{ analyse.verbes | map(attribute=0) | join(', ') }}
                 </p>
             {% endif %}
 
             {% if analyse.modes %}
-                <p class="analyse-item"><strong>Mode(s) le(s) moins réussi(s) :</strong> 
+                <p class="analyse-item">
+                    <strong>Mode(s) le(s) moins réussi(s) :</strong>
                     {{ analyse.modes | map(attribute=0) | join(', ') }}
                 </p>
             {% endif %}
 
+            <!-- Graphique des erreurs par mode -->
             <div class="mode-chart" style="margin: 20px 0;">
                 {% set total_err_modes = analyse.modes | map(attribute=1) | sum %}
                 {% for mode, nb in analyse.modes %}
                     {% set pct = (nb * 100 / total_err_modes) | round(0, 'floor') if total_err_modes > 0 else 0 %}
                     <div class="mode-row" style="display: flex; align-items: center; margin-bottom: 8px;">
-                        <span class="mode-label" style="width: 110px; text-align: left; font-size: 0.85rem;">{{ mode }}</span>
+                        <span class="mode-label" style="width: 110px; text-align: left; font-size: 0.85rem;">
+                            {{ mode }}
+                        </span>
                         <div class="mode-bar-premium" style="flex-grow: 1; height: 10px; background: #eef2f7; border-radius: 5px; margin: 0 10px; overflow: hidden;">
                             <div class="mode-bar-fill-premium" style="width: {{ pct }}%; height: 100%; background: linear-gradient(90deg, #10b981, #007bff); border-radius: 5px;"></div>
                         </div>
-                        <span class="mode-value" style="width: 40px; font-size: 0.85rem; font-weight: 600;">{{ pct }}%</span>
+                        <span class="mode-value" style="width: 40px; font-size: 0.85rem; font-weight: 600;">
+                            {{ pct }}%
+                        </span>
                     </div>
                 {% endfor %}
             </div>
@@ -71,15 +94,17 @@
         </div>
     {% endif %}
 
+    <!-- Actions de fin de session -->
     <div style="margin-top: 35px; display: flex; flex-direction: column; gap: 12px;">
         {% if erreurs %}
             <a href="/revision" class="btn">Réessayer mes erreurs</a>
         {% endif %}
-        
+
         <a href="/quiz" class="btn" style="background: #007bff;">Nouvelle session</a>
         <a href="/" class="back-button">Retour au menu principal</a>
     </div>
 
 </div>
+
 </body>
 </html>
