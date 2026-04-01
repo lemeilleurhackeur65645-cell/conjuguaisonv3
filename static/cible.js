@@ -1,152 +1,80 @@
+document.addEventListener('DOMContentLoaded', () => {
+    const secTemps = document.getElementById('sec-temps');
+    const secPers = document.getElementById('sec-personnes');
+    const secVerbes = document.getElementById('sec-verbes');
+    const tempsContainer = document.getElementById('temps-container');
 
-// --- Sélection des éléments ---
-const listChips = document.querySelectorAll(".list-chip");
-const verbChips = document.querySelectorAll(".verb-chip");
-
-// --- Met à jour l’état d’une liste (cochée / décochée) ---
-function updateListState(listeId) {
-
-    // Cas spécial : "Tous les verbes"
-    if (listeId === "all") {
-        const allChecked = Array.from(verbChips).every(chip => chip.querySelector("input").checked);
-        const chipAll = document.querySelector('.list-chip[data-liste="all"]');
-        chipAll.querySelector("input").checked = allChecked;
-        chipAll.classList.toggle("active", allChecked);
-        return;
-    }
-
-    // Verbes appartenant à cette liste
-    const verbes = document.querySelectorAll(`.verb-chip[data-liste="${listeId}"] input`);
-    const listeChip = document.querySelector(`.list-chip[data-liste="${listeId}"]`);
-
-    // Vérifie si tous les verbes sont cochés
-    const allChecked = Array.from(verbes).every(v => v.checked);
-
-    listeChip.querySelector("input").checked = allChecked;
-    listeChip.classList.toggle("active", allChecked);
-}
-
-// --- Quand on clique sur une liste ---
-listChips.forEach(chip => {
-    chip.addEventListener("click", () => {
-        const listeId = chip.dataset.liste;
-        const checked = chip.querySelector("input").checked;
-
-        // Cas spécial : "Tous les verbes"
-        if (listeId === "all") {
-            verbChips.forEach(v => {
-                v.querySelector("input").checked = checked;
-                v.classList.toggle("active", checked);
+    // --- 1. GESTION VISUELLE DES CHIPS ---
+    function initChipListener(container) {
+        const target = container || document;
+        target.querySelectorAll('.chip').forEach(chip => {
+            if (chip.dataset.listened) return; 
+            const input = chip.querySelector('input');
+            
+            chip.addEventListener('click', (e) => {
+                // Petit délai pour laisser l'input changer d'état
+                setTimeout(() => {
+                    chip.classList.toggle('active', input.checked);
+                    updateLocks();
+                }, 10);
             });
-
-            // Toutes les listes suivent
-            listChips.forEach(c => {
-                if (c.dataset.liste !== "all") {
-                    c.querySelector("input").checked = checked;
-                    c.classList.toggle("active", checked);
-                }
-            });
-
-            return;
-        }
-
-        // Coche/décoche tous les verbes de la liste
-        const verbes = document.querySelectorAll(`.verb-chip[data-liste="${listeId}"]`);
-        verbes.forEach(v => {
-            v.querySelector("input").checked = checked;
-            v.classList.toggle("active", checked);
+            chip.dataset.listened = "true";
         });
-
-        // Met à jour "Tous les verbes"
-        updateListState("all");
-    });
-});
-
-// --- Quand on clique sur un verbe individuel ---
-verbChips.forEach(chip => {
-    chip.addEventListener("click", () => {
-        const listeId = chip.dataset.liste;
-
-        // Met à jour la liste correspondante
-        updateListState(listeId);
-
-        // Met à jour "Tous les verbes"
-        updateListState("all");
-    });
-});
-document.querySelectorAll('.chip').forEach(chip => {
-    const input = chip.querySelector('input');
-    if (!input) return;
-
-    // état initial
-    if (input.checked) chip.classList.add('active');
-
-    chip.addEventListener('click', () => {
-        // petit délai pour laisser le checkbox se mettre à jour
-        setTimeout(() => {
-            chip.classList.toggle('active', input.checked);
-        }, 0);
-    });
-});
-const secModes = document.getElementById('sec-modes');
-const secTemps = document.getElementById('sec-temps');
-const secPers  = document.getElementById('sec-personnes');
-const secVerbes = document.getElementById('sec-verbes');
-
-function hasChecked(selector) {
-    return document.querySelectorAll(selector + ' input[type="checkbox"]:checked').length > 0;
-}
-
-function updateSectionsLock() {
-    const modesOk = hasChecked('#sec-modes');
-    const tempsOk = hasChecked('#sec-temps');
-    const persOk  = hasChecked('#sec-personnes');
-
-    secTemps.classList.toggle('disabled', !modesOk);
-    secPers.classList.toggle('disabled', !modesOk || !tempsOk);
-    secVerbes.classList.toggle('disabled', !modesOk || !tempsOk || !persOk);
-}
-
-// on écoute tous les changements de checkbox
-document.addEventListener('change', (e) => {
-    if (e.target.matches('input[type="checkbox"]')) {
-        updateSectionsLock();
     }
-});
 
-// état initial
-updateSectionsLock();
-document.querySelectorAll('.chip').forEach(chip => {
-    const input = chip.querySelector('input');
-    if (!input) return;
+    // --- 2. LOGIQUE DE DÉBLOCAGE (LOCKS) ---
+    function updateLocks() {
+        const hasModes = document.querySelectorAll('#sec-modes input:checked').length > 0;
+        const hasTemps = document.querySelectorAll('#sec-temps input:checked').length > 0;
+        const hasPers = document.querySelectorAll('#sec-personnes input:checked').length > 0;
 
-    // état initial
-    chip.classList.toggle('active', input.checked);
+        secTemps.classList.toggle('disabled', !hasModes);
+        secPers.classList.toggle('disabled', !hasModes || !hasTemps);
+        secVerbes.classList.toggle('disabled', !hasModes || !hasTemps || !hasPers);
+    }
 
-    chip.addEventListener('click', () => {
-        setTimeout(() => {
-            chip.classList.toggle('active', input.checked);
-        }, 0);
+    // --- 3. MISE À JOUR DYNAMIQUE DES TEMPS ---
+    document.querySelectorAll('#sec-modes input').forEach(input => {
+        input.addEventListener('change', () => {
+            const modesChoisis = Array.from(document.querySelectorAll('#sec-modes input:checked')).map(i => i.value);
+            
+            // Collecter tous les temps uniques pour les modes choisis
+            const tempsSet = new Set();
+            modesChoisis.forEach(m => {
+                if (modesTempsMap[m]) modesTempsMap[m].forEach(t => tempsSet.add(t));
+            });
+
+            // Re-générer les chips de temps
+            tempsContainer.innerHTML = "";
+            Array.from(tempsSet).sort().forEach(t => {
+                const label = document.createElement('label');
+                label.className = 'chip';
+                label.innerHTML = `<input type="checkbox" name="temps" value="${t}">${t}`;
+                tempsContainer.appendChild(label);
+            });
+            
+            initChipListener(tempsContainer);
+            updateLocks();
+        });
     });
+
+    // --- 4. GESTION DES LISTES DE VERBES ---
+    document.querySelectorAll('.list-chip').forEach(listChip => {
+        listChip.addEventListener('click', () => {
+            const listeId = listChip.dataset.liste;
+            const isChecked = listChip.querySelector('input').checked;
+            
+            let selector = `.verb-chip[data-liste="${listeId}"] input`;
+            if (listeId === 'all') selector = `.verb-chip input`;
+
+            document.querySelectorAll(selector).forEach(vInput => {
+                vInput.checked = isChecked;
+                vInput.parentElement.classList.toggle('active', isChecked);
+            });
+        });
+    });
+
+    // Initialisation
+    initChipListener();
+    updateLocks();
 });
-const secModes = document.getElementById('sec-modes');
-const secTemps = document.getElementById('sec-temps');
-const secPers  = document.getElementById('sec-personnes');
-const secVerbes = document.getElementById('sec-verbes');
-
-function hasChecked(sectionId) {
-    return document.querySelectorAll(`#${sectionId} input[type="checkbox"]:checked`).length > 0;
-}
-
-function updateLocks() {
-    const modesOK = hasChecked('sec-modes');
-    const tempsOK = hasChecked('sec-temps');
-    const persOK  = hasChecked('sec-personnes');
-
-    secTemps.classList.toggle('disabled', !modesOK);
-    secPers.classList.toggle('disabled', !modesOK || !tempsOK);
-    secVerbes.classList.toggle('disabled', !modesOK || !tempsOK || !persOK);
-}
-
-document.addEventListener('change', updateLocks);
-updateLocks();
