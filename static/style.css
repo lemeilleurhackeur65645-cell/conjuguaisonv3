@@ -188,5 +188,44 @@ input:checked + .slider:before { transform: translateX(22px); }
     gap: 12px;
     align-items: center;
 }
+/* ============================================================
+   BOUTONS DU BAS DU BILAN — VERSION PREMIUM FIGMA
+   ============================================================ */
+
+.bilan-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 35px;
+}
+
+/* Boutons principaux du bas */
+.bilan-actions .btn {
+    width: 100%;
+    max-width: 320px;
+    padding: 14px 24px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    background: linear-gradient(135deg, #007bff, #0056d6);
+    color: #fff !important;
+    box-shadow: 0 8px 20px rgba(0, 123, 255, 0.3);
+    transition: 0.2s ease;
+    text-align: center;
+}
+
+.bilan-actions .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(0, 123, 255, 0.4);
+}
+
+/* Bouton retour */
+.bilan-actions .back-button {
+    width: 100%;
+    max-width: 320px;
+    text-align: center;
+}
 
 
