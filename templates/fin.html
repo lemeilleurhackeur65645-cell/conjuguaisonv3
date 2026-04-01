@@ -59,26 +59,39 @@
 
             <!-- Graphique premium des erreurs par mode -->
 
+           {% if analyse and analyse.modes %}
+    <div class="mode-chart">
+
+        {# 1) On calcule le total des erreurs par mode #}
+        {% set total_err_modes = 0 %}
+        {% for mode, nb in analyse.modes %}
+            {% set total_err_modes = total_err_modes + nb %}
+        {% endfor %}
+
+        {# 2) On affiche une ligne par mode avec une barre #}
+        {% for mode, nb in analyse.modes %}
+            {% if total_err_modes > 0 %}
+                {% set pct = (nb * 100 / total_err_modes) | round(0, 'floor') %}
+            {% else %}
+                {% set pct = 0 %}
+            {% endif %}
+
+            <div class="mode-row">
+                <span class="mode-label">{{ mode }}</span>
+
+                <div class="mode-bar-premium">
+                    <div class="mode-bar-fill-premium" style="width: {{ pct }}%;"></div>
+                </div>
+
+                <span class="mode-value">{{ pct }}%</span>
+            </div>
+        {% endfor %}
+
+    </div>
+{% endif %}
+
            
-            <div class="mode-chart">
-                {% set total_err_modes = analyse.modes | map(attribute=1) | sum %}
-                {% for mode, nb in analyse.modes %}
-                    {% set pct = (nb * 100 / total_err_modes) | round(0, 'floor') if total_err_modes > 0 else 0 %}
-
-                    <div class="mode-row">
-                        <span class="mode-label">{{ mode }}</span>
-
-                        <div class="mode-bar-premium">
-                            <div class="mode-bar-fill-premium" style="width: {{ pct }}%;"></div>
-                        </div>
-
-                        <span class="mode-value">{{ pct }}%</span>
-                    </div>
-                {% endfor %}
-            </div>
-
-            </div>
-
+      
 
             <p class="analyse-title">Temps le(s) moins réussi(s)</p>
             {% for temps, nb in analyse.temps %}
