@@ -101,3 +101,92 @@ input[type="text"]:focus { border-color: #007bff; box-shadow: 0 0 0 4px rgba(0, 
 .slider:before { content: ""; position: absolute; height: 22px; width: 22px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: 0.3s; }
 input:checked + .slider { background: #007bff; }
 input:checked + .slider:before { transform: translateX(22px); }
+/* ============================================================
+   BOUTONS SECONDAIRES — VERSION PREMIUM FIGMA
+   (back-button, stop-button, menu-link, etc.)
+   ============================================================ */
+
+/* Conteneur global pour centrer et espacer les petits boutons */
+.small-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 25px;
+}
+
+/* Bouton retour */
+.back-button {
+    display: inline-block;
+    padding: 10px 18px;
+    background: #f1f5f9;
+    border-radius: 10px;
+    color: #334155;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.06);
+    transition: 0.2s ease;
+}
+
+.back-button:hover {
+    background: #e2e8f0;
+    color: #0f172a;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(15, 23, 42, 0.10);
+}
+
+/* Bouton stop / bilan compact */
+.stop-button {
+    display: inline-block;
+    padding: 10px 18px;
+    background: #ffe5e5;
+    color: #c0392b;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 4px 10px rgba(192, 57, 43, 0.20);
+    transition: 0.2s ease;
+}
+
+.stop-button:hover {
+    background: #ffd6d6;
+    color: #a83226;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(192, 57, 43, 0.25);
+}
+
+/* Liens de menu */
+.menu-link {
+    display: inline-block;
+    padding: 8px 14px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    color: #475569;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.06);
+    transition: 0.2s ease;
+}
+
+.menu-link:hover {
+    background: #ffffff;
+    color: #0f172a;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(15, 23, 42, 0.10);
+}
+
+/* Footer de menu (centré et espacé) */
+.menu-footer {
+    margin-top: 40px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+}
+
+
