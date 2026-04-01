@@ -2,186 +2,74 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Révision ciblée</title>
-    <link rel="stylesheet" href="/static/style.css">
-    <style>
-        .page {
-            max-width: 900px;
-            margin: 40px auto;
-            font-family: Inter, system-ui, sans-serif;
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 25px;
-        }
-        .section h2 {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-        }
-        
-        }
-        .start-btn {
-            width: 100%;
-            padding: 14px;
-            border-radius: 10px;
-            border: none;
-            background: #007bff;
-            color: #fff;
-            font-size: 1.1rem;
-            cursor: pointer;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuration — Révision Ciblée</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-<div class="page">
-    <h1>Révision ciblée</h1>
+    <div class="container">
+        <h1>Révision Ciblée</h1>
+        <p class="intro">Configurez vos paramètres pour une session sur mesure.</p>
 
-    <form action="/cible_start" method="POST" id="cible-form">
-
-        <!-- MODES -->
-        <div class="section" id="sec-modes">
-            <h2>Modes</h2>
-            <div class="chips">
-                {% for m in modes %}
-                <label class="chip">
-                <input type="checkbox" name="modes" value="{{ m }}">
-                {{ m }}
-                </label>
-            {% endfor %}
+        <form action="/cible_start" method="POST" id="cible-form">
+            
+            <div class="section" id="sec-modes">
+                <h2>1. Modes</h2>
+                <div class="chips">
+                    {% for m in modes %}
+                    <label class="chip">
+                        <input type="checkbox" name="modes" value="{{ m }}"> {{ m }}
+                    </label>
+                    {% endfor %}
+                </div>
             </div>
-        </div>
 
-
-        <!-- TEMPS (activé seulement si au moins un mode) -->
-        <div class="section disabled" id="sec-temps">
-            <h2>Temps</h2>
-            <div class="chips" id="temps-container">
-                <!-- rempli dynamiquement en JS -->
+            <div class="section disabled" id="sec-temps">
+                <h2>2. Temps</h2>
+                <div class="chips" id="temps-container">
+                    </div>
             </div>
-        </div>
 
-        <!-- PERSONNES -->
-        <div class="section disabled" id="sec-personnes">
-            <h2>Personnes</h2>
-            <div class="chips">
-                <label class="chip"><input type="checkbox" name="personnes" value="0">1re pers. sing.</label>
-                <label class="chip"><input type="checkbox" name="personnes" value="1">2e pers. sing.</label>
-                <label class="chip"><input type="checkbox" name="personnes" value="2">3e pers. sing.</label>
-                <label class="chip"><input type="checkbox" name="personnes" value="3">1re pers. plur.</label>
-                <label class="chip"><input type="checkbox" name="personnes" value="4">2e pers. plur.</label>
-                <label class="chip"><input type="checkbox" name="personnes" value="5">3e pers. plur.</label>
+            <div class="section disabled" id="sec-personnes">
+                <h2>3. Personnes</h2>
+                <div class="chips">
+                    {% for i, label in [(0,'1re S'), (1,'2e S'), (2,'3e S'), (3,'1re P'), (4,'2e P'), (5,'3e P')] %}
+                    <label class="chip">
+                        <input type="checkbox" name="personnes" value="{{ i }}"> {{ label }}
+                    </label>
+                    {% endfor %}
+                </div>
             </div>
-        </div>
 
-        <!-- VERBES (par listes, on branchera tes vraies listes) -->
-        <div class="section disabled" id="sec-verbes">
-    <h2>Verbes</h2>
+            <div class="section disabled" id="sec-verbes">
+                <h2>4. Verbes</h2>
+                <div class="chips" style="margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #eee;">
+                    {% for liste_id, v_list in listes.items() %}
+                    <label class="chip list-chip" data-liste="{{ liste_id }}">
+                        <input type="checkbox"> {{ liste_id|capitalize }}
+                    </label>
+                    {% endfor %}
+                    <label class="chip list-chip" data-liste="all">
+                        <input type="checkbox"> Tous
+                    </label>
+                </div>
+                <div class="chips">
+                    {% for liste_id, v_list in listes.items() %}
+                        {% for v in v_list %}
+                        <label class="chip verb-chip" data-liste="{{ liste_id }}">
+                            <input type="checkbox" name="verbes" value="{{ v }}"> {{ v }}
+                        </label>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            </div>
 
-    <!-- Boutons de listes -->
-    <div class="chips" id="list-buttons">
-        {% for liste_id, verbes in listes.items() %}
-        <label class="chip list-chip" data-liste="{{ liste_id }}">
-            <input type="checkbox" name="listes_verbes" value="{{ liste_id }}">
-            {{ liste_id|capitalize }}
-        </label>
-        {% endfor %}
-
-        <label class="chip list-chip" data-liste="all">
-            <input type="checkbox" name="listes_verbes" value="all">
-            Tous les verbes
-        </label>
+            <button type="submit" class="btn">Commencer la révision</button>
+            <a href="/" class="back-button">← Retour à l'accueil</a>
+        </form>
     </div>
 
-    <!-- Tous les verbes -->
-    <div class="chips" id="verbes-container">
-        {% for liste_id, verbes in listes.items() %}
-            {% for v in verbes %}
-            <label class="chip verb-chip" data-liste="{{ liste_id }}">
-                <input type="checkbox" name="verbes" value="{{ v }}">
-                {{ v }}
-            </label>
-            {% endfor %}
-        {% endfor %}
-    </div>
-</div>
-
-
-        <button class="start-btn">Commencer</button>
-    </form>
-</div>
-
-<script>
-    // Activation visuelle des chips
-    document.querySelectorAll('.chip').forEach(chip => {
-        chip.addEventListener('click', () => {
-            chip.classList.toggle('active');
-        });
-    });
-
-    const secModes = document.getElementById('sec-modes');
-    const secTemps = document.getElementById('sec-temps');
-    const secPers = document.getElementById('sec-personnes');
-    const secVerbes = document.getElementById('sec-verbes');
-    const tempsContainer = document.getElementById('temps-container');
-
-    const modesInputs = secModes.querySelectorAll('input[name="modes"]');
-
-    // données envoyées par Flask : mapping mode -> liste de temps valides
-    const modesTemps = {{ modes_temps_json|safe }};
-
-    function updateTemps() {
-        const modesChoisis = Array.from(modesInputs)
-            .filter(i => i.checked)
-            .map(i => i.value);
-
-        if (!modesChoisis.length) {
-            secTemps.classList.add('disabled');
-            secPers.classList.add('disabled');
-            secVerbes.classList.add('disabled');
-            tempsContainer.innerHTML = "";
-            return;
-        }
-
-        // activer section temps
-        secTemps.classList.remove('disabled');
-
-        // construire la liste des temps possibles (union des temps des modes choisis)
-        const tempsSet = new Set();
-        modesChoisis.forEach(m => {
-            (modesTemps[m] || []).forEach(t => tempsSet.add(t));
-        });
-
-        tempsContainer.innerHTML = "";
-        Array.from(tempsSet).sort().forEach(t => {
-            const label = document.createElement('label');
-            label.className = 'chip';
-            label.innerHTML = `<input type="checkbox" name="temps" value="${t}">${t}`;
-            label.addEventListener('click', () => label.classList.toggle('active'));
-            tempsContainer.appendChild(label);
-        });
-    }
-
-    modesInputs.forEach(i => i.addEventListener('change', updateTemps));
-
-    // activer personnes quand au moins un temps est choisi
-    document.addEventListener('change', () => {
-        const tempsChecked = document.querySelectorAll('#sec-temps input[name="temps"]:checked').length;
-        if (tempsChecked) {
-            secPers.classList.remove('disabled');
-        } else {
-            secPers.classList.add('disabled');
-            secVerbes.classList.add('disabled');
-        }
-
-        const persChecked = document.querySelectorAll('#sec-personnes input[name="personnes"]:checked').length;
-        if (persChecked) {
-            secVerbes.classList.remove('disabled');
-        } else {
-            secVerbes.classList.add('disabled');
-        }
-    });
-</script>
-<script src="/static/cible.js"></script>
-
+    <script>const modesTempsMap = {{ modes_temps_json|safe }};</script>
+    <script src="{{ url_for('static', filename='cible.js') }}"></script>
 </body>
 </html>
