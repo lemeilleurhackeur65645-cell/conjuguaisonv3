@@ -1,136 +1,87 @@
 /* ============================================================
-   BASE & FONTS
+   DESIGN SYSTEM : MESH GRADIENT & FONTS
    ============================================================ */
 body {
     font-family: 'Inter', -apple-system, sans-serif;
-    background: radial-gradient(circle at top left, #e8f0ff, #f5f7fb 40%, #eef2f7 100%);
+    /* Fond dégradé premium inspiré des interfaces SaaS modernes */
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    background-attachment: fixed;
     text-align: center;
-    padding: 60px 20px;
-    color: #0f172a;
+    padding: 50px 20px;
+    color: #1e293b;
     margin: 0;
 }
 
 .container {
     width: 450px;
     margin: auto;
-    background: white;
-    padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0 14px 32px rgba(15, 23, 42, 0.12);
-}
-
-.container-large {
-    max-width: 850px;
-    margin: auto;
-    background: white;
-    padding: 40px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 35px;
     border-radius: 24px;
-    box-shadow: 0 20px 40px rgba(15, 23, 42, 0.1);
-    text-align: left;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.8);
 }
 
 /* ============================================================
-   BOUTONS (Affinés)
+   BOUTONS : LE RETOUR AU STYLE ELEGANT
    ============================================================ */
 .btn {
     display: inline-block;
-    padding: 12px 24px; /* Plus fin */
+    padding: 12px 24px;
     background: linear-gradient(135deg, #007bff, #0056d6);
-    color: white;
+    color: white !important;
     text-decoration: none;
-    border-radius: 10px;
+    border-radius: 12px;
     font-weight: 600;
-    font-size: 1rem;
     border: none;
     cursor: pointer;
-    box-shadow: 0 6px 15px rgba(0, 123, 255, 0.25);
-    transition: 0.2s;
-    margin: 10px 5px;
+    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.2);
+    margin: 8px;
 }
 
 .btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(0, 123, 255, 0.35);
+    box-shadow: 0 8px 20px rgba(0, 123, 255, 0.3);
 }
 
-/* Bouton Ghost pour "Révision Ciblée" */
-.btn.ghost {
+/* Bouton secondaire (Gris élégant) */
+.btn-secondary {
     background: #f1f5f9;
-    color: #475569;
+    color: #475569 !important;
     box-shadow: none;
 }
-.btn.ghost:hover { background: #e2e8f0; color: #1e293b; }
+.btn-secondary:hover { background: #e2e8f0; }
 
 /* ============================================================
-   LE SLIDER (Switch) - DE RETOUR
+   ENTRÉE DES RÉPONSES (STYLE ORIGINAL)
    ============================================================ */
-.switch-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    margin: 25px 0;
-}
-
-.switch {
-    position: relative;
-    width: 50px;
-    height: 28px;
-}
-
-.switch input { opacity: 0; width: 0; height: 0; }
-
-.slider {
-    position: absolute;
-    cursor: pointer;
-    inset: 0;
-    background: #cbd5e1;
-    border-radius: 34px;
-    transition: 0.4s;
-}
-
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 20px;
-    width: 20px;
-    left: 4px;
-    bottom: 4px;
-    background: white;
-    transition: 0.4s;
-    border-radius: 50%;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-
-input:checked + .slider { background: #007bff; }
-input:checked + .slider:before { transform: translateX(22px); }
-
-.switch-label { font-size: 0.9rem; font-weight: 500; color: #64748b; }
-
-/* ============================================================
-   CHIPS (Révision ciblée)
-   ============================================================ */
-.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-.chip {
-    padding: 8px 16px;
-    background: white;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 0.85rem;
+input[type="text"] {
+    width: 85%;
+    padding: 15px;
+    border: 2px solid #e2e8f0;
+    border-radius: 14px;
+    font-size: 1.2rem;
+    text-align: center;
+    outline: none;
     transition: 0.2s;
+    margin-bottom: 20px;
 }
-.chip.active {
-    background: #007bff;
-    color: white;
-    border-color: transparent;
-    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+
+input[type="text"]:focus {
+    border-color: #007bff;
+    background: #f8fbff;
 }
-.chip input { display: none; }
 
 /* ============================================================
-   QUIZ ELEMENTS
+   RETOUR DU SLIDER (SWITCH)
    ============================================================ */
-.timer-box { font-size: 2.5rem; font-weight: 800; color: #c0392b; margin: 15px 0; }
-.progress-container { width: 100%; height: 10px; background: #f1f5f9; border-radius: 20px; margin: 20px 0; overflow: hidden; }
-.progress-bar { height: 100%; background: #007bff; transition: 0.4s ease-out; }
+.switch-container { display: flex; justify-content: center; align-items: center; gap: 12px; margin: 20px 0; }
+.switch { position: relative; width: 44px; height: 24px; }
+.switch input { opacity: 0; width: 0; height: 0; }
+.slider { position: absolute; cursor: pointer; inset: 0; background: #cbd5e1; border-radius: 34px; transition: 0.3s; }
+.slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background: white; transition: 0.3s; border-radius: 50%; }
+input:checked + .slider { background: #007bff; }
+input:checked + .slider:before { transform: translateX(20px); }
+.switch-label { font-size: 0.85rem; color: #64748b; font-weight: 500; }
