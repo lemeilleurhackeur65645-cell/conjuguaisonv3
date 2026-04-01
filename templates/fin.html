@@ -2,83 +2,34 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Bilan de session</title>
+    <title>Bilan</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
-
 <body>
 <div class="container">
-
     <h1>Bilan de la session</h1>
-
-    <p class="intro">
-        Plus vous répondez à des questions, plus le bilan devient précis et adapté à vos besoins.
-    </p>
-
+    
     <div class="bilan-block">
         <p><strong>Questions posées :</strong> {{ total }}</p>
         <p><strong>Bonnes réponses :</strong> {{ score }}</p>
         <p><strong>Taux de réussite :</strong> {{ taux }}%</p>
-        <p><strong>Temps total :</strong> {{ duree }} sec</p>
-        <p><strong>Temps moyen :</strong> {{ temps_moyen }} sec/question</p>
     </div>
 
-    <hr style="border: 0; border-top: 1px solid #eee; margin: 25px 0;">
-
     <h2>Détails des erreurs</h2>
-
     {% if erreurs %}
-        <div class="erreurs-block" style="text-align: left; background: #fff5f5; padding: 15px; border-radius: 12px; margin-bottom: 20px;">
+        <div class="erreurs-block">
             {% for e in erreurs %}
-                <div class="erreur-item" style="font-size: 0.9rem; margin-bottom: 8px; color: #c0392b;">
-                    <strong>{{ e[0] }}</strong> ({{ e[1] }} {{ e[2] }}) : 
-                    <span style="text-decoration: line-through; opacity: 0.6;">{{ e[4] }}</span> → <strong>{{ e[5] }}</strong>
-                </div>
+                <div class="erreur-item">{{ e[0] }} : « {{ e[4] }} » → « {{ e[5] }} »</div>
             {% endfor %}
         </div>
     {% else %}
-        <p style="color: #27ae60; font-weight: 600;">Aucune erreur. Bravo ! 🎉</p>
+        <p>Aucune erreur. Bravo ! 🎉</p>
     {% endif %}
 
-    {% if analyse %}
-        <h2>Analyse</h2>
-
-        <div class="analyse-section">
-            <p class="analyse-title">Points à surveiller</p>
-            
-            {% if analyse.verbes %}
-                <div class="analyse-item">Verbes : <em>{{ analyse.verbes | map(attribute=0) | join(', ') }}</em></div>
-            {% endif %}
-
-            <div class="mode-chart" style="margin: 20px 0;">
-                {% set total_modes = analyse.modes | map(attribute=1) | sum %}
-                {% for mode, nb in analyse.modes %}
-                    {% set pct = (nb * 100 / total_modes) | round(0, 'floor') if total_modes > 0 else 0 %}
-                    <div class="mode-row" style="display: flex; align-items: center; margin-bottom: 10px;">
-                        <span class="mode-label" style="width: 100px; text-align: left; font-size: 0.85rem;">{{ mode }}</span>
-                        <div class="mode-bar-premium" style="flex-grow: 1; height: 8px; background: #eef2f7; border-radius: 4px; margin: 0 10px; position: relative; overflow: hidden;">
-                            <div class="mode-bar-fill-premium" style="width: {{ pct }}%; height: 100%; background: linear-gradient(90deg, #007bff, #0056d6); border-radius: 4px;"></div>
-                        </div>
-                        <span class="mode-value" style="font-size: 0.85rem; font-weight: 600;">{{ pct }}%</span>
-                    </div>
-                {% endfor %}
-            </div>
-
-            <p class="suggestion" style="background: #f8fbff; padding: 12px; border-radius: 10px; border-left: 4px solid #007bff; font-style: italic;">
-                {{ analyse.suggestion }}
-            </p>
-        </div>
-    {% endif %}
-
-    <div style="margin-top: 35px; display: flex; flex-direction: column; gap: 10px;">
-        {% if erreurs %}
-            <a href="/revision" class="btn">Réviser mes erreurs</a>
-        {% endif %}
-        
-        <a href="/quiz" class="btn">Recommencer une session</a>
-        <a href="/" class="btn btn-secondary">Retour au menu principal</a>
+    <div style="margin-top: 30px;">
+        <a href="/quiz" class="btn">Recommencer</a>
+        <a href="/" class="btn btn-secondary">Retour au menu</a>
     </div>
-
 </div>
 </body>
 </html>
