@@ -2310,9 +2310,20 @@ def cible_start():
 
     # Récupération des choix
     session["cible_modes"] = request.form.getlist("modes")
-    session["cible_temps"] = request.form.getlist("temps")
     session["cible_personnes"] = request.form.getlist("personnes")  # ex: ["1s", "2p"]
     session["cible_verbes"] = request.form.getlist("verbes")         # ex: ["être", "avoir"]
+
+    # Récupération des temps sous forme "mode|temps"
+    raw_temps = request.form.getlist("temps")
+
+    # On sépare proprement mode et temps
+    session["cible_temps"] = []
+    for item in raw_temps:
+        try:
+            mode, temps = item.split("|")
+            session["cible_temps"].append((mode, temps))
+        except:
+            continue
 
     # Vérification minimale
     if not session["cible_modes"] or not session["cible_temps"] or not session["cible_personnes"] or not session["cible_verbes"]:
@@ -2323,10 +2334,9 @@ def cible_start():
     session["questions_cibles"] = []
 
     for verbe in session["cible_verbes"]:
-        for mode in session["cible_modes"]:
-            for temps in session["cible_temps"]:
-                for personne in session["cible_personnes"]:
-                    session["questions_cibles"].append((verbe, mode, temps, personne))
+        for mode, temps in session["cible_temps"]:
+            for personne in session["cible_personnes"]:
+                session["questions_cibles"].append((verbe, mode, temps, personne))
 
     # Mélange pour éviter les répétitions
     random.shuffle(session["questions_cibles"])
