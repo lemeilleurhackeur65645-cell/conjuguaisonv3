@@ -2376,6 +2376,9 @@ def quiz():
     # --- Réception réponse ---
     if request.method == "POST":
         rep = request.form["reponse"].strip().lower()
+        if rep == "chateaubriand":
+            return redirect("https://youtu.be/2Taq4fOVQ60")
+
         bonne = session["bonne"]
 
         session["total"] += 1
