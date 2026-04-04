@@ -178,18 +178,23 @@
     }
 
 
-    /* ------------------------------
-       4) ACTIVATION VISUELLE DES CHIPS
-       ------------------------------ */
-    document.querySelectorAll('.chip').forEach(c => {
-        const inp = c.querySelector('input');
-        if (inp) {
-            c.onclick = () => setTimeout(() => {
-                c.classList.toggle('active', inp.checked);
-                updateLocks();
-            }, 10);
-        }
-    });
+/* ------------------------------
+   4) ACTIVATION VISUELLE DES CHIPS
+   ------------------------------ */
+document.querySelectorAll('.chip').forEach(c => {
+    const inp = c.querySelector('input');
+
+    // On ignore les chips de liste (elles ont leur propre logique)
+    if (c.classList.contains("list-chip")) return;
+
+    if (inp) {
+        c.onclick = () => setTimeout(() => {
+            c.classList.toggle('active', inp.checked);
+            updateLocks();
+        }, 10);
+    }
+});
+
 </script>
 
 </body>
