@@ -101,21 +101,33 @@
             selected.forEach(m => modesTemps[m]?.forEach(t => tempsSet.add(t)));
 
             Array.from(tempsSet).sort().forEach(t => {
-                const label = document.createElement('label');
-                label.className = 'chip';
-                label.innerHTML = `
-                    <input type="checkbox" name="temps" value="${t}">
-                    ${t}
-                `;
-                label.onclick = () => {
-                    const inp = label.querySelector('input');
-                    setTimeout(() => {
-                        label.classList.toggle('active', inp.checked);
-                        updateLocks();
-                    }, 10);
-                };
-                container.appendChild(label);
+                selected.forEach(mode => {
+                    const label = document.createElement('label');
+                    label.className = 'chip';
+
+                    // Texte affiché : "indicatif présent"
+                    const fullLabel = `${mode} ${t}`;
+
+                    // Valeur envoyée au backend : "indicatif|présent"
+                    const fullValue = `${mode}|${t}`;
+
+                    label.innerHTML = `
+                    <input type="checkbox" name="temps" value="${fullValue}">
+                    ${fullLabel}
+                    `;
+
+                    label.onclick = () => {
+                        const inp = label.querySelector('input');
+                        setTimeout(() => {
+                            label.classList.toggle('active', inp.checked);
+                            updateLocks();
+                        }, 10);
+                    };
+
+                    container.appendChild(label);
+                });
             });
+
         }
         updateLocks();
     }
