@@ -5,54 +5,71 @@
     <title>Révision ciblée</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
+
 <body>
 <div class="page">
+
     <h1>Révision ciblée</h1>
 
     <form action="/cible_start" method="POST" id="cible-form">
+
+        <!-- MODES -->
         <div class="section" id="sec-modes">
             <h2>Modes</h2>
             <div class="chips">
                 {% for m in modes %}
                 <label class="chip">
-                    <input type="checkbox" name="modes" value="{{ m }}"> {{ m }}
+                    <input type="checkbox" name="modes" value="{{ m }}">
+                    {{ m|capitalize }}
                 </label>
                 {% endfor %}
             </div>
         </div>
 
+        <!-- TEMPS -->
         <div class="section disabled" id="sec-temps">
             <h2>Temps</h2>
             <div class="chips" id="temps-container"></div>
         </div>
 
+        <!-- PERSONNES -->
         <div class="section disabled" id="sec-personnes">
             <h2>Personnes</h2>
             <div class="chips">
-                {% for i, text in [(0,'1re S'), (1,'2e S'), (2,'3e S'), (3,'1re P'), (4,'2e P'), (5,'3e P')] %}
-                <label class="chip"><input type="checkbox" name="personnes" value="{{ i }}"> {{ text }}</label>
-                {% endfor %}
+                <label class="chip"><input type="checkbox" name="personnes" value="1s"> 1re personne du singulier</label>
+                <label class="chip"><input type="checkbox" name="personnes" value="2s"> 2e personne du singulier</label>
+                <label class="chip"><input type="checkbox" name="personnes" value="3s"> 3e personne du singulier</label>
+                <label class="chip"><input type="checkbox" name="personnes" value="1p"> 1re personne du pluriel</label>
+                <label class="chip"><input type="checkbox" name="personnes" value="2p"> 2e personne du pluriel</label>
+                <label class="chip"><input type="checkbox" name="personnes" value="3p"> 3e personne du pluriel</label>
             </div>
         </div>
 
+        <!-- VERBES -->
         <div class="section disabled" id="sec-verbes">
             <h2>Verbes</h2>
+
+            <!-- Sélection par listes -->
             <div class="chips" style="border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 15px;">
                 {% for liste_id, verbes in listes.items() %}
                 <label class="chip list-chip" data-liste="{{ liste_id }}">
-                    <input type="checkbox" name="listes_verbes" value="{{ liste_id }}"> {{ liste_id|capitalize }}
+                    <input type="checkbox" name="listes_verbes" value="{{ liste_id }}">
+                    {{ liste_id|capitalize }}
                 </label>
                 {% endfor %}
                 <label class="chip list-chip" data-liste="all">
-                    <input type="checkbox" name="listes_verbes" value="all"> Tous
+                    <input type="checkbox" name="listes_verbes" value="all">
+                    Tous
                 </label>
             </div>
 
+            <!-- Sélection individuelle -->
             <div class="chips" id="verbes-container">
                 {% for liste_id, verbes in listes.items() %}
                     {% for v in verbes %}
                     <label class="chip verb-chip" data-liste="{{ liste_id }}">
-                        <input type="checkbox" name="verbes" value="{{ v }}"> {{ v }}
+                        <input type="checkbox" name="verbes" value="{{ v }}">
+                        {{ v }}
                     </label>
                     {% endfor %}
                 {% endfor %}
@@ -60,38 +77,55 @@
         </div>
 
         <button type="submit" class="start-btn">Commencer</button>
+
     </form>
 </div>
 
 <script>
-    // --- Logique des Temps & Sections (Ton main.py data) ---
+    /* ------------------------------
+       1) TEMPS DYNAMIQUES PAR MODE
+       ------------------------------ */
     const modesTemps = {{ modes_temps_json|safe }};
     const modesInputs = document.querySelectorAll('#sec-modes input');
-    
+
     function updateTemps() {
-        const selected = Array.from(modesInputs).filter(i => i.checked).map(i => i.value);
+        const selected = Array.from(modesInputs)
+            .filter(i => i.checked)
+            .map(i => i.value);
+
         const container = document.getElementById('temps-container');
         container.innerHTML = "";
-        
+
         if (selected.length > 0) {
             const tempsSet = new Set();
             selected.forEach(m => modesTemps[m]?.forEach(t => tempsSet.add(t)));
+
             Array.from(tempsSet).sort().forEach(t => {
                 const label = document.createElement('label');
                 label.className = 'chip';
-                label.innerHTML = `<input type="checkbox" name="temps" value="${t}">${t}`;
+                label.innerHTML = `
+                    <input type="checkbox" name="temps" value="${t}">
+                    ${t}
+                `;
                 label.onclick = () => {
                     const inp = label.querySelector('input');
-                    setTimeout(() => { label.classList.toggle('active', inp.checked); updateLocks(); }, 10);
+                    setTimeout(() => {
+                        label.classList.toggle('active', inp.checked);
+                        updateLocks();
+                    }, 10);
                 };
                 container.appendChild(label);
             });
         }
         updateLocks();
     }
+
     modesInputs.forEach(i => i.onchange = updateTemps);
 
-    // --- Logique des Verbes (Ton cible.js) ---
+
+    /* ------------------------------
+       2) LISTES DE VERBES
+       ------------------------------ */
     const verbChips = document.querySelectorAll(".verb-chip");
     const listChips = document.querySelectorAll(".list-chip");
 
@@ -99,11 +133,15 @@
         chip.onclick = () => {
             const inp = chip.querySelector('input');
             const listId = chip.dataset.liste;
+
             setTimeout(() => {
                 const isChecked = inp.checked;
                 chip.classList.toggle('active', isChecked);
-                
-                const targets = listId === "all" ? verbChips : document.querySelectorAll(`.verb-chip[data-liste="${listId}"]`);
+
+                const targets = listId === "all"
+                    ? verbChips
+                    : document.querySelectorAll(`.verb-chip[data-liste="${listId}"]`);
+
                 targets.forEach(v => {
                     const vInp = v.querySelector('input');
                     vInp.checked = isChecked;
@@ -113,22 +151,34 @@
         };
     });
 
-    // --- Verrouillage des sections ---
+
+    /* ------------------------------
+       3) VERROUILLAGE DES SECTIONS
+       ------------------------------ */
     function updateLocks() {
         const mOk = document.querySelectorAll('#sec-modes input:checked').length > 0;
         const tOk = document.querySelectorAll('#sec-temps input:checked').length > 0;
         const pOk = document.querySelectorAll('#sec-personnes input:checked').length > 0;
-        
+
         document.getElementById('sec-temps').classList.toggle('disabled', !mOk);
         document.getElementById('sec-personnes').classList.toggle('disabled', !mOk || !tOk);
         document.getElementById('sec-verbes').classList.toggle('disabled', !mOk || !tOk || !pOk);
     }
 
-    // Initialisation visuelle globale
+
+    /* ------------------------------
+       4) ACTIVATION VISUELLE DES CHIPS
+       ------------------------------ */
     document.querySelectorAll('.chip').forEach(c => {
         const inp = c.querySelector('input');
-        if(inp) c.onclick = () => setTimeout(() => { c.classList.toggle('active', inp.checked); updateLocks(); }, 10);
+        if (inp) {
+            c.onclick = () => setTimeout(() => {
+                c.classList.toggle('active', inp.checked);
+                updateLocks();
+            }, 10);
+        }
     });
 </script>
+
 </body>
 </html>
