@@ -2221,7 +2221,8 @@ def generer_question(modes=None, temps=None, personnes=None, verbes=None):
 
         # 3. Sélection du temps
         if temps:
-            candidats_temps = [t for t in temps if t in temps_dict]
+            # temps = liste de tuples (mode, temps)
+            candidats_temps = [t for (m, t) in temps if m == mode_v and t in temps_dict]
             if not candidats_temps:
                 return generer_question(modes, temps, personnes, verbes)
             temps_sel = random.choice(candidats_temps)
@@ -2232,36 +2233,23 @@ def generer_question(modes=None, temps=None, personnes=None, verbes=None):
         if not formes:
             return generer_question(modes, temps, personnes, verbes)
 
-        mode_lower = mode_v.lower()
-
         # 4. Sélection de la personne
+        mapping = ["je", "tu", "il", "nous", "vous", "ils"]
+
         if len(formes) == 1:
             sujet = "(forme impersonnelle)"
             idx = 0
-
         else:
-            mapping = ["je", "tu", "il", "nous", "vous", "ils"]
-
-            # Filtrage si l'utilisateur a choisi des personnes
             if personnes:
-                sujets_possibles = [mapping[p] for p in personnes if p < len(formes)]
+                sujets_possibles = [mapping[int(p[0]) - 1] if p[1] == "s" else mapping[int(p[0]) + 2] for p in personnes]
             else:
-                sujets_possibles = [s for i, s in enumerate(mapping) if i < len(formes)]
-
-            if not sujets_possibles:
-                return generer_question(modes, temps, personnes, verbes)
+                sujets_possibles = mapping[:len(formes)]
 
             sujet = random.choice(sujets_possibles)
             idx = mapping.index(sujet)
 
-        # 5. Sécurité anti-index hors limites
-        if idx >= len(formes):
-            return generer_question(modes, temps, personnes, verbes)
-
-        # 6. Bonne réponse
         bonne = formes[idx]
 
-        # 7. Description des personnes
         mapping_desc = {
             "je": "1re personne du singulier",
             "tu": "2e personne du singulier",
