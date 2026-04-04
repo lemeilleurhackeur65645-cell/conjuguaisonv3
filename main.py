@@ -2302,19 +2302,37 @@ def revision():
 
 @app.route("/cible_start", methods=["POST"])
 def cible_start():
-    session.clear()
+    # On réinitialise uniquement ce qui concerne la session de quiz
     session["mode"] = "cible"
-
-    session["cible_modes"] = request.form.getlist("modes")
-    session["cible_temps"] = request.form.getlist("temps")
-    session["cible_personnes"] = list(map(int, request.form.getlist("personnes")))
-    session["cible_verbes"] = [v.strip() for v in request.form["verbes"].split(",") if v.strip()]
-
     session["score"] = 0
     session["total"] = 0
     session["start"] = time.time()
 
+    # Récupération des choix
+    session["cible_modes"] = request.form.getlist("modes")
+    session["cible_temps"] = request.form.getlist("temps")
+    session["cible_personnes"] = request.form.getlist("personnes")  # ex: ["1s", "2p"]
+    session["cible_verbes"] = request.form.getlist("verbes")         # ex: ["être", "avoir"]
+
+    # Vérification minimale
+    if not session["cible_modes"] or not session["cible_temps"] or not session["cible_personnes"] or not session["cible_verbes"]:
+        flash("Veuillez sélectionner au moins un mode, un temps, une personne et un verbe.")
+        return redirect("/cible")
+
+    # On prépare la liste des questions possibles
+    session["questions_cibles"] = []
+
+    for verbe in session["cible_verbes"]:
+        for mode in session["cible_modes"]:
+            for temps in session["cible_temps"]:
+                for personne in session["cible_personnes"]:
+                    session["questions_cibles"].append((verbe, mode, temps, personne))
+
+    # Mélange pour éviter les répétitions
+    random.shuffle(session["questions_cibles"])
+
     return redirect("/quiz")
+
 
 # ============================================================
 # ROUTE DU QUIZ
