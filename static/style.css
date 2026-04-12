@@ -286,4 +286,13 @@ input:checked + .slider:before { transform: translateX(22px); }
     box-shadow: 0 0 12px rgba(0,123,255,0.4);
 }
 
+.flash {
+    background: #ffdddd;
+    border-left: 4px solid #ff4444;
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    color: #a00000;
+    font-weight: 500;
+}
 
