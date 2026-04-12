@@ -87,7 +87,8 @@
             </div>
         </div>
 
-        <button type="submit" class="start-btn">Commencer</button>
+      <button type="submit" class="start-btn" id="start-btn" disabled>Commencer</button>
+
 
     </form>
 </div>
@@ -176,15 +177,22 @@
     /* ------------------------------
        3) VERROUILLAGE DES SECTIONS
        ------------------------------ */
-    function updateLocks() {
-        const mOk = document.querySelectorAll('#sec-modes input:checked').length > 0;
-        const tOk = document.querySelectorAll('#sec-temps input:checked').length > 0;
-        const pOk = document.querySelectorAll('#sec-personnes input:checked').length > 0;
+function updateLocks() {
+    const mOk = document.querySelectorAll('#sec-modes input:checked').length > 0;
+    const tOk = document.querySelectorAll('#sec-temps input:checked').length > 0;
+    const pOk = document.querySelectorAll('#sec-personnes input:checked').length > 0;
+    const vOk = document.querySelectorAll('#sec-verbes input[name="verbes"]:checked').length > 0;
 
-        document.getElementById('sec-temps').classList.toggle('disabled', !mOk);
-        document.getElementById('sec-personnes').classList.toggle('disabled', !mOk || !tOk);
-        document.getElementById('sec-verbes').classList.toggle('disabled', !mOk || !tOk || !pOk);
-    }
+    // Verrouillage des sections
+    document.getElementById('sec-temps').classList.toggle('disabled', !mOk);
+    document.getElementById('sec-personnes').classList.toggle('disabled', !mOk || !tOk);
+    document.getElementById('sec-verbes').classList.toggle('disabled', !mOk || !tOk || !pOk);
+
+    // Activation / désactivation du bouton Commencer
+    const startBtn = document.getElementById('start-btn');
+    startBtn.disabled = !(mOk && tOk && pOk && vOk);
+}
+
 
 
     /* ------------------------------
