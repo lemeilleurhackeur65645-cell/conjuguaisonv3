@@ -296,3 +296,8 @@ input:checked + .slider:before { transform: translateX(22px); }
     font-weight: 500;
 }
 
+.start-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+}
