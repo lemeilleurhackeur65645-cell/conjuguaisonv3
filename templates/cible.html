@@ -11,6 +11,17 @@
 
     <h1>Révision ciblée</h1>
 
+    <!-- MESSAGES FLASH -->
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flash">
+          {% for msg in messages %}
+            <p>{{ msg }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
     <form action="/cible_start" method="POST" id="cible-form">
 
         <!-- MODES -->
@@ -97,23 +108,21 @@
         container.innerHTML = "";
 
         if (selected.length > 0) {
-            const tempsSet = new Set();
-            selected.forEach(m => modesTemps[m]?.forEach(t => tempsSet.add(t)));
 
-            Array.from(tempsSet).sort().forEach(t => {
-                selected.forEach(mode => {
+            // Pour chaque mode sélectionné, afficher SES temps uniquement
+            selected.forEach(mode => {
+                const tempsList = modesTemps[mode] || [];
+
+                tempsList.forEach(t => {
                     const label = document.createElement('label');
                     label.className = 'chip';
 
-                    // Texte affiché : "indicatif présent"
                     const fullLabel = `${mode} ${t}`;
-
-                    // Valeur envoyée au backend : "indicatif|présent"
                     const fullValue = `${mode}|${t}`;
 
                     label.innerHTML = `
-                    <input type="checkbox" name="temps" value="${fullValue}">
-                    ${fullLabel}
+                        <input type="checkbox" name="temps" value="${fullValue}">
+                        ${fullLabel}
                     `;
 
                     label.onclick = () => {
@@ -127,8 +136,8 @@
                     container.appendChild(label);
                 });
             });
-
         }
+
         updateLocks();
     }
 
@@ -178,23 +187,22 @@
     }
 
 
-/* ------------------------------
-   4) ACTIVATION VISUELLE DES CHIPS
-   ------------------------------ */
-document.querySelectorAll('.chip').forEach(c => {
-    const inp = c.querySelector('input');
+    /* ------------------------------
+       4) ACTIVATION VISUELLE DES CHIPS
+       ------------------------------ */
+    document.querySelectorAll('.chip').forEach(c => {
+        const inp = c.querySelector('input');
 
-    // On ignore les chips de liste (elles ont leur propre logique)
-    if (c.classList.contains("list-chip")) return;
+        // On ignore les chips de liste (elles ont leur propre logique)
+        if (c.classList.contains("list-chip")) return;
 
-    if (inp) {
-        c.onclick = () => setTimeout(() => {
-            c.classList.toggle('active', inp.checked);
-            updateLocks();
-        }, 10);
-    }
-});
-
+        if (inp) {
+            c.onclick = () => setTimeout(() => {
+                c.classList.toggle('active', inp.checked);
+                updateLocks();
+            }, 10);
+        }
+    });
 </script>
 
 </body>
