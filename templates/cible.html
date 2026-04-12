@@ -151,27 +151,31 @@
     const verbChips = document.querySelectorAll(".verb-chip");
     const listChips = document.querySelectorAll(".list-chip");
 
-    listChips.forEach(chip => {
-        chip.onclick = () => {
-            const inp = chip.querySelector('input');
-            const listId = chip.dataset.liste;
+   listChips.forEach(chip => {
+    chip.onclick = () => {
+        const inp = chip.querySelector('input');
+        const listId = chip.dataset.liste;
 
-            setTimeout(() => {
-                const isChecked = inp.checked;
-                chip.classList.toggle('active', isChecked);
+        setTimeout(() => {
+            const isChecked = inp.checked;
+            chip.classList.toggle('active', isChecked);
 
-                const targets = listId === "all"
-                    ? verbChips
-                    : document.querySelectorAll(`.verb-chip[data-liste="${listId}"]`);
+            const targets = listId === "all"
+                ? verbChips
+                : document.querySelectorAll(`.verb-chip[data-liste="${listId}"]`);
 
-                targets.forEach(v => {
-                    const vInp = v.querySelector('input');
-                    vInp.checked = isChecked;
-                    v.classList.toggle('active', isChecked);
-                });
-            }, 10);
-        };
-    });
+            targets.forEach(v => {
+                const vInp = v.querySelector('input');
+                vInp.checked = isChecked;
+                v.classList.toggle('active', isChecked);
+            });
+
+            
+            updateLocks();
+
+        }, 10);
+    };
+});
 
 
     /* ------------------------------
