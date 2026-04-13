@@ -1149,7 +1149,7 @@
     }
 },
 
-    "tuer": {
+ "tuer": {
     "indicatif": {
         "présent": [
             "je tue", "tu tues", "il tue",
@@ -1976,7 +1976,7 @@
         "présent": ["tiens", "tenons", "tenez"],
         "passé": ["aie tenu", "ayons tenu", "ayez tenu"]
     }
-}
+},
 
 "sentir": {
     "indicatif": {
@@ -2049,7 +2049,7 @@
         "présent": ["sens", "sentons", "sentez"],
         "passé": ["aie senti", "ayons senti", "ayez senti"]
     }
-}
+},
 
 
     "peindre": {
@@ -2123,7 +2123,7 @@
             "présent": ["peins", "peignons", "peignez"],
             "passé": ["aie peint", "ayons peint", "ayez peint"]
         }
-    }
+    },
     
  
   "faillir": {
@@ -2152,7 +2152,7 @@
       "présent": [],
       "passé": []
     }
-  }
+  },
 
  
   "voir": {
@@ -2181,7 +2181,7 @@
       "présent": ["vois", "voyons", "voyez"],
       "passé": ["aie vu", "ayons vu", "ayez vu"]
     }
-  }
+  },
 
   "vaincre": {
     "indicatif": {
@@ -2209,7 +2209,7 @@
       "présent": ["vaincs", "vainquons", "vainquez"],
       "passé": ["aie vaincu", "ayons vaincu", "ayez vaincu"]
     }
-  }
+  },
 
   "prendre": {
     "indicatif": {
@@ -2237,7 +2237,7 @@
       "présent": ["prends", "prenons", "prenez"],
       "passé": ["aie pris", "ayons pris", "ayez pris"]
     }
-  }
+  },
 
   "croire": {
     "indicatif": {
