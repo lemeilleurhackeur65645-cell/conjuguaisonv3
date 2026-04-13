@@ -2141,6 +2141,260 @@ conjugaisons = {
             "passé": ["aie peint", "ayons peint", "ayez peint"]
         }
     }
+    
+  "faillir": {
+    "indicatif": {
+      "présent": [],
+      "passé composé": [],
+      "imparfait": [],
+      "plus-que-parfait": [],
+      "passé simple": [],
+      "passé antérieur": [],
+      "futur simple": [],
+      "futur antérieur": []
+    },
+    "conditionnel": {
+      "présent": [],
+      "passé 1": [],
+      "passé 2": []
+    },
+    "subjonctif": {
+      "présent": [],
+      "passé": [],
+      "imparfait": [],
+      "plus-que-parfait": []
+    },
+    "impératif": {
+      "présent": [],
+      "passé": []
+    }
+  },
+
+  "savoir": {
+    "indicatif": {
+      "présent": [],
+      "passé composé": [],
+      "imparfait": [],
+      "plus-que-parfait": [],
+      "passé simple": [],
+      "passé antérieur": [],
+      "futur simple": [],
+      "futur antérieur": []
+    },
+    "conditionnel": {
+      "présent": [],
+      "passé 1": [],
+      "passé 2": []
+    },
+    "subjonctif": {
+      "présent": [],
+      "passé": [],
+      "imparfait": [],
+      "plus-que-parfait": []
+    },
+    "impératif": {
+      "présent": [],
+      "passé": []
+    }
+  },
+
+  "voir": {
+    "indicatif": {
+      "présent": [],
+      "passé composé": [],
+      "imparfait": [],
+      "plus-que-parfait": [],
+      "passé simple": [],
+      "passé antérieur": [],
+      "futur simple": [],
+      "futur antérieur": []
+    },
+    "conditionnel": {
+      "présent": [],
+      "passé 1": [],
+      "passé 2": []
+    },
+    "subjonctif": {
+      "présent": [],
+      "passé": [],
+      "imparfait": [],
+      "plus-que-parfait": []
+    },
+    "impératif": {
+      "présent": [],
+      "passé": []
+    }
+  }
+
+  "faillir": {
+    "indicatif": {
+      "présent": ["je faux", "tu faux", "il faut", "nous faillissons", "vous faillissez", "ils faillissent"],
+      "passé composé": ["j'ai failli", "tu as failli", "il a failli", "nous avons failli", "vous avez failli", "ils ont failli"],
+      "imparfait": ["je faillais", "tu faillais", "il faillait", "nous faillions", "vous failliez", "ils faillaient"],
+      "plus-que-parfait": ["j'avais failli", "tu avais failli", "il avait failli", "nous avions failli", "vous aviez failli", "ils avaient failli"],
+      "passé simple": ["je faillis", "tu faillis", "il faillit", "nous faillîmes", "vous faillîtes", "ils faillirent"],
+      "passé antérieur": ["j'eus failli", "tu eus failli", "il eut failli", "nous eûmes failli", "vous eûtes failli", "ils eurent failli"],
+      "futur simple": ["je faillirai", "tu failliras", "il faillira", "nous faillirons", "vous faillirez", "ils failliront"],
+      "futur antérieur": ["j'aurai failli", "tu auras failli", "il aura failli", "nous aurons failli", "vous aurez failli", "ils auront failli"]
+    },
+    "conditionnel": {
+      "présent": ["je faillirais", "tu faillirais", "il faillirait", "nous faillirions", "vous failliriez", "ils failliraient"],
+      "passé 1": ["j'aurais failli", "tu aurais failli", "il aurait failli", "nous aurions failli", "vous auriez failli", "ils auraient failli"],
+      "passé 2": ["j'eusse failli", "tu eusses failli", "il eût failli", "nous eussions failli", "vous eussiez failli", "ils eussent failli"]
+    },
+    "subjonctif": {
+      "présent": ["que je faille", "que tu failles", "qu'il faille", "que nous faillions", "que vous failliez", "qu'ils faillent"],
+      "passé": ["que j'aie failli", "que tu aies failli", "qu'il ait failli", "que nous ayons failli", "que vous ayez failli", "qu'ils aient failli"],
+      "imparfait": ["que je faillisse", "que tu faillisses", "qu'il faillît", "que nous faillissions", "que vous faillissiez", "qu'ils faillissent"],
+      "plus-que-parfait": ["que j'eusse failli", "que tu eusses failli", "qu'il eût failli", "que nous eussions failli", "que vous eussiez failli", "qu'ils eussent failli"]
+    },
+    "impératif": {
+      "présent": [],
+      "passé": []
+    }
+  },
+
+  "savoir": {
+    "indicatif": {
+      "présent": ["je sais", "tu sais", "il sait", "nous savons", "vous savez", "ils savent"],
+      "passé composé": ["j'ai su", "tu as su", "il a su", "nous avons su", "vous avez su", "ils ont su"],
+      "imparfait": ["je savais", "tu savais", "il savait", "nous savions", "vous saviez", "ils savaient"],
+      "plus-que-parfait": ["j'avais su", "tu avais su", "il avait su", "nous avions su", "vous aviez su", "ils avaient su"],
+      "passé simple": ["je sus", "tu sus", "il sut", "nous sûmes", "vous sûtes", "ils surent"],
+      "passé antérieur": ["j'eus su", "tu eus su", "il eut su", "nous eûmes su", "vous eûtes su", "ils eurent su"],
+      "futur simple": ["je saurai", "tu sauras", "il saura", "nous saurons", "vous saurez", "ils sauront"],
+      "futur antérieur": ["j'aurai su", "tu auras su", "il aura su", "nous aurons su", "vous aurez su", "ils auront su"]
+    },
+    "conditionnel": {
+      "présent": ["je saurais", "tu saurais", "il saurait", "nous saurions", "vous sauriez", "ils sauraient"],
+      "passé 1": ["j'aurais su", "tu aurais su", "il aurait su", "nous aurions su", "vous auriez su", "ils auraient su"],
+      "passé 2": ["j'eusse su", "tu eusses su", "il eût su", "nous eussions su", "vous eussiez su", "ils eussent su"]
+    },
+    "subjonctif": {
+      "présent": ["que je sache", "que tu saches", "qu'il sache", "que nous sachions", "que vous sachiez", "qu'ils sachent"],
+      "passé": ["que j'aie su", "que tu aies su", "qu'il ait su", "que nous ayons su", "que vous ayez su", "qu'ils aient su"],
+      "imparfait": ["que je susse", "que tu susses", "qu'il sût", "que nous sussions", "que vous sussiez", "qu'ils sussent"],
+      "plus-que-parfait": ["que j'eusse su", "que tu eusses su", "qu'il eût su", "que nous eussions su", "que vous eussiez su", "qu'ils eussent su"]
+    },
+    "impératif": {
+      "présent": ["sache", "sachons", "sachez"],
+      "passé": ["aie su", "ayons su", "ayez su"]
+    }
+  },
+
+  "voir": {
+    "indicatif": {
+      "présent": ["je vois", "tu vois", "il voit", "nous voyons", "vous voyez", "ils voient"],
+      "passé composé": ["j'ai vu", "tu as vu", "il a vu", "nous avons vu", "vous avez vu", "ils ont vu"],
+      "imparfait": ["je voyais", "tu voyais", "il voyait", "nous voyions", "vous voyiez", "ils voyaient"],
+      "plus-que-parfait": ["j'avais vu", "tu avais vu", "il avait vu", "nous avions vu", "vous aviez vu", "ils avaient vu"],
+      "passé simple": ["je vis", "tu vis", "il vit", "nous vîmes", "vous vîtes", "ils virent"],
+      "passé antérieur": ["j'eus vu", "tu eus vu", "il eut vu", "nous eûmes vu", "vous eûtes vu", "ils eurent vu"],
+      "futur simple": ["je verrai", "tu verras", "il verra", "nous verrons", "vous verrez", "ils verront"],
+      "futur antérieur": ["j'aurai vu", "tu auras vu", "il aura vu", "nous aurons vu", "vous aurez vu", "ils auront vu"]
+    },
+    "conditionnel": {
+      "présent": ["je verrais", "tu verrais", "il verrait", "nous verrions", "vous verriez", "ils verraient"],
+      "passé 1": ["j'aurais vu", "tu aurais vu", "il aurait vu", "nous aurions vu", "vous auriez vu", "ils auraient vu"],
+      "passé 2": ["j'eusse vu", "tu eusses vu", "il eût vu", "nous eussions vu", "vous eussiez vu", "ils eussent vu"]
+    },
+    "subjonctif": {
+      "présent": ["que je voie", "que tu voies", "qu'il voie", "que nous voyions", "que vous voyiez", "qu'ils voient"],
+      "passé": ["que j'aie vu", "que tu aies vu", "qu'il ait vu", "que nous ayons vu", "que vous ayez vu", "qu'ils aient vu"],
+      "imparfait": ["que je visse", "que tu visses", "qu'il vît", "que nous vissions", "que vous vissiez", "qu'ils vissent"],
+      "plus-que-parfait": ["que j'eusse vu", "que tu eusses vu", "qu'il eût vu", "que nous eussions vu", "que vous eussiez vu", "qu'ils eussent vu"]
+    },
+    "impératif": {
+      "présent": ["vois", "voyons", "voyez"],
+      "passé": ["aie vu", "ayons vu", "ayez vu"]
+    }
+  }
+
+  "vaincre": {
+    "indicatif": {
+      "présent": ["je vaincs", "tu vaincs", "il vainc", "nous vainquons", "vous vainquez", "ils vainquent"],
+      "passé composé": ["j'ai vaincu", "tu as vaincu", "il a vaincu", "nous avons vaincu", "vous avez vaincu", "ils ont vaincu"],
+      "imparfait": ["je vainquais", "tu vainquais", "il vainquait", "nous vainquions", "vous vainquiez", "ils vainquaient"],
+      "plus-que-parfait": ["j'avais vaincu", "tu avais vaincu", "il avait vaincu", "nous avions vaincu", "vous aviez vaincu", "ils avaient vaincu"],
+      "passé simple": ["je vainquis", "tu vainquis", "il vainquit", "nous vainquîmes", "vous vainquîtes", "ils vainquirent"],
+      "passé antérieur": ["j'eus vaincu", "tu eus vaincu", "il eut vaincu", "nous eûmes vaincu", "vous eûtes vaincu", "ils eurent vaincu"],
+      "futur simple": ["je vaincrai", "tu vaincras", "il vaincra", "nous vaincrons", "vous vaincrez", "ils vaincront"],
+      "futur antérieur": ["j'aurai vaincu", "tu auras vaincu", "il aura vaincu", "nous aurons vaincu", "vous aurez vaincu", "ils auront vaincu"]
+    },
+    "conditionnel": {
+      "présent": ["je vaincrais", "tu vaincrais", "il vaincrait", "nous vaincrions", "vous vaincriez", "ils vaincraient"],
+      "passé 1": ["j'aurais vaincu", "tu aurais vaincu", "il aurait vaincu", "nous aurions vaincu", "vous auriez vaincu", "ils auraient vaincu"],
+      "passé 2": ["j'eusse vaincu", "tu eusses vaincu", "il eût vaincu", "nous eussions vaincu", "vous eussiez vaincu", "ils eussent vaincu"]
+    },
+    "subjonctif": {
+      "présent": ["que je vainque", "que tu vainques", "qu'il vainque", "que nous vainquions", "que vous vainquiez", "qu'ils vainquent"],
+      "passé": ["que j'aie vaincu", "que tu aies vaincu", "qu'il ait vaincu", "que nous ayons vaincu", "que vous ayez vaincu", "qu'ils aient vaincu"],
+      "imparfait": ["que je vainquisse", "que tu vainquisses", "qu'il vainquît", "que nous vainquissions", "que vous vainquissiez", "qu'ils vainquissent"],
+      "plus-que-parfait": ["que j'eusse vaincu", "que tu eusses vaincu", "qu'il eût vaincu", "que nous eussions vaincu", "que vous eussiez vaincu", "qu'ils eussent vaincu"]
+    },
+    "impératif": {
+      "présent": ["vaincs", "vainquons", "vainquez"],
+      "passé": ["aie vaincu", "ayons vaincu", "ayez vaincu"]
+    }
+  },
+
+  "prendre": {
+    "indicatif": {
+      "présent": ["je prends", "tu prends", "il prend", "nous prenons", "vous prenez", "ils prennent"],
+      "passé composé": ["j'ai pris", "tu as pris", "il a pris", "nous avons pris", "vous avez pris", "ils ont pris"],
+      "imparfait": ["je prenais", "tu prenais", "il prenait", "nous prenions", "vous preniez", "ils prenaient"],
+      "plus-que-parfait": ["j'avais pris", "tu avais pris", "il avait pris", "nous avions pris", "vous aviez pris", "ils avaient pris"],
+      "passé simple": ["je pris", "tu pris", "il prit", "nous prîmes", "vous prîtes", "ils prirent"],
+      "passé antérieur": ["j'eus pris", "tu eus pris", "il eut pris", "nous eûmes pris", "vous eûtes pris", "ils eurent pris"],
+      "futur simple": ["je prendrai", "tu prendras", "il prendra", "nous prendrons", "vous prendrez", "ils prendront"],
+      "futur antérieur": ["j'aurai pris", "tu auras pris", "il aura pris", "nous aurons pris", "vous aurez pris", "ils auront pris"]
+    },
+    "conditionnel": {
+      "présent": ["je prendrais", "tu prendrais", "il prendrait", "nous prendrions", "vous prendriez", "ils prendraient"],
+      "passé 1": ["j'aurais pris", "tu aurais pris", "il aurait pris", "nous aurions pris", "vous auriez pris", "ils auraient pris"],
+      "passé 2": ["j'eusse pris", "tu eusses pris", "il eût pris", "nous eussions pris", "vous eussiez pris", "ils eussent pris"]
+    },
+    "subjonctif": {
+      "présent": ["que je prenne", "que tu prennes", "qu'il prenne", "que nous prenions", "que vous preniez", "qu'ils prennent"],
+      "passé": ["que j'aie pris", "que tu aies pris", "qu'il ait pris", "que nous ayons pris", "que vous ayez pris", "qu'ils aient pris"],
+      "imparfait": ["que je prisse", "que tu prisses", "qu'il prît", "que nous prissions", "que vous prissiez", "qu'ils prissent"],
+      "plus-que-parfait": ["que j'eusse pris", "que tu eusses pris", "qu'il eût pris", "que nous eussions pris", "que vous eussiez pris", "qu'ils eussent pris"]
+    },
+    "impératif": {
+      "présent": ["prends", "prenons", "prenez"],
+      "passé": ["aie pris", "ayons pris", "ayez pris"]
+    }
+  },
+
+  "croire": {
+    "indicatif": {
+      "présent": ["je crois", "tu crois", "il croit", "nous croyons", "vous croyez", "ils croient"],
+      "passé composé": ["j'ai cru", "tu as cru", "il a cru", "nous avons cru", "vous avez cru", "ils ont cru"],
+      "imparfait": ["je croyais", "tu croyais", "il croyait", "nous croyions", "vous croyiez", "ils croyaient"],
+      "plus-que-parfait": ["j'avais cru", "tu avais cru", "il avait cru", "nous avions cru", "vous aviez cru", "ils avaient cru"],
+      "passé simple": ["je crus", "tu crus", "il crut", "nous crûmes", "vous crûtes", "ils crurent"],
+      "passé antérieur": ["j'eus cru", "tu eus cru", "il eut cru", "nous eûmes cru", "vous eûtes cru", "ils eurent cru"],
+      "futur simple": ["je croirai", "tu croiras", "il croira", "nous croirons", "vous croirez", "ils croiront"],
+      "futur antérieur": ["j'aurai cru", "tu auras cru", "il aura cru", "nous aurons cru", "vous aurez cru", "ils auront cru"]
+    },
+    "conditionnel": {
+      "présent": ["je croirais", "tu croirais", "il croirait", "nous croirions", "vous croiriez", "ils croiraient"],
+      "passé 1": ["j'aurais cru", "tu aurais cru", "il aurait cru", "nous aurions cru", "vous auriez cru", "ils auraient cru"],
+      "passé 2": ["j'eusse cru", "tu eusses cru", "il eût cru", "nous eussions cru", "vous eussiez cru", "ils eussent cru"]
+    },
+    "subjonctif": {
+      "présent": ["que je croie", "que tu croies", "qu'il croie", "que nous croyions", "que vous croyiez", "qu'ils croient"],
+      "passé": ["que j'aie cru", "que tu aies cru", "qu'il ait cru", "que nous ayons cru", "que vous ayez cru", "qu'ils aient cru"],
+      "imparfait": ["que je crusse", "que tu crusses", "qu'il crût", "que nous crussions", "que vous crussiez", "qu'ils crussent"],
+      "plus-que-parfait": ["que j'eusse cru", "que tu eusses cru", "qu'il eût cru", "que nous eussions cru", "que vous eussiez cru", "qu'ils eussent cru"]
+    },
+    "impératif": {
+      "présent": ["crois", "croyons", "croyez"],
+      "passé": ["aie cru", "ayons cru", "ayez cru"]
+    }
+  }
+
+
 
 } 
 
@@ -2178,7 +2432,8 @@ def cible():
     LISTES_VERBES = {
         "liste1": ["être", "avoir", "aller", "faire", "falloir", "pouvoir", "savoir", "valoir", "vouloir", "appeler", "jeter"],
         "liste2": ["peindre", "peigner", "plaire", "pleuvoir", "se taire", "taire", "moudre", "mouler", "choir", "tuer"],
-        "liste3": ["acquérir", "seoir", "devoir", "cueillir", "fuir", "recevoir", "rendre", "courir", "tenir", "sentir"]
+        "liste3": ["acquérir", "seoir", "devoir", "cueillir", "fuir", "recevoir", "rendre", "courir", "tenir", "sentir"],
+        "liste4": ["joindre", "assaillir", "pouvoir", "asseoir", "faillir", "savoir", "voir", "vaincre", "prendre", croire"],
     }
 
     return render_template(
