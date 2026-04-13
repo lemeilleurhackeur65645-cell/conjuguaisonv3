@@ -2154,34 +2154,7 @@
     }
   }
 
-  "savoir": {
-    "indicatif": {
-      "présent": ["je sais", "tu sais", "il sait", "nous savons", "vous savez", "ils savent"],
-      "passé composé": ["j'ai su", "tu as su", "il a su", "nous avons su", "vous avez su", "ils ont su"],
-      "imparfait": ["je savais", "tu savais", "il savait", "nous savions", "vous saviez", "ils savaient"],
-      "plus-que-parfait": ["j'avais su", "tu avais su", "il avait su", "nous avions su", "vous aviez su", "ils avaient su"],
-      "passé simple": ["je sus", "tu sus", "il sut", "nous sûmes", "vous sûtes", "ils surent"],
-      "passé antérieur": ["j'eus su", "tu eus su", "il eut su", "nous eûmes su", "vous eûtes su", "ils eurent su"],
-      "futur simple": ["je saurai", "tu sauras", "il saura", "nous saurons", "vous saurez", "ils sauront"],
-      "futur antérieur": ["j'aurai su", "tu auras su", "il aura su", "nous aurons su", "vous aurez su", "ils auront su"]
-    },
-    "conditionnel": {
-      "présent": ["je saurais", "tu saurais", "il saurait", "nous saurions", "vous sauriez", "ils sauraient"],
-      "passé 1": ["j'aurais su", "tu aurais su", "il aurait su", "nous aurions su", "vous auriez su", "ils auraient su"],
-      "passé 2": ["j'eusse su", "tu eusses su", "il eût su", "nous eussions su", "vous eussiez su", "ils eussent su"]
-    },
-    "subjonctif": {
-      "présent": ["que je sache", "que tu saches", "qu'il sache", "que nous sachions", "que vous sachiez", "qu'ils sachent"],
-      "passé": ["que j'aie su", "que tu aies su", "qu'il ait su", "que nous ayons su", "que vous ayez su", "qu'ils aient su"],
-      "imparfait": ["que je susse", "que tu susses", "qu'il sût", "que nous sussions", "que vous sussiez", "qu'ils sussent"],
-      "plus-que-parfait": ["que j'eusse su", "que tu eusses su", "qu'il eût su", "que nous eussions su", "que vous eussiez su", "qu'ils eussent su"]
-    },
-    "impératif": {
-      "présent": ["sache", "sachons", "sachez"],
-      "passé": ["aie su", "ayons su", "ayez su"]
-    }
-  }
-
+ 
   "voir": {
     "indicatif": {
       "présent": ["je vois", "tu vois", "il voit", "nous voyons", "vous voyez", "ils voient"],
