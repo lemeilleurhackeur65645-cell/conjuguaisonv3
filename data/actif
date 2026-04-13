@@ -1905,7 +1905,7 @@ conjugaisons = {
         "présent": ["cours", "courons", "courez"],
         "passé": ["aie couru", "ayons couru", "ayez couru"]
     }
-},
+}
 
 "tenir": {
     "indicatif": {
@@ -2154,7 +2154,7 @@ conjugaisons = {
       "présent": [],
       "passé": []
     }
-  },
+  }
 
   "savoir": {
     "indicatif": {
@@ -2182,7 +2182,7 @@ conjugaisons = {
       "présent": ["sache", "sachons", "sachez"],
       "passé": ["aie su", "ayons su", "ayez su"]
     }
-  },
+  }
 
   "voir": {
     "indicatif": {
@@ -2238,7 +2238,7 @@ conjugaisons = {
       "présent": ["vaincs", "vainquons", "vainquez"],
       "passé": ["aie vaincu", "ayons vaincu", "ayez vaincu"]
     }
-  },
+  }
 
   "prendre": {
     "indicatif": {
@@ -2266,7 +2266,7 @@ conjugaisons = {
       "présent": ["prends", "prenons", "prenez"],
       "passé": ["aie pris", "ayons pris", "ayez pris"]
     }
-  },
+  }
 
   "croire": {
     "indicatif": {
