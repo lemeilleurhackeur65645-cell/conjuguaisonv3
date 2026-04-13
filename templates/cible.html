@@ -108,64 +108,62 @@
 </div>
 
 <script>
-    /* ------------------------------
-       1) TEMPS DYNAMIQUES PAR MODE
-       ------------------------------ */
-    const modesTemps = {{ modes_temps_json|safe }};
-    const modesInputs = document.querySelectorAll('#sec-modes input');
+/* ------------------------------
+   1) TEMPS DYNAMIQUES PAR MODE
+   ------------------------------ */
+const modesTemps = {{ modes_temps_json|safe }};
+const modesInputs = document.querySelectorAll('#sec-modes input');
 
-    function updateTemps() {
-        const selected = Array.from(modesInputs)
-            .filter(i => i.checked)
-            .map(i => i.value);
+function updateTemps() {
+    const selected = Array.from(modesInputs)
+        .filter(i => i.checked)
+        .map(i => i.value);
 
-        const container = document.getElementById('temps-container');
-        container.innerHTML = "";
+    const container = document.getElementById('temps-container');
+    container.innerHTML = "";
 
-        if (selected.length > 0) {
+    if (selected.length > 0) {
+        selected.forEach(mode => {
+            const tempsList = modesTemps[mode] || [];
 
-            // Pour chaque mode sélectionné, afficher SES temps uniquement
-            selected.forEach(mode => {
-                const tempsList = modesTemps[mode] || [];
+            tempsList.forEach(t => {
+                const label = document.createElement('label');
+                label.className = 'chip';
 
-                tempsList.forEach(t => {
-                    const label = document.createElement('label');
-                    label.className = 'chip';
+                const fullLabel = `${mode} ${t}`;
+                const fullValue = `${mode}|${t}`;
 
-                    const fullLabel = `${mode} ${t}`;
-                    const fullValue = `${mode}|${t}`;
+                label.innerHTML = `
+                    <input type="checkbox" name="temps" value="${fullValue}">
+                    ${fullLabel}
+                `;
 
-                    label.innerHTML = `
-                        <input type="checkbox" name="temps" value="${fullValue}">
-                        ${fullLabel}
-                    `;
+                label.onclick = () => {
+                    const inp = label.querySelector('input');
+                    setTimeout(() => {
+                        label.classList.toggle('active', inp.checked);
+                        updateLocks();
+                    }, 10);
+                };
 
-                    label.onclick = () => {
-                        const inp = label.querySelector('input');
-                        setTimeout(() => {
-                            label.classList.toggle('active', inp.checked);
-                            updateLocks();
-                        }, 10);
-                    };
-
-                    container.appendChild(label);
-                });
+                container.appendChild(label);
             });
-        }
-
-        updateLocks();
+        });
     }
 
-    modesInputs.forEach(i => i.onchange = updateTemps);
+    updateLocks();
+}
+
+modesInputs.forEach(i => i.onchange = updateTemps);
 
 
-    /* ------------------------------
-       2) LISTES DE VERBES
-       ------------------------------ */
-    const verbChips = document.querySelectorAll(".verb-chip");
-    const listChips = document.querySelectorAll(".list-chip");
+/* ------------------------------
+   2) LISTES DE VERBES
+   ------------------------------ */
+const verbChips = document.querySelectorAll(".verb-chip");
+const listChips = document.querySelectorAll(".list-chip");
 
-   listChips.forEach(chip => {
+listChips.forEach(chip => {
     chip.onclick = () => {
         const inp = chip.querySelector('input');
         const listId = chip.dataset.liste;
@@ -184,54 +182,51 @@
                 v.classList.toggle('active', isChecked);
             });
 
-            
             updateLocks();
-
         }, 10);
     };
 });
 
 
-    /* ------------------------------
-       3) VERROUILLAGE DES SECTIONS
-       ------------------------------ */
+/* ------------------------------
+   3) VERROUILLAGE DES SECTIONS
+   ------------------------------ */
 function updateLocks() {
+
+    const startBtn = document.getElementById('start-btn');
+
     const mOk = document.querySelectorAll('#sec-modes input:checked').length > 0;
     const tOk = document.querySelectorAll('#sec-temps input:checked').length > 0;
     const pOk = document.querySelectorAll('#sec-personnes input:checked').length > 0;
     const vOk = document.querySelectorAll('#sec-verbes input[name="verbes"]:checked').length > 0;
-    const vX = document.querySelectorAll('input[name="voix"]:checked').length > 0;
-    startBtn.disabled = !(mOk && tOk && pOk && vOk && vX);
-
+    const vX = document.querySelectorAll('#sec-voix input[name="voix"]:checked').length > 0;
 
     // Verrouillage des sections
     document.getElementById('sec-temps').classList.toggle('disabled', !mOk);
     document.getElementById('sec-personnes').classList.toggle('disabled', !mOk || !tOk);
-    document.getElementById('sec-verbes').classList.toggle('disabled', !mOk || !tOk || !pOk);
+    document.getElementById('sec-voix').classList.toggle('disabled', !mOk || !tOk || !pOk);
+    document.getElementById('sec-verbes').classList.toggle('disabled', !mOk || !tOk || !pOk || !vX);
 
-    // Activation / désactivation du bouton Commencer
-    const startBtn = document.getElementById('start-btn');
-    startBtn.disabled = !(mOk && tOk && pOk && vOk);
+    // Activation du bouton
+    startBtn.disabled = !(mOk && tOk && pOk && vX && vOk);
 }
 
 
+/* ------------------------------
+   4) ACTIVATION VISUELLE DES CHIPS
+   ------------------------------ */
+document.querySelectorAll('.chip').forEach(c => {
+    const inp = c.querySelector('input');
 
-    /* ------------------------------
-       4) ACTIVATION VISUELLE DES CHIPS
-       ------------------------------ */
-    document.querySelectorAll('.chip').forEach(c => {
-        const inp = c.querySelector('input');
+    if (c.classList.contains("list-chip")) return;
 
-        // On ignore les chips de liste (elles ont leur propre logique)
-        if (c.classList.contains("list-chip")) return;
-
-        if (inp) {
-            c.onclick = () => setTimeout(() => {
-                c.classList.toggle('active', inp.checked);
-                updateLocks();
-            }, 10);
-        }
-    });
+    if (inp) {
+        c.onclick = () => setTimeout(() => {
+            c.classList.toggle('active', inp.checked);
+            updateLocks();
+        }, 10);
+    }
+});
 </script>
 
 </body>
