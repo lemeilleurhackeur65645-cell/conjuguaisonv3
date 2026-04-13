@@ -2433,7 +2433,7 @@ def cible():
         "liste1": ["être", "avoir", "aller", "faire", "falloir", "pouvoir", "savoir", "valoir", "vouloir", "appeler", "jeter"],
         "liste2": ["peindre", "peigner", "plaire", "pleuvoir", "se taire", "taire", "moudre", "mouler", "choir", "tuer"],
         "liste3": ["acquérir", "seoir", "devoir", "cueillir", "fuir", "recevoir", "rendre", "courir", "tenir", "sentir"],
-        "liste4": ["joindre", "assaillir", "pouvoir", "asseoir", "faillir", "savoir", "voir", "vaincre", "prendre", croire"],
+        "liste4": ["joindre", "assaillir", "pouvoir", "asseoir", "faillir", "savoir", "voir", "vaincre", "prendre", "croire"],
     }
 
     return render_template(
