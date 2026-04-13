@@ -1993,7 +1993,7 @@ conjugaisons = {
         "présent": ["tiens", "tenons", "tenez"],
         "passé": ["aie tenu", "ayons tenu", "ayez tenu"]
     }
-},
+}
 
 "sentir": {
     "indicatif": {
@@ -2142,90 +2142,7 @@ conjugaisons = {
         }
     }
     
-  "faillir": {
-    "indicatif": {
-      "présent": [],
-      "passé composé": [],
-      "imparfait": [],
-      "plus-que-parfait": [],
-      "passé simple": [],
-      "passé antérieur": [],
-      "futur simple": [],
-      "futur antérieur": []
-    },
-    "conditionnel": {
-      "présent": [],
-      "passé 1": [],
-      "passé 2": []
-    },
-    "subjonctif": {
-      "présent": [],
-      "passé": [],
-      "imparfait": [],
-      "plus-que-parfait": []
-    },
-    "impératif": {
-      "présent": [],
-      "passé": []
-    }
-  },
-
-  "savoir": {
-    "indicatif": {
-      "présent": [],
-      "passé composé": [],
-      "imparfait": [],
-      "plus-que-parfait": [],
-      "passé simple": [],
-      "passé antérieur": [],
-      "futur simple": [],
-      "futur antérieur": []
-    },
-    "conditionnel": {
-      "présent": [],
-      "passé 1": [],
-      "passé 2": []
-    },
-    "subjonctif": {
-      "présent": [],
-      "passé": [],
-      "imparfait": [],
-      "plus-que-parfait": []
-    },
-    "impératif": {
-      "présent": [],
-      "passé": []
-    }
-  },
-
-  "voir": {
-    "indicatif": {
-      "présent": [],
-      "passé composé": [],
-      "imparfait": [],
-      "plus-que-parfait": [],
-      "passé simple": [],
-      "passé antérieur": [],
-      "futur simple": [],
-      "futur antérieur": []
-    },
-    "conditionnel": {
-      "présent": [],
-      "passé 1": [],
-      "passé 2": []
-    },
-    "subjonctif": {
-      "présent": [],
-      "passé": [],
-      "imparfait": [],
-      "plus-que-parfait": []
-    },
-    "impératif": {
-      "présent": [],
-      "passé": []
-    }
-  }
-
+ 
   "faillir": {
     "indicatif": {
       "présent": ["je faux", "tu faux", "il faut", "nous faillissons", "vous faillissez", "ils faillissent"],
