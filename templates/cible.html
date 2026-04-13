@@ -56,6 +56,20 @@
             </div>
         </div>
 
+        <!-- VOIX -->
+        <div id="sec-voix" class="section">
+            <h2>Voix</h2>
+            <label class="chip">
+                <input type="checkbox" name="voix" value="actif" checked>
+                    Actif
+             </label>
+            <label class="chip">
+                <input type="checkbox" name="voix" value="passif">
+                     Passif
+            </label>
+            
+        </div>
+
         <!-- VERBES -->
         <div class="section disabled" id="sec-verbes">
             <h2>Verbes</h2>
@@ -186,6 +200,9 @@ function updateLocks() {
     const tOk = document.querySelectorAll('#sec-temps input:checked').length > 0;
     const pOk = document.querySelectorAll('#sec-personnes input:checked').length > 0;
     const vOk = document.querySelectorAll('#sec-verbes input[name="verbes"]:checked').length > 0;
+    const vX = document.querySelectorAll('input[name="voix"]:checked').length > 0;
+    startBtn.disabled = !(mOk && tOk && pOk && vOk && vX);
+
 
     // Verrouillage des sections
     document.getElementById('sec-temps').classList.toggle('disabled', !mOk);
