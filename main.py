@@ -2066,7 +2066,7 @@ conjugaisons = {
         "présent": ["sens", "sentons", "sentez"],
         "passé": ["aie senti", "ayons senti", "ayez senti"]
     }
-},
+}
 
 
     "peindre": {
