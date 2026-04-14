@@ -69,13 +69,35 @@ def cible():
         "liste 3": ["acquérir", "seoir", "devoir", "cueillir", "fuir", "recevoir", "rendre", "courir", "tenir", "sentir"],
         "liste 4": ["joindre", "assaillir", "pouvoir", "asseoir", "faillir", "savoir", "voir", "vaincre", "prendre", "croire"],
     }
+    VERBES_PASSIVABLES = [
+        "tenir",
+        "sentir",
+        "voir",
+        "recevoir",
+        "cueillir",
+        "acquérir"
+    ]
 
-    return render_template(
-        "cible.html",
-        modes=modes,
-        modes_temps_json=json.dumps(modes_temps, ensure_ascii=False),
-        listes=LISTES_VERBES
-    )
+    voix = request.form.getlist("voix")
+
+    # Cas : uniquement passif → on ne propose que les verbes passivables
+    if voix == ["passif"]:
+        verbes = VERBES_PASSIVABLES
+
+    # Cas : uniquement actif → tous les verbes actifs
+    elif voix == ["actif"]:
+        verbes = list(ACTIF.keys())
+
+    # Cas : actif + passif → union logique
+    else:
+        verbes = list(set(ACTIF.keys()) | set(VERBES_PASSIVABLES))
+
+       return render_template(
+            "cible.html",
+            modes=modes,
+            modes_temps_json=json.dumps(modes_temps, ensure_ascii=False),
+            listes=LISTES_VERBES
+        )
 
 
 # ============================================================
