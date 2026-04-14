@@ -107,7 +107,7 @@ def cible():
         modes=modes,
         modes_temps_json=json.dumps(modes_temps, ensure_ascii=False),
         listes=LISTES_VERBES,
-        verbes_passivables=VERBES_PASSIVABLES
+        verbes_passivables=VERBES_PASSIVABLES,
         voix=voix
 
     )
