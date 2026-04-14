@@ -49,6 +49,8 @@ def changelog():
 def cible():
     # Modes disponibles (à partir de ACTIF)
     modes = sorted({m for v in ACTIF.values() for m in v.keys()})
+    
+    voix = request.args.getlist("voix")
 
     # Mapping mode -> temps valides
     modes_temps = {}
@@ -106,6 +108,8 @@ def cible():
         modes_temps_json=json.dumps(modes_temps, ensure_ascii=False),
         listes=LISTES_VERBES,
         verbes_passivables=VERBES_PASSIVABLES
+        voix=voix
+
     )
 
 
