@@ -75,7 +75,17 @@ def cible():
         "voir",
         "recevoir",
         "cueillir",
-        "acquérir"
+        "acquérir",
+        "faire",
+        "appeler",
+        "jeter",
+        "peigner",
+        "mouler",
+        "tuer",
+        "rendre",
+        "peindre",
+        "vaincre",
+        "prendre"
     ]
 
     voix = request.form.getlist("voix")
