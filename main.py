@@ -45,10 +45,8 @@ def index():
 def changelog():
     return render_template("changelog.html")
 
-
 @app.route("/cible")
 def cible():
-
     # Modes disponibles (à partir de ACTIF)
     modes = sorted({m for v in ACTIF.values() for m in v.keys()})
 
@@ -69,6 +67,8 @@ def cible():
         "liste 3": ["acquérir", "seoir", "devoir", "cueillir", "fuir", "recevoir", "rendre", "courir", "tenir", "sentir"],
         "liste 4": ["joindre", "assaillir", "pouvoir", "asseoir", "faillir", "savoir", "voir", "vaincre", "prendre", "croire"],
     }
+
+    # Liste complète des verbes passivables dans TOUTE ta liste
     VERBES_PASSIVABLES = [
         "tenir",
         "sentir",
@@ -87,7 +87,6 @@ def cible():
         "vaincre",
         "prendre"
     ]
-
     voix = request.form.getlist("voix")
 
     # Cas : uniquement passif → on ne propose que les verbes passivables
@@ -101,13 +100,13 @@ def cible():
     # Cas : actif + passif → union logique
     else:
         verbes = list(set(ACTIF.keys()) | set(VERBES_PASSIVABLES))
-
-       return render_template(
-            "cible.html",
-            modes=modes,
-            modes_temps_json=json.dumps(modes_temps, ensure_ascii=False),
-            listes=LISTES_VERBES
-        )
+    return render_template(
+        "cible.html",
+        modes=modes,
+        modes_temps_json=json.dumps(modes_temps, ensure_ascii=False),
+        listes=LISTES_VERBES,
+        verbes_passivables=VERBES_PASSIVABLES
+    )
 
 
 # ============================================================
