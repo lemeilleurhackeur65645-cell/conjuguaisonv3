@@ -71,12 +71,19 @@
 
             <!-- Sélection par listes -->
             <div class="chips" style="border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 15px;">
-                {% for liste_id, verbes in listes.items() %}
-                <label class="chip list-chip" data-liste="{{ liste_id }}">
-                    <input type="checkbox" name="listes_verbes" value="{{ liste_id }}">
-                    {{ liste_id|capitalize }}
-                </label>
+                
+                {% for liste, verbes in listes.items() %}
+                    {% for verbe in verbes %}
+                        {% if "passif" in voix %}
+                            {% if verbe in verbes_passivables %}
+                                <div class="chip">{{ verbe }}</div>
+                            {% endif %}
+                        {% else %}
+                            <div class="chip">{{ verbe }}</div>
+                        {% endif %}
+                    {% endfor %}
                 {% endfor %}
+
                 <label class="chip list-chip" data-liste="all">
                     <input type="checkbox" name="listes_verbes" value="all">
                     Tous
