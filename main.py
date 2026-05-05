@@ -72,7 +72,9 @@ def cible():
         "cible.html",
         modes=modes,
         modes_temps_json=json.dumps(modes_temps, ensure_ascii=False),
-        listes=LISTES_VERBES
+        listes=LISTES_VERBES,
+        verbes_passivables=VERBES_PASSIVABLES,
+        voix=voix
     )
 
 
