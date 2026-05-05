@@ -308,7 +308,7 @@ def quiz():
         else:
             feedback = "✔️ Correct" if rep == bonne.lower() else f"❌ Faux. Réponse attendue : {bonne}"
 
-    # Nouvelle question
+       # Nouvelle question
     if mode == "revision":
 
         if not session.get("erreurs_revision"):
@@ -333,23 +333,24 @@ def quiz():
             voix_question = "active"
 
         verbe, mode_v, temps, sujet, bonne, question = generer_question(
-            modes=session["cible_modes"],
-            temps=session["cible_temps"],
-            personnes=session["cible_personnes"],
-            verbes=session["cible_verbes"],
+            modes=session.get("cible_modes"),
+            temps=session.get("cible_temps"),
+            personnes=session.get("cible_personnes"),
+            verbes=session.get("cible_verbes"),
             base=base,
             voix_question=voix_question
         )
 
-        else:
-            # Pour les modes entraînement et évaluation : choisir la voix au hasard
-            base = random.choice([ACTIF, PASSIF])
-            voix_question = "passive" if base is PASSIF else "active"
+    else:
+        # Pour les modes entraînement et évaluation : choisir la voix au hasard
+        base = random.choice([ACTIF, PASSIF])
+        voix_question = "passive" if base is PASSIF else "active"
 
-            verbe, mode_v, temps, sujet, bonne, question = generer_question(
-                base=base,
-                voix_question=voix_question
-            )
+        verbe, mode_v, temps, sujet, bonne, question = generer_question(
+            base=base,
+            voix_question=voix_question
+        )
+
 
     # Stockage
     session["verbe"] = verbe
