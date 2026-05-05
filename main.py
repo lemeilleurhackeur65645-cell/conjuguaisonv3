@@ -116,8 +116,8 @@ def cible():
 # ============================================================
 # GÉNÉRATION D’UNE QUESTION
 # ============================================================
+def generer_question(modes=None, temps=None, personnes=None, verbes=None, base=None, voix_question="active"):
 
-def generer_question(modes=None, temps=None, personnes=None, verbes=None, base=None):
     """
     base = ACTIF ou PASSIF selon la voix choisie
     """
@@ -220,7 +220,8 @@ def generer_question(modes=None, temps=None, personnes=None, verbes=None, base=N
         }
 
         sujet_affiche = mapping_desc.get(sujet, sujet)
-        question = f"Conjugue : {verbe} — {mode_v} — {temps_sel} — {sujet_affiche}"
+        question = f"Conjugue : {verbe} — {mode_v} — {temps_sel} — {sujet_affiche} — voix {voix_question}"
+
 
         return verbe, mode_v, temps_sel, sujet, bonne, question
 
@@ -360,17 +361,21 @@ def quiz():
 
         if "actif" in voix and "passif" in voix:
             base = random.choice([ACTIF, PASSIF])
+            voix_question = "passive" if base is PASSIF else "active"
         elif "passif" in voix:
             base = PASSIF
+            voix_question = "passive"
         else:
             base = ACTIF
+            voix_question = "active"
 
         verbe, mode_v, temps, sujet, bonne, question = generer_question(
             modes=session["cible_modes"],
             temps=session["cible_temps"],
             personnes=session["cible_personnes"],
             verbes=session["cible_verbes"],
-            base=base
+            base=base,
+            voix_question=voix_question
         )
 
     else:
