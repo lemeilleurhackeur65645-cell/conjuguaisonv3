@@ -341,8 +341,15 @@ def quiz():
             voix_question=voix_question
         )
 
-    else:
-        verbe, mode_v, temps, sujet, bonne, question = generer_question()
+        else:
+            # Pour les modes entraînement et évaluation : choisir la voix au hasard
+            base = random.choice([ACTIF, PASSIF])
+            voix_question = "passive" if base is PASSIF else "active"
+
+            verbe, mode_v, temps, sujet, bonne, question = generer_question(
+                base=base,
+                voix_question=voix_question
+            )
 
     # Stockage
     session["verbe"] = verbe
