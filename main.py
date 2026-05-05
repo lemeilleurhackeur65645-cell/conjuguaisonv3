@@ -49,8 +49,6 @@ def changelog():
 def cible():
     # Modes disponibles (à partir de ACTIF)
     modes = sorted({m for v in ACTIF.values() for m in v.keys()})
-    
-    voix = request.args.getlist("voix")
 
     # Mapping mode -> temps valides
     modes_temps = {}
@@ -62,7 +60,7 @@ def cible():
 
     modes_temps = {m: sorted(list(ts)) for m, ts in modes_temps.items()}
 
-    # Listes de verbes
+    # Listes de verbes (visuel révision ciblée)
     LISTES_VERBES = {
         "liste 1": ["être", "avoir", "aller", "faire", "falloir", "pouvoir", "savoir", "valoir", "vouloir", "appeler", "jeter"],
         "liste 2": ["peindre", "peigner", "plaire", "pleuvoir", "se taire", "taire", "moudre", "mouler", "choir", "tuer"],
@@ -70,46 +68,11 @@ def cible():
         "liste 4": ["joindre", "assaillir", "pouvoir", "asseoir", "faillir", "savoir", "voir", "vaincre", "prendre", "croire"],
     }
 
-    # Liste complète des verbes passivables dans TOUTE ta liste
-    VERBES_PASSIVABLES = [
-        "tenir",
-        "sentir",
-        "voir",
-        "recevoir",
-        "cueillir",
-        "acquérir",
-        "faire",
-        "appeler",
-        "jeter",
-        "peigner",
-        "mouler",
-        "tuer",
-        "rendre",
-        "peindre",
-        "vaincre",
-        "prendre"
-    ]
-    voix = request.form.getlist("voix")
-
-    # Cas : uniquement passif → on ne propose que les verbes passivables
-    if voix == ["passif"]:
-        verbes = VERBES_PASSIVABLES
-
-    # Cas : uniquement actif → tous les verbes actifs
-    elif voix == ["actif"]:
-        verbes = list(ACTIF.keys())
-
-    # Cas : actif + passif → union logique
-    else:
-        verbes = list(set(ACTIF.keys()) | set(VERBES_PASSIVABLES))
     return render_template(
         "cible.html",
         modes=modes,
         modes_temps_json=json.dumps(modes_temps, ensure_ascii=False),
-        listes=LISTES_VERBES,
-        verbes_passivables=VERBES_PASSIVABLES,
-        voix=voix
-
+        listes=LISTES_VERBES
     )
 
 
