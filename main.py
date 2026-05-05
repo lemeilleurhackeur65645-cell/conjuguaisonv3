@@ -60,7 +60,7 @@ def cible():
 
     modes_temps = {m: sorted(list(ts)) for m, ts in modes_temps.items()}
 
-    # Listes de verbes (ton tri d’origine)
+    # Listes de verbes (tri d’origine)
     LISTES_VERBES = {
         "liste 1": ["être", "avoir", "aller", "faire", "falloir", "pouvoir", "savoir", "valoir", "vouloir", "appeler", "jeter"],
         "liste 2": ["peindre", "peigner", "plaire", "pleuvoir", "se taire", "taire", "moudre", "mouler", "choir", "tuer"],
@@ -72,11 +72,8 @@ def cible():
         "cible.html",
         modes=modes,
         modes_temps_json=json.dumps(modes_temps, ensure_ascii=False),
-        listes=LISTES_VERBES,
-        verbes_passivables=VERBES_PASSIVABLES,
-        voix=voix
+        listes=LISTES_VERBES
     )
-
 
 
 # ============================================================
