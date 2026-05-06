@@ -247,10 +247,46 @@ def cible_start():
 
     session["questions_cibles"] = []
 
+    # Déterminer la base selon la voix
+    voix = session["cible_voix"]
+    if voix == ["passif"]:
+        base = PASSIF
+    elif voix == ["actif"]:
+        base = ACTIF
+    else:
+        base = {**ACTIF, **PASSIF}  # union logique
+    
     for verbe in session["cible_verbes"]:
+        if verbe not in base:
+            continue
+
+        modes_dict = base[verbe]
+
         for mode, temps in session["cible_temps"]:
+            if mode not in modes_dict:
+                continue
+
+            temps_dict = modes_dict[mode]
+            if temps not in temps_dict:
+                continue
+
+            formes = temps_dict[temps]
+            if not formes:
+                continue
+
             for personne in session["cible_personnes"]:
+                # Vérifier que la personne existe dans les formes
+                mapping = ["je", "tu", "il", "nous", "vous", "ils"]
+                idx = mapping.index({
+                    "1s": "je", "2s": "tu", "3s": "il",
+                    "1p": "nous", "2p": "vous", "3p": "ils"
+                }[personne])
+
+                if idx >= len(formes):
+                    continue
+
                 session["questions_cibles"].append((verbe, mode, temps, personne))
+
 
     random.shuffle(session["questions_cibles"])
 
