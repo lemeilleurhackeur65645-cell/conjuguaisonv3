@@ -326,6 +326,23 @@ input:checked + .slider:before { transform: translateX(22px); }
         align-self: center;
         margin-top: auto; /* pousse le bouton en bas proprement */
     }
+   /* ============================
+   MINI-CARTE D'INTRO
+   ============================ */
+   .mini-card {
+       width: 450px;
+       margin: 0 auto 30px auto;
+       padding: 14px 20px;
+       background: rgba(255, 255, 255, 0.9);
+       backdrop-filter: blur(8px);
+       border-radius: 14px;
+       box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+       border: 1px solid rgba(255, 255, 255, 0.7);
+       font-size: 1.1rem;
+       font-weight: 600;
+       color: #0f172a;
+   }
+
 }
 
 
