@@ -312,13 +312,20 @@ input:checked + .slider:before { transform: translateX(22px); }
         gap: 20px; /* espace réduit */
     }
 
-    .menu-row .container {
+  .menu-row .container {
+        width: 450px;              /* même largeur */
+        min-height: 330px;         /* même hauteur */
+        height: 330px;             /* fixe la hauteur */
         display: flex;
         flex-direction: column;
-        justify-content: space-between; /* équilibre le contenu */
+        justify-content: space-between;
+    }
+
+    /* Empêche le bouton de s'étirer */
+    .menu-row .container .btn {
+        width: auto;
+        align-self: center;
     }
 }
 
-}
 
-}
