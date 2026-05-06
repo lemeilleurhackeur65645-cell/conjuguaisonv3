@@ -18,6 +18,14 @@ with open(DATA_DIR / "actif.json", encoding="utf-8") as f:
 # Chargement passif.json
 with open(DATA_DIR / "passif.json", encoding="utf-8") as f:
     PASSIF = json.load(f)
+    
+# Liste complète des verbes passivables (utilisée pour la révision ciblée)
+VERBES_PASSIVABLES = [
+    "tenir", "sentir", "voir", "recevoir", "cueillir", "acquérir",
+    "faire", "appeler", "jeter", "peigner", "mouler", "tuer",
+    "rendre", "peindre", "vaincre", "prendre"
+]
+
 
 # Par défaut, conjugaisons = actif
 conjugaisons = ACTIF
@@ -207,9 +215,21 @@ def cible_start():
     session["cible_modes"] = request.form.getlist("modes")
     session["cible_personnes"] = request.form.getlist("personnes")
     session["cible_verbes"] = request.form.getlist("verbes")
-
     # VOIX (actif/passif)
     session["cible_voix"] = request.form.getlist("voix")
+
+    # Dédupliquer en conservant l'ordre
+    session["cible_verbes"] = list(dict.fromkeys(session["cible_verbes"]))
+
+    # Si l'utilisateur a choisi uniquement le passif, ne garder que les verbes passivables
+    if session["cible_voix"] == ["passif"]:
+        session["cible_verbes"] = [v for v in session["cible_verbes"] if v in VERBES_PASSIVABLES]
+
+    # Si après filtrage il n'y a plus de verbes, prévenir et renvoyer à la page
+    if not session["cible_verbes"]:
+        flash("Aucun verbe passivables sélectionné. Choisissez d'autres verbes ou activez la voix active.")
+        return redirect("/cible")
+
 
     raw_temps = request.form.getlist("temps")
     session["cible_temps"] = []
