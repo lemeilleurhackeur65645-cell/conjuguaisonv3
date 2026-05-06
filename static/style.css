@@ -316,6 +316,13 @@ input:checked + .slider:before { transform: translateX(22px); }
     .menu-row {
         flex-direction: row;
         justify-content: center;
-        gap: 40px; /* espace horizontal entre les deux cartes */
+        gap: 20px; /* espace horizontal entre les deux cartes */
     }
+/* Agrandissement de la carte Révision ciblée sur PC */
+@media (min-width: 900px) {
+    .menu-row .container:nth-child(2) {
+        width: 500px; /* un peu plus large */
+    }
+}
+
 }
