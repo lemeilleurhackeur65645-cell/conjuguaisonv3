@@ -301,3 +301,21 @@ input:checked + .slider:before { transform: translateX(22px); }
     cursor: not-allowed;
     pointer-events: none;
 }
+/* ============================
+   ALIGNEMENT PC — DEUX CARTES
+   ============================ */
+.menu-row {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    align-items: center;
+}
+
+/* Version PC : cartes côte à côte */
+@media (min-width: 900px) {
+    .menu-row {
+        flex-direction: row;
+        justify-content: center;
+        gap: 40px; /* espace horizontal entre les deux cartes */
+    }
+}
