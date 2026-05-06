@@ -304,25 +304,21 @@ input:checked + .slider:before { transform: translateX(22px); }
 /* ============================
    ALIGNEMENT PC — DEUX CARTES
    ============================ */
-.menu-row {
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-    align-items: center;
-}
-
-/* Version PC : cartes côte à côte */
 @media (min-width: 900px) {
     .menu-row {
-        flex-direction: row;
+        display: flex;
         justify-content: center;
-        gap: 20px; /* espace horizontal entre les deux cartes */
+        align-items: stretch; /* égalise les hauteurs */
+        gap: 20px; /* espace réduit */
     }
-/* Agrandissement de la carte Révision ciblée sur PC */
-@media (min-width: 900px) {
-    .menu-row .container:nth-child(2) {
-        width: 500px; /* un peu plus large */
+
+    .menu-row .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between; /* équilibre le contenu */
     }
+}
+
 }
 
 }
