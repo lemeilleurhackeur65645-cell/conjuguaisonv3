@@ -97,9 +97,12 @@
                 {% endfor %}
             </div>
         </div>
+        
+        <p id="note-passif" style="display:none; color:#444; font-size:14px; margin-bottom:10px;">
+            Certains verbes passivables manquent et seront implantés le plus tôt possible.
+        </p>
 
-
-      <button type="submit" class="start-btn" id="start-btn" disabled>Commencer</button>
+        <button type="submit" class="start-btn" id="start-btn" disabled>Commencer</button>
 
 
     </form>
@@ -252,6 +255,24 @@ function updateVerbesPassif() {
 }
 
 voixInputs.forEach(inp => inp.addEventListener('change', updateVerbesPassif));
+/* ------------------------------
+   6) NOTE POUR LE MODE PASSIF SEUL
+   ------------------------------ */
+function updateNotePassif() {
+    const actif = document.querySelector('#sec-voix input[value="actif"]').checked;
+    const passif = document.querySelector('#sec-voix input[value="passif"]').checked;
+
+    const note = document.getElementById("note-passif");
+
+    // Afficher la note uniquement si passif seul est coché
+    if (!actif && passif) {
+        note.style.display = "block";
+    } else {
+        note.style.display = "none";
+    }
+}
+
+voixInputs.forEach(inp => inp.addEventListener('change', updateNotePassif));
 
 </script>
 
