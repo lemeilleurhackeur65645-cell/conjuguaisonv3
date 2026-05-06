@@ -305,27 +305,28 @@ input:checked + .slider:before { transform: translateX(22px); }
    ALIGNEMENT PC — DEUX CARTES
    ============================ */
 @media (min-width: 900px) {
+
     .menu-row {
         display: flex;
         justify-content: center;
-        align-items: stretch; /* égalise les hauteurs */
-        gap: 20px; /* espace réduit */
+        align-items: stretch; /* égalise automatiquement les hauteurs */
+        gap: 20px; /* espace horizontal */
     }
 
-  .menu-row .container {
-        width: 450px;              /* même largeur */
-        min-height: 330px;         /* même hauteur */
-        height: 330px;             /* fixe la hauteur */
+    /* Les deux cartes gardent leur largeur */
+    .menu-row .container {
+        width: 450px;
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
     }
 
     /* Empêche le bouton de s'étirer */
     .menu-row .container .btn {
         width: auto;
         align-self: center;
+        margin-top: auto; /* pousse le bouton en bas proprement */
     }
 }
+
 
 
