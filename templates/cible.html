@@ -87,7 +87,9 @@
             <div class="chips" id="verbes-container">
                 {% for liste_id, verbes in listes.items() %}
                     {% for v in verbes %}
-                    <label class="chip verb-chip" data-liste="{{ liste_id }}">
+                    <label class="chip verb-chip"
+                            data-liste="{{ liste_id }}"
+                            data-passivable="{{ 'yes' if v in verbes_passivables else 'no' }}">
                         <input type="checkbox" name="verbes" value="{{ v }}">
                         {{ v }}
                     </label>
@@ -223,6 +225,34 @@ document.querySelectorAll('.chip').forEach(c => {
         }, 10);
     }
 });
+    /* ------------------------------
+   5) FILTRAGE DES VERBES PASSIVABLES
+   ------------------------------ */
+const voixInputs = document.querySelectorAll('#sec-voix input[name="voix"]');
+
+function updateVerbesPassif() {
+    const actif = document.querySelector('#sec-voix input[value="actif"]').checked;
+    const passif = document.querySelector('#sec-voix input[value="passif"]').checked;
+
+    verbChips.forEach(chip => {
+        const isPassivable = chip.dataset.passivable === "yes";
+
+        if (!actif && passif) {
+            // Passif seul → afficher uniquement les passivables
+            chip.style.display = isPassivable ? "inline-flex" : "none";
+            chip.querySelector('input').checked = false;
+            chip.classList.remove('active');
+        } else {
+            // Actif ou Actif+Passif → afficher tous les verbes
+            chip.style.display = "inline-flex";
+        }
+    });
+
+    updateLocks();
+}
+
+voixInputs.forEach(inp => inp.addEventListener('change', updateVerbesPassif));
+
 </script>
 
 </body>
