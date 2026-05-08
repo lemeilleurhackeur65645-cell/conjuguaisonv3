@@ -60,31 +60,34 @@
   </svg>
 </button>
 
-<div class="settings-popup-inner">
-  <h2 id="settings-title">Paramètres</h2>
+<div id="settings-popup" class="settings-popup" role="dialog" aria-hidden="true" aria-labelledby="settings-title">
+  <div class="settings-popup-inner">
+    <h2 id="settings-title">Paramètres</h2>
 
-  <!-- Interface switch -->
-  <div class="setting-block">
-    <label class="setting-label">Interface</label>
+    <!-- Interface switch -->
+    <div class="setting-block">
+      <label class="setting-label">Interface</label>
 
-    <div class="switch-container interface-switch" role="group" aria-label="Interface mobile ou PC">
-      <span class="switch-label">Mobile</span>
+      <div class="switch-container interface-switch" role="group" aria-label="Interface mobile ou PC">
+        <span class="switch-label">Mobile</span>
 
-      <label class="switch" aria-hidden="true">
-        <input type="checkbox" id="interface-toggle" aria-checked="false" />
-        <span class="slider" aria-hidden="true"></span>
-      </label>
+        <label class="switch" aria-hidden="true">
+          <input type="checkbox" id="interface-toggle" aria-checked="true" />
+          <span class="slider" aria-hidden="true"></span>
+        </label>
 
-      <span class="switch-label">PC</span>
+        <span class="switch-label">PC</span>
+      </div>
+
+      <p class="muted small-note">Par défaut : PC. Active Mobile pour adapter l'interface.</p>
     </div>
-    <p class="muted small-note">Par défaut : PC. Active Mobile pour adapter l'interface.</p>
-  </div>
 
-  <!-- Espace pour d'autres réglages -->
-  <div class="setting-block">
-    <p class="muted">Cliquez de nouveau sur l'engrenage pour fermer.</p>
+    <div class="setting-block">
+      <p class="muted">Cliquez de nouveau sur l'engrenage pour fermer.</p>
+    </div>
   </div>
 </div>
+
 
 <!-- script settings (placer avant </body>) -->
 <script>
