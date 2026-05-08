@@ -508,6 +508,13 @@ def fin():
             "voix": stats_voix,
             "suggestion": f"{top(stats_verbes)[0][0]} — {top(stats_modes)[0][0]} — {top(stats_temps)[0][0]}"
         }
+# s'assurer que modes_complet existe et que les valeurs sont des int
+    modes_complet = analyse.get("modes_complet", {})
+    analyse["modes_complet"] = {k: int(v) for k, v in modes_complet.items()}
+
+# optionnel : garantir que les 4 modes principaux sont présents (même à 0)
+    for m in ["indicatif", "conditionnel", "subjonctif", "impératif"]:
+        analyse["modes_complet"].setdefault(m, 0)
 
     return render_template(
         "fin.html",
