@@ -5,6 +5,21 @@
 {% block content %}
 <div class="container">
     <h1>Paramètres</h1>
-    <p>Aucun réglage disponible en ce moment.</p>
+    <div class="setting-block">
+  <label class="setting-label">Interface</label>
+
+  <div class="switch-container interface-switch">
+    <span class="switch-label">Mobile</span>
+
+    <label class="switch">
+      <input type="checkbox" id="interface-toggle" checked>
+      <span class="slider"></span>
+    </label>
+
+    <span class="switch-label">PC</span>
+  </div>
+</div>
+
+    
 </div>
 {% endblock %}
