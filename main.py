@@ -8,7 +8,7 @@ from pathlib import Path
 # CHARGEMENT DES DONNÉES
 # ============================================================
 
-BASE_DIR = Path(__file__).resolve().parent
+BASE_DIR = Path(__file__).resolve().parentF
 DATA_DIR = BASE_DIR / "data"
 
 # Chargement actif.json
@@ -508,13 +508,24 @@ def fin():
             "voix": stats_voix,
             "suggestion": f"{top(stats_verbes)[0][0]} — {top(stats_modes)[0][0]} — {top(stats_temps)[0][0]}"
         }
-# s'assurer que modes_complet existe et que les valeurs sont des int
-    modes_complet = analyse.get("modes_complet", {})
-    analyse["modes_complet"] = {k: int(v) for k, v in modes_complet.items()}
+# --- Garanties pour modes_complet envoyées au template ---
+# Si analyse est None, on laisse tel quel (déjà géré plus haut)
+    if analyse:
+    # s'assurer que modes_complet existe et que les valeurs sont des int
+        modes_complet = analyse.get("modes_complet", {})
+        analyse["modes_complet"] = {k: int(v or 0) for k, v in modes_complet.items()}
 
-# optionnel : garantir que les 4 modes principaux sont présents (même à 0)
-    for m in ["indicatif", "conditionnel", "subjonctif", "impératif"]:
-        analyse["modes_complet"].setdefault(m, 0)
+    # garantir la présence des principaux modes (même à 0)
+        for m in ["indicatif", "conditionnel", "subjonctif", "impératif"]:
+            analyse["modes_complet"].setdefault(m, 0)
+
+    # préparer aussi une version triée (utile si tu veux l'utiliser directement)
+        analyse["modes_sorted"] = sorted(
+            analyse["modes_complet"].items(),
+            key=lambda x: x[1],
+            reverse=True
+        )
+
 
     return render_template(
         "fin.html",
