@@ -70,35 +70,35 @@
             </div>
         {% endfor %}
 
-     <!-- MODES -->
+        <!-- MODES -->
         <p class="analyse-title">Modes les moins réussis</p>
 
         <div class="mode-chart">
 
-            {# Récupère le dict complet et assure des valeurs entières #}
-            {% set modes_stats = {} %}
-            {% for k, v in analyse.modes_complet.items() %}
-                {% set _ = modes_stats.update({k: (v | int)}) %}
-            {% endfor %}
-    
-            {# Si aucun mode dans modes_complet, fallback sur analyse.modes (top3) #}
-            {% if modes_stats|length == 0 and analyse.modes %}
+            {# Construire une liste triable en toute sécurité #}
+            {% set ns = namespace(items=[]) %}
+            {% if analyse.modes_complet %}
+                {% for k, v in analyse.modes_complet.items() %}
+                    {% set _ = ns.items.append((k, (v | int))) %}
+                {% endfor %}
+            {% elif analyse.modes %}
+                {# fallback sur top3 si modes_complet absent #}
                 {% for k, v in analyse.modes %}
-                    {% set _ = modes_stats.update({k: (v | int)}) %}
+                    {% set _ = ns.items.append((k, (v | int))) %}
                 {% endfor %}
             {% endif %}
 
-            {# Calcul du total en s'assurant d'un entier #}
+            {# Calcul du total #}
             {% set total_err_modes = 0 %}
-               {% for k, v in modes_stats.items() %}
-                {% set total_err_modes = total_err_modes + (v | int) %}
+            {% for pair in ns.items %}
+                {% set total_err_modes = total_err_modes + (pair[1] | int) %}
             {% endfor %}
 
-            {# Si total = 0, on affiche les modes existants avec 0% (évite division par zéro) #}
+            {# Si aucun total, afficher les modes connus (0%) pour éviter division par zéro #}
             {% if total_err_modes == 0 %}
-                {% for k, v in modes_stats.items() %}
+                {% for pair in ns.items %}
                     <div class="mode-row">
-                        <span class="mode-label">{{ k }}</span>
+                        <span class="mode-label">{{ pair[0] }}</span>
                         <div class="mode-bar-premium">
                             <div class="mode-bar-fill-premium" style="width: 0%;"></div>
                         </div>
@@ -106,9 +106,11 @@
                     </div>
                 {% endfor %}
             {% else %}
-                {# Trie par nombre d'erreurs décroissant pour affichage cohérent #}
-                {% for k, v in modes_stats|dictsort(false, 'value') %}
-                    {% set pct = ((v | int) * 100 / total_err_modes) | round(0, 'floor') %}
+                {# Trier par valeur décroissante et afficher pourcentages #}
+                {% for pair in ns.items|sort(attribute=1, reverse=True) %}
+                    {% set k = pair[0] %}
+                    {% set v = pair[1] | int %}
+                    {% set pct = ((v * 100) / total_err_modes) | round(0, 'floor') %}
                     <div class="mode-row">
                         <span class="mode-label">{{ k }}</span>
                         <div class="mode-bar-premium">
@@ -120,7 +122,6 @@
             {% endif %}
 
         </div>
-
 
         <!-- TEMPS -->
         <p class="analyse-title">Temps les moins réussis</p>
