@@ -5,16 +5,25 @@
     <title>Quiz de Conjugaison</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
+<!-- Remplacer le bouton existant par ceci -->
 <button id="settings-gear" class="settings-gear" aria-expanded="false" aria-controls="settings-popup" aria-label="Paramètres">
-  <!-- SVG simple, net et centré -->
-  <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-    <g fill="none" fill-rule="evenodd">
-      <circle cx="12" cy="12" r="11" fill="#0077E6"/>
-      <path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7z" fill="#fff"/>
-      <path d="M19.4 15a7.9 7.9 0 0 0 .1-1 7.9 7.9 0 0 0-.1-1l2.1-1.6a.5.5 0 0 0 .12-.64l-2-3.46a.5.5 0 0 0-.6-.22l-2.5 1a8.1 8.1 0 0 0-1.7-.98l-.38-2.65A.5.5 0 0 0 13.6 2h-3.2a.5.5 0 0 0-.5.42L9.5 5.07c-.6.24-1.16.55-1.7.9l-2.5-1a.5.5 0 0 0-.6.22L2.9 8.65a.5.5 0 0 0 .12.64L5.1 10.9c-.06.33-.1.66-.1 1 0 .34.04.67.1 1L2.9 14.5a.5.5 0 0 0-.12.64l2 3.46c.14.24.44.34.7.22l2.5-1c.54.35 1.1.66 1.7.9l.5 2.65c.06.28.3.48.58.48h3.2c.28 0 .52-.2.58-.48l.38-2.65c.6-.24 1.16-.55 1.7-.9l2.5 1c.26.12.56.02.7-.22l2-3.46a.5.5 0 0 0-.12-.64L19.4 15z" fill="#ffffff" opacity="0.95"/>
+  <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <!-- anneau extérieur -->
+    <circle cx="12" cy="12" r="11" fill="none" stroke="currentColor" stroke-width="1.6" />
+    <!-- dents stylisées -->
+    <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 7.2v-2" />
+      <path d="M12 18.8v2" />
+      <path d="M17.6 9.2l1.4-1.4" />
+      <path d="M5 16.2l-1.4 1.4" />
+      <path d="M17.6 14.8l1.4 1.4" />
+      <path d="M5 7.8L3.6 6.4" />
     </g>
+    <!-- centre creux -->
+    <circle cx="12" cy="12" r="3.2" fill="none" stroke="currentColor" stroke-width="1.6"/>
   </svg>
 </button>
+
 
 
 <div id="settings-popup" class="settings-popup" role="dialog" aria-hidden="true" aria-labelledby="settings-title">
