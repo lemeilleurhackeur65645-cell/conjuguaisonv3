@@ -466,22 +466,36 @@ def fin():
 
     analyse = None
     if erreurs:
+
+        # --- STATS ---
         stats_verbes = {}
         stats_modes = {}
         stats_temps = {}
+        stats_voix = {"active": 0, "passive": 0}
 
-        for v, m, t, s, r, b in erreurs:
-            stats_verbes[v] = stats_verbes.get(v, 0) + 1
-            stats_modes[m] = stats_modes.get(m, 0) + 1
-            stats_temps[t] = stats_temps.get(t, 0) + 1
+        # erreurs = liste de dicts
+        for e in erreurs:
+            verbe = e["verbe"]
+            mode = e["mode"]
+            temps = e["temps"]
+            voix = e["voix"]
+
+            stats_verbes[verbe] = stats_verbes.get(verbe, 0) + 1
+            stats_modes[mode] = stats_modes.get(mode, 0) + 1
+            stats_temps[temps] = stats_temps.get(temps, 0) + 1
+
+            if voix in stats_voix:
+                stats_voix[voix] += 1
 
         def top(d):
             return sorted(d.items(), key=lambda x: x[1], reverse=True)[:3]
 
+        # --- ANALYSE ---
         analyse = {
             "verbes": top(stats_verbes),
             "modes": top(stats_modes),
             "temps": top(stats_temps),
+            "voix": stats_voix,
             "suggestion": f"{top(stats_verbes)[0][0]} — {top(stats_modes)[0][0]} — {top(stats_temps)[0][0]}"
         }
 
