@@ -80,17 +80,23 @@
             {% endfor %}
 
             {% for mode, nb in analyse.modes %}
-                {% set pct = (nb * 100 / total_err_modes) | round(0, 'floor') %}
+                {% if total_err_modes > 0 %}
+                    {% set pct = (nb * 100 / total_err_modes) | round(0, 'floor') %}
+                {% else %}
+                    {% set pct = 0 %}
+                {% endif %}
+
                 <div class="mode-row">
                     <span class="mode-label">{{ mode }}</span>
 
-                    <div class="mode-bar-premium">
-                        <div class="mode-bar-fill-premium" style="width: {{ pct }}%;"></div>
-                    </div>
-
-                    <span class="mode-value">{{ pct }}%</span>
+                <div class="mode-bar-premium">
+                    <div class="mode-bar-fill-premium" style="width: {{ pct }}%;"></div>
                 </div>
-            {% endfor %}
+
+                <span class="mode-value">{{ pct }}%</span>
+            </div>
+        {% endfor %}
+
         </div>
 
         <!-- TEMPS -->
