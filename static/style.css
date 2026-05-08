@@ -584,60 +584,41 @@ input:checked + .slider:before { transform: translateX(22px); }
     overflow: hidden;
 }
 
-/* Popup visible */
+/* Popup */
+.settings-popup {
+  position: fixed;
+  right: 18px;
+  bottom: 78px;
+  width: 280px;
+  max-width: calc(100% - 40px);
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 18px 48px rgba(0,119,230,0.18);
+  opacity: 0;
+  transform: translateY(12px) scale(0.96);
+  pointer-events: none;
+  transition: opacity 260ms ease, transform 260ms cubic-bezier(.2,.9,.2,1);
+  z-index: 1300;
+  overflow: hidden;
+}
 .settings-popup.open {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    pointer-events: auto;
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
 }
+.settings-popup-inner { padding: 16px 18px; color: #222; }
 
-/* Contenu interne */
-.settings-popup-inner {
-    padding: 18px 20px;
-    color: #222;
-    font-size: 15px;
-    line-height: 1.4;
-}
-
-/* Titre */
-.settings-popup h2 {
-    margin: 0 0 10px 0;
-    font-size: 17px;
-    font-weight: 600;
-    color: #0077e6;
-}
-
-/* Texte secondaire */
-.settings-popup .muted {
-    color: #666;
-    font-size: 13px;
-    margin-top: 8px;
-}
-
-/* Responsive */
-@media (max-width: 420px) {
-    .settings-popup {
-        right: 12px;
-        left: 12px;
-        bottom: 70px;
-        width: auto;
-    }
-}
 /* Switch block */
 .setting-block { margin-bottom: 14px; }
 .setting-label { display:block; font-weight:600; color:#0077e6; margin-bottom:8px; }
-
-/* Switch container */
 .interface-switch { display:flex; align-items:center; gap:10px; }
-
-/* Labels */
 .switch-label { font-size:14px; color:#333; }
 
-/* Switch style */
+/* Switch visual */
 .switch { position:relative; display:inline-block; width:52px; height:28px; }
 .switch input { opacity:0; width:0; height:0; position:absolute; left:0; top:0; }
 .slider {
-  position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0;
+  position:absolute; top:0; left:0; right:0; bottom:0;
   background:#d0d7de; border-radius:34px; transition:background .25s ease, box-shadow .25s;
   box-shadow: inset 0 0 0 1px rgba(0,0,0,0.03);
 }
@@ -646,27 +627,21 @@ input:checked + .slider:before { transform: translateX(22px); }
   background:#fff; border-radius:50%; transition:transform .25s cubic-bezier(.2,.9,.2,1);
   box-shadow: 0 2px 6px rgba(0,0,0,0.12);
 }
-
-/* Checked state = PC (par défaut) */
+/* checked = PC (par défaut) */
 #interface-toggle:checked + .slider { background:#0077e6; }
 #interface-toggle:checked + .slider:before { transform: translateX(24px); }
-
-/* Small note */
 .small-note { margin:8px 0 0 0; color:#666; font-size:13px; }
 
-/* MODE ADAPTATION : classes appliquées au body */
+/* Mode classes appliquées au body */
 body.mobile-mode .container { max-width: 380px; width: 92%; transition: width .28s ease, max-width .28s ease; }
 body.mobile-mode .menu-row { flex-direction: column !important; gap:18px !important; }
-body.mobile-mode .card { transform: none; } /* exemple : override si besoin */
-
-/* PC mode explicit (optionnel) */
 body.pc-mode .container { max-width: 1100px; width: 100%; transition: width .28s ease, max-width .28s ease; }
 body.pc-mode .menu-row { flex-direction: row !important; gap:32px !important; }
 
-/* Accessibilité focus */
+/* Focus accessibility */
 .switch input:focus + .slider { box-shadow: 0 0 0 6px rgba(0,119,230,0.12); outline:none; }
 
-/* Responsive tweak for popup placement if needed */
+/* Responsive popup placement */
 @media (max-width:420px) {
   .settings-popup { right:12px; left:12px; bottom:70px; width:auto; }
   .settings-gear { right:12px; bottom:12px; }
