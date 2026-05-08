@@ -73,54 +73,31 @@
         <!-- MODES -->
         <p class="analyse-title">Modes les moins réussis</p>
 
-        <div class="mode-chart">
+        <div class="mode-list">
+            {% set modes_stats = {} %}
 
-            {# Construire une liste triable en toute sécurité #}
-            {% set ns = namespace(items=[]) %}
+            {# Préférer modes_complet (dict) s'il existe #}
             {% if analyse.modes_complet %}
                 {% for k, v in analyse.modes_complet.items() %}
-                    {% set _ = ns.items.append((k, (v | int))) %}
+                    {% set _ = modes_stats.update({k: (v | int)}) %}
                 {% endfor %}
             {% elif analyse.modes %}
-                {# fallback sur top3 si modes_complet absent #}
+                {# fallback : analyse.modes est une liste de tuples (mode, nb) #}
                 {% for k, v in analyse.modes %}
-                    {% set _ = ns.items.append((k, (v | int))) %}
+                    {% set _ = modes_stats.update({k: (v | int)}) %}
                 {% endfor %}
             {% endif %}
 
-            {# Calcul du total #}
-            {% set total_err_modes = 0 %}
-            {% for pair in ns.items %}
-                {% set total_err_modes = total_err_modes + (pair[1] | int) %}
-            {% endfor %}
-
-            {# Si aucun total, afficher les modes connus (0%) pour éviter division par zéro #}
-            {% if total_err_modes == 0 %}
-                {% for pair in ns.items %}
-                    <div class="mode-row">
-                        <span class="mode-label">{{ pair[0] }}</span>
-                        <div class="mode-bar-premium">
-                            <div class="mode-bar-fill-premium" style="width: 0%;"></div>
-                        </div>
-                        <span class="mode-value">0%</span>
-                    </div>
-                {% endfor %}
+            {# Si aucun mode trouvé, afficher message #}
+            {% if modes_stats|length == 0 %}
+                <div class="analyse-item">Aucun mode analysé.</div>
             {% else %}
-                {# Trier par valeur décroissante et afficher pourcentages #}
-                {% for pair in ns.items|sort(attribute=1, reverse=True) %}
-                    {% set k = pair[0] %}
-                    {% set v = pair[1] | int %}
-                    {% set pct = ((v * 100) / total_err_modes) | round(0, 'floor') %}
-                    <div class="mode-row">
-                        <span class="mode-label">{{ k }}</span>
-                        <div class="mode-bar-premium">
-                            <div class="mode-bar-fill-premium" style="width: {{ pct }}%;"></div>
-                        </div>
-                        <span class="mode-value">{{ pct }}%</span>
+                {% for mode, nb in modes_stats.items() %}
+                    <div class="analyse-item">
+                        <strong>{{ mode }}</strong> : {{ nb }} erreur{% if nb > 1 %}s{% endif %}
                     </div>
                 {% endfor %}
             {% endif %}
-
         </div>
 
         <!-- TEMPS -->
