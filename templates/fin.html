@@ -70,35 +70,56 @@
             </div>
         {% endfor %}
 
-      <!-- MODES -->
-<p class="analyse-title">Modes les moins réussis</p>
+     <!-- MODES -->
+        <p class="analyse-title">Modes les moins réussis</p>
 
-<div class="mode-chart">
+        <div class="mode-chart">
 
-    {% set total_err_modes = 0 %}
-    {% for mode, nb in analyse.modes_complet.items() %}
-        {% set total_err_modes = total_err_modes + nb %}
-    {% endfor %}
+            {# Récupère le dict complet et assure des valeurs entières #}
+            {% set modes_stats = {} %}
+            {% for k, v in analyse.modes_complet.items() %}
+                {% set _ = modes_stats.update({k: (v | int)}) %}
+            {% endfor %}
+    
+            {# Si aucun mode dans modes_complet, fallback sur analyse.modes (top3) #}
+            {% if modes_stats|length == 0 and analyse.modes %}
+                {% for k, v in analyse.modes %}
+                    {% set _ = modes_stats.update({k: (v | int)}) %}
+                {% endfor %}
+            {% endif %}
 
-    {% for mode, nb in analyse.modes_complet.items() %}
-        {% if total_err_modes > 0 %}
-            {% set pct = (nb * 100 / total_err_modes) | round(0, 'floor') %}
-        {% else %}
-            {% set pct = 0 %}
-        {% endif %}
+            {# Calcul du total en s'assurant d'un entier #}
+            {% set total_err_modes = 0 %}
+               {% for k, v in modes_stats.items() %}
+                {% set total_err_modes = total_err_modes + (v | int) %}
+            {% endfor %}
 
-        <div class="mode-row">
-            <span class="mode-label">{{ mode }}</span>
+            {# Si total = 0, on affiche les modes existants avec 0% (évite division par zéro) #}
+            {% if total_err_modes == 0 %}
+                {% for k, v in modes_stats.items() %}
+                    <div class="mode-row">
+                        <span class="mode-label">{{ k }}</span>
+                        <div class="mode-bar-premium">
+                            <div class="mode-bar-fill-premium" style="width: 0%;"></div>
+                        </div>
+                        <span class="mode-value">0%</span>
+                    </div>
+                {% endfor %}
+            {% else %}
+                {# Trie par nombre d'erreurs décroissant pour affichage cohérent #}
+                {% for k, v in modes_stats|dictsort(false, 'value') %}
+                    {% set pct = ((v | int) * 100 / total_err_modes) | round(0, 'floor') %}
+                    <div class="mode-row">
+                        <span class="mode-label">{{ k }}</span>
+                        <div class="mode-bar-premium">
+                            <div class="mode-bar-fill-premium" style="width: {{ pct }}%;"></div>
+                        </div>
+                        <span class="mode-value">{{ pct }}%</span>
+                    </div>
+                {% endfor %}
+            {% endif %}
 
-            <div class="mode-bar-premium">
-                <div class="mode-bar-fill-premium" style="width: {{ pct }}%;"></div>
-            </div>
-
-            <span class="mode-value">{{ pct }}%</span>
         </div>
-    {% endfor %}
-
-</div>
 
 
         <!-- TEMPS -->
