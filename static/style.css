@@ -489,80 +489,74 @@ input:checked + .slider:before { transform: translateX(22px); }
     flex-direction: column;
     gap: 16px;
 }
-/* Apparence finale : grand bouton discret avec icône outline noire */
+/* Bouton settings — bleu, circulaire, compact, animé */
 .settings-gear {
     position: fixed;
     right: 18px;
     bottom: 18px;
-    width: 84px;
-    height: 84px;
-    border-radius: 18px;
-    background: #ffffff;                 /* fond blanc pour contraste */
-    border: 1px solid rgba(0,0,0,0.06);
+
+    /* Taille plus petite */
+    width: 56px;
+    height: 56px;
+
+    /* Forme circulaire */
+    border-radius: 50%;
+
+    /* Fond bleu moderne */
+    background: linear-gradient(135deg, #4fb3ff, #0077e6);
+
+    /* Bordure subtile */
+    border: 2px solid rgba(255,255,255,0.25);
+
+    /* Centrage du SVG */
     display: flex;
     align-items: center;
     justify-content: center;
+
     cursor: pointer;
     z-index: 1400;
     padding: 0;
-    transition: transform 180ms ease, box-shadow 180ms ease;
-    box-shadow: 0 18px 40px rgba(0,0,0,0.08);
-    color: #111;                         /* couleur de l'icône (currentColor) */
+
+    /* Animation douce */
+    transition:
+        transform 260ms cubic-bezier(.2,.9,.2,1),
+        box-shadow 260ms cubic-bezier(.2,.9,.2,1),
+        background 260ms ease;
+
+    /* Ombre moderne */
+    box-shadow: 0 10px 26px rgba(0, 119, 230, 0.25);
+
+    /* Icône en blanc */
+    color: #ffffff;
 }
 
-/* Icône plus grande et centrée */
-.settings-gear svg { width: 44px; height: 44px; display:block; pointer-events: none; }
+/* Taille du SVG */
+.settings-gear svg {
+    width: 28px;
+    height: 28px;
+    display: block;
+    pointer-events: none;
+}
 
-/* Hover / focus */
+/* Hover : élévation + glow bleu */
 .settings-gear:hover {
-    transform: translateY(-6px) scale(1.02);
-    box-shadow: 0 28px 64px rgba(0,0,0,0.12);
+    transform: translateY(-4px) scale(1.08);
+    box-shadow: 0 18px 40px rgba(0, 119, 230, 0.35);
+    background: linear-gradient(135deg, #6fd3ff, #0088ff);
 }
+
+/* Focus clavier */
 .settings-gear:focus {
     outline: none;
-    box-shadow: 0 0 0 8px rgba(0,119,230,0.08);
+    box-shadow: 0 0 0 6px rgba(0,119,230,0.25);
 }
 
-/* État ouvert (JS ajoute la classe open ou applique la transform inline) */
+/* Animation ouverture (rotation douce) */
 .settings-gear.open {
-    transform: rotate(90deg) scale(1.02);
+    transform: rotate(90deg) scale(1.05);
+    box-shadow: 0 22px 48px rgba(0,119,230,0.40);
 }
 
-
-/* Popup */
-.settings-popup {
-    position: fixed;
-    right: 20px;
-    bottom: 84px;
-    width: 300px;
-    max-width: calc(100% - 40px);
-    background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 18px 48px rgba(0,0,0,0.18);
-    opacity: 0;
-    transform: translateY(10px) scale(0.98);
-    pointer-events: none;
-    transition: opacity 260ms ease, transform 260ms cubic-bezier(.2,.9,.2,1);
-    z-index: 1090;
-    overflow: hidden;
-}
-.settings-popup.open {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    pointer-events: auto;
-}
-.settings-popup-inner {
-    padding: 16px 18px;
-    color: #222;
-}
-.settings-popup h2 { margin: 0 0 8px 0; font-size: 16px; }
-.settings-popup .muted { color: #666; font-size: 13px; margin-top: 8px; }
-
-/* Responsive tweak */
-@media (max-width: 420px) {
-    .settings-popup { right: 12px; left: 12px; bottom: 74px; width: auto; }
-    .settings-gear { right: 12px; bottom: 12px; }
-}
 
 
 }
