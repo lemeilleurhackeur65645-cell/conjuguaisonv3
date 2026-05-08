@@ -342,6 +342,153 @@ input:checked + .slider:before { transform: translateX(22px); }
        font-weight: 600;
        color: #0f172a;
    }
+/* ============================
+   BILAN — STYLE PREMIUM
+   ============================ */
+
+.bilan-container {
+    max-width: 700px;
+}
+
+.intro {
+    font-size: 1rem;
+    color: #475569;
+    margin-bottom: 25px;
+}
+
+.bilan-block {
+    background: rgba(255,255,255,0.9);
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(15,23,42,0.08);
+    margin-bottom: 30px;
+}
+
+/* BARRE DE PROGRESSION GLOBALE */
+.bar-container {
+    width: 100%;
+    height: 12px;
+    background: #e2e8f0;
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 10px 0 20px 0;
+}
+
+.bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #007bff, #0056d6);
+    transition: width 0.4s ease;
+}
+
+/* ERREURS */
+.erreurs-block {
+    margin-bottom: 30px;
+}
+
+.erreur-item {
+    background: #fff1f2;
+    border-left: 4px solid #e11d48;
+    padding: 12px 16px;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    text-align: left;
+    font-size: 0.95rem;
+}
+
+.erreur-verbe {
+    font-weight: 700;
+    color: #b91c1c;
+}
+
+.attendu {
+    color: #0f172a;
+    font-weight: 600;
+}
+
+.donne {
+    color: #b91c1c;
+    font-weight: 600;
+}
+
+.fleche {
+    margin: 0 6px;
+}
+
+/* ANALYSE */
+.analyse-section {
+    margin-top: 20px;
+}
+
+.analyse-title {
+    margin-top: 25px;
+    font-weight: 700;
+    color: #334155;
+}
+
+.analyse-item {
+    background: #f8fafc;
+    padding: 10px 14px;
+    border-radius: 10px;
+    margin-bottom: 8px;
+    text-align: left;
+}
+
+/* MINI GRAPHIQUES PAR MODE / VOIX */
+.mode-chart {
+    margin: 20px 0;
+}
+
+.mode-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.mode-label {
+    width: 120px;
+    text-align: left;
+    font-weight: 600;
+    color: #334155;
+}
+
+.mode-bar-premium {
+    flex: 1;
+    height: 10px;
+    background: #e2e8f0;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.mode-bar-fill-premium {
+    height: 100%;
+    background: linear-gradient(90deg, #007bff, #0056d6);
+    transition: width 0.4s ease;
+}
+
+.mode-value {
+    width: 40px;
+    text-align: right;
+    font-weight: 600;
+}
+
+/* SUGGESTION */
+.suggestion {
+    background: #eef2ff;
+    padding: 14px;
+    border-radius: 12px;
+    color: #3730a3;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+/* BOUTONS */
+.bilan-actions {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
 
 }
 
