@@ -352,14 +352,15 @@ def quiz():
         session["total"] += 1
 
         if rep != bonne.lower():
-            session["erreurs"].append((
-                session["verbe"],
-                session["mode_verbe"],
-                session["temps"],
-                session["sujet"],
-                rep,
-                bonne
-            ))
+            session["erreurs"].append({
+                "verbe": session["verbe"],
+                "mode": session["mode_verbe"],
+                "temps": session["temps"],
+                "personne": session["sujet"],
+                "voix": session.get("voix_question", "active"),
+                "attendu": bonne,
+                "donne": rep
+            })
         else:
             session["score"] += 1
 
@@ -375,7 +376,7 @@ def quiz():
         else:
             feedback = "✔️ Correct" if rep == bonne.lower() else f"❌ Faux. Réponse attendue : {bonne}"
 
-       # Nouvelle question
+    # Nouvelle question
     if mode == "revision":
 
         if not session.get("erreurs_revision"):
@@ -383,6 +384,7 @@ def quiz():
 
         verbe, mode_v, temps, sujet, rep_faute, bonne = session["erreurs_revision"].pop(0)
         question = f"Conjugue : {verbe} — {mode_v} — {temps} — {sujet}"
+        voix_question = session.get("voix_question", "active")  # pas critique ici
 
     elif mode == "cible":
 
@@ -407,6 +409,7 @@ def quiz():
             base=base,
             voix_question=voix_question
         )
+
         # Vérification de cohérence voix
         if ("voix passive" in question and base != PASSIF) or \
            ("voix active" in question and base != ACTIF):
@@ -414,10 +417,14 @@ def quiz():
             base = PASSIF if "voix passive" in question else ACTIF
 
             verbe, mode_v, temps, sujet, bonne, question = generer_question(
-                modes, temps, personnes, verbes,
+                modes=session.get("cible_modes"),
+                temps=session.get("cible_temps"),
+                personnes=session.get("cible_personnes"),
+                verbes=session.get("cible_verbes"),
                 base=base,
                 voix_question="passive" if base == PASSIF else "active"
-            )   
+            )
+
     else:
         # Pour les modes entraînement et évaluation : choisir la voix au hasard
         base = random.choice([ACTIF, PASSIF])
@@ -428,13 +435,13 @@ def quiz():
             voix_question=voix_question
         )
 
-
     # Stockage
     session["verbe"] = verbe
     session["mode_verbe"] = mode_v
     session["temps"] = temps
     session["sujet"] = sujet
     session["bonne"] = bonne
+    session["voix_question"] = voix_question
 
     temps_restant = None
     if mode == "evaluation":
@@ -447,6 +454,7 @@ def quiz():
         mode=mode,
         temps_restant=temps_restant
     )
+
 
 
 # ============================================================
