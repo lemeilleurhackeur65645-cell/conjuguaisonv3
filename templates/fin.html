@@ -7,7 +7,8 @@
 </head>
 
 <body>
-<div class="container">
+
+<div class="container bilan-container">
 
     <h1>Bilan de la session</h1>
 
@@ -15,22 +16,36 @@
         Plus vous répondez à des questions, plus le bilan devient précis et adapté à vos besoins.
     </p>
 
+    <!-- ============================
+         RÉSUMÉ GLOBAL
+         ============================ -->
     <div class="bilan-block">
         <p><strong>Questions posées :</strong> {{ total }}</p>
         <p><strong>Bonnes réponses :</strong> {{ score }}</p>
         <p><strong>Taux de réussite :</strong> {{ taux }}%</p>
+
+        <div class="bar-container">
+            <div class="bar-fill" style="width: {{ taux }}%;"></div>
+        </div>
+
         <p><strong>Temps total :</strong> {{ duree }} sec</p>
         <p><strong>Temps moyen :</strong> {{ temps_moyen }} sec/question</p>
     </div>
 
+    <!-- ============================
+         DÉTAIL DES ERREURS
+         ============================ -->
     <h2>Détails des erreurs</h2>
 
     {% if erreurs %}
         <div class="erreurs-block">
             {% for e in erreurs %}
                 <div class="erreur-item">
-                    {{ e[0] }} — {{ e[1] }} — {{ e[2] }} — {{ e[3] }} :
-                    « {{ e[4] }} » → « {{ e[5] }} »
+                    <span class="erreur-verbe">{{ e.verbe }}</span> —
+                    {{ e.mode }} — {{ e.temps }} — {{ e.personne }} — voix {{ e.voix }}<br>
+                    <span class="attendu">« {{ e.attendu }} »</span>
+                    <span class="fleche">→</span>
+                    <span class="donne">« {{ e.donne }} »</span>
                 </div>
             {% endfor %}
         </div>
@@ -39,80 +54,95 @@
     {% endif %}
 
     {% if erreurs %}
-        <h2>Analyse</h2>
 
-        <div class="analyse-section">
+    <!-- ============================
+         ANALYSE
+         ============================ -->
+    <h2>Analyse</h2>
 
-            <!-- VERBES -->
-            <p class="analyse-title">Verbe(s) le(s) moins réussi(s)</p>
-            {% for verbe, nb in analyse.verbes %}
-                <div class="analyse-item">
-                    {{ verbe }} ({{ nb }} erreur{% if nb > 1 %}s{% endif %})
-                </div>
-            {% endfor %}
+    <div class="analyse-section">
 
-            <!-- MODES -->
-            <p class="analyse-title">Mode(s) le(s) moins réussi(s)</p>
+        <!-- VERBES -->
+        <p class="analyse-title">Verbe(s) le(s) moins réussi(s)</p>
+        {% for verbe, nb in analyse.verbes %}
+            <div class="analyse-item">
+                {{ verbe }} — {{ nb }} erreur{% if nb > 1 %}s{% endif %}
+            </div>
+        {% endfor %}
+
+        <!-- MODES -->
+        <p class="analyse-title">Modes les moins réussis</p>
+
+        <div class="mode-chart">
+            {% set total_err_modes = 0 %}
             {% for mode, nb in analyse.modes %}
-                <div class="analyse-item">
-                    {{ mode }} ({{ nb }} erreur{% if nb > 1 %}s{% endif %})
-                </div>
+                {% set total_err_modes = total_err_modes + nb %}
             {% endfor %}
 
-            <!-- BARRES DE PROGRESSION PAR MODE -->
-            {% if erreurs %}
-                <div class="mode-chart">
+            {% for mode, nb in analyse.modes %}
+                {% set pct = (nb * 100 / total_err_modes) | round(0, 'floor') %}
+                <div class="mode-row">
+                    <span class="mode-label">{{ mode }}</span>
 
-                    {% set total_err_modes = 0 %}
-                    {% for mode, nb in analyse.modes %}
-                        {% set total_err_modes = total_err_modes + nb %}
-                    {% endfor %}
+                    <div class="mode-bar-premium">
+                        <div class="mode-bar-fill-premium" style="width: {{ pct }}%;"></div>
+                    </div>
 
-                    {% for mode, nb in analyse.modes %}
-                        {% if total_err_modes > 0 %}
-                            {% set pct = (nb * 100 / total_err_modes) | round(0, 'floor') %}
-                        {% else %}
-                            {% set pct = 0 %}
-                        {% endif %}
-
-                        <div class="mode-row">
-                            <span class="mode-label">{{ mode }}</span>
-
-                            <div class="mode-bar-premium">
-                                <div class="mode-bar-fill-premium" style="width: {{ pct }}%;"></div>
-                            </div>
-
-                            <span class="mode-value">{{ pct }}%</span>
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-
-            <!-- TEMPS -->
-            <p class="analyse-title">Temps le(s) moins réussi(s)</p>
-            {% for temps, nb in analyse.temps %}
-                <div class="analyse-item">
-                    {{ temps }} ({{ nb }} erreur{% if nb > 1 %}s{% endif %})
+                    <span class="mode-value">{{ pct }}%</span>
                 </div>
             {% endfor %}
-
-            <!-- SUGGESTION -->
-            <h3>Suggestion de révision</h3>
-            <p class="suggestion">{{ analyse.suggestion }}</p>
-
         </div>
+
+        <!-- TEMPS -->
+        <p class="analyse-title">Temps les moins réussis</p>
+        {% for temps, nb in analyse.temps %}
+            <div class="analyse-item">
+                {{ temps }} — {{ nb }} erreur{% if nb > 1 %}s{% endif %}
+            </div>
+        {% endfor %}
+
+        <!-- VOIX -->
+        <p class="analyse-title">Voix les moins réussies</p>
+
+        {% set total_voix = analyse.voix.active + analyse.voix.passive %}
+        {% set pct_active = (analyse.voix.active * 100 / total_voix) | round(0, 'floor') %}
+        {% set pct_passive = (analyse.voix.passive * 100 / total_voix) | round(0, 'floor') %}
+
+        <div class="mode-row">
+            <span class="mode-label">Active</span>
+            <div class="mode-bar-premium">
+                <div class="mode-bar-fill-premium" style="width: {{ pct_active }}%;"></div>
+            </div>
+            <span class="mode-value">{{ pct_active }}%</span>
+        </div>
+
+        <div class="mode-row">
+            <span class="mode-label">Passive</span>
+            <div class="mode-bar-premium">
+                <div class="mode-bar-fill-premium" style="width: {{ pct_passive }}%;"></div>
+            </div>
+            <span class="mode-value">{{ pct_passive }}%</span>
+        </div>
+
+        <!-- SUGGESTION -->
+        <h3>Suggestion de révision</h3>
+        <p class="suggestion">{{ analyse.suggestion }}</p>
+
+    </div>
     {% endif %}
 
-    <!-- BOUTONS -->
+    <!-- ============================
+         BOUTONS
+         ============================ -->
     <div class="bilan-actions">
         {% if erreurs %}
             <a href="/revision" class="btn">Réessayer mes erreurs</a>
         {% endif %}
-
         <a href="/quiz" class="btn">Recommencer</a>
         <a href="/" class="back-button">Retour au menu principal</a>
     </div>
 
 </div>
+
 </body>
 </html>
