@@ -5,25 +5,35 @@
     <title>Quiz de Conjugaison</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
-<!-- Remplacer le bouton existant par ceci -->
+
 <button id="settings-gear" class="settings-gear" aria-expanded="false" aria-controls="settings-popup" aria-label="Paramètres">
+  <!-- SVG : icône engrenage nette, trait fin, centre creux -->
   <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-    <!-- anneau extérieur -->
-    <circle cx="12" cy="12" r="11" fill="none" stroke="currentColor" stroke-width="1.6" />
-    <!-- dents stylisées -->
-    <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M12 7.2v-2" />
-      <path d="M12 18.8v2" />
-      <path d="M17.6 9.2l1.4-1.4" />
-      <path d="M5 16.2l-1.4 1.4" />
-      <path d="M17.6 14.8l1.4 1.4" />
-      <path d="M5 7.8L3.6 6.4" />
+    <defs>
+      <linearGradient id="sg-grad" x1="0" x2="0" y1="0" y2="1">
+        <stop offset="0" stop-color="#5fc3ff"/>
+        <stop offset="1" stop-color="#0077e6"/>
+      </linearGradient>
+      <filter id="sg-shadow" x="-50%" y="-50%" width="200%" height="200%">
+        <feDropShadow dx="0" dy="6" stdDeviation="12" flood-color="#0077e6" flood-opacity="0.12"/>
+      </filter>
+    </defs>
+
+    <!-- anneau dégradé + ombre -->
+    <g filter="url(#sg-shadow)">
+      <circle cx="12" cy="12" r="11" fill="url(#sg-grad)"/>
     </g>
-    <!-- centre creux -->
-    <circle cx="12" cy="12" r="3.2" fill="none" stroke="currentColor" stroke-width="1.6"/>
+
+    <!-- centre blanc -->
+    <circle cx="12" cy="12" r="6.2" fill="#ffffff"/>
+
+    <!-- engrenage en trait (contraste bleu) -->
+    <g transform="translate(12,12) scale(0.9)" fill="none" stroke="#0077e6" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="0" cy="0" r="2.6" />
+      <path d="M6.2 0 L8.2 0 M-6.2 0 L-8.2 0 M0 6.2 L0 8.2 M0 -6.2 L0 -8.2 M4.4 4.4 L5.8 5.8 M-4.4 -4.4 L-5.8 -5.8 M4.4 -4.4 L5.8 -5.8 M-4.4 4.4 L-5.8 5.8" />
+    </g>
   </svg>
 </button>
-
 
 
 <div id="settings-popup" class="settings-popup" role="dialog" aria-hidden="true" aria-labelledby="settings-title">
