@@ -501,8 +501,10 @@ def fin():
         # --- ANALYSE ---
         analyse = {
             "verbes": top(stats_verbes),
-            "modes": top(stats_modes),
+            "modes": top(stats_modes),          # pour l'affichage textuel
+            "modes_complet": stats_modes,       # pour les graphiques
             "temps": top(stats_temps),
+            "temps_complet": stats_temps,       # pour les graphiques
             "voix": stats_voix,
             "suggestion": f"{top(stats_verbes)[0][0]} — {top(stats_modes)[0][0]} — {top(stats_temps)[0][0]}"
         }
