@@ -694,6 +694,27 @@ input:checked + .slider:before {
     transform: translateX(24px);
 }
 
+/* MODE MOBILE — active quand le slider est sur "Mobile" */
+body.mobile-mode .menu-row {
+    flex-direction: column !important;
+    gap: 24px !important;
+}
+
+body.mobile-mode .container {
+    width: 92% !important;
+    max-width: 380px;
+}
+
+/* MODE PC — active quand le slider est sur "PC" */
+body.pc-mode .menu-row {
+    flex-direction: row !important;
+    justify-content: center;
+    gap: 40px !important;
+}
+
+body.pc-mode .container {
+    width: 420px;
+}
 
 }
 
