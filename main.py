@@ -48,6 +48,9 @@ def index():
     session.clear()
     return render_template("index.html")
 
+@app.route("/parametres")
+def parametres():
+    return render_template("parametres.html")
 
 @app.route("/changelog")
 def changelog():
