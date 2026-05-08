@@ -140,21 +140,28 @@ def generer_question(modes=None, temps=None, personnes=None, verbes=None, base=N
         mapping = ["je", "tu", "il", "nous", "vous", "ils"]
 
         if mode_v.lower() == "impératif":
-            # Ordre 
+    # Ordre réel des formes dans tes données
             imperatif_personnes = ["tu", "nous", "vous"]
 
+    # Sécurité : l'impératif n'a que présent et passé
+            if temps_sel not in ["présent", "passé"]:
+                return generer_question(modes, temps, personnes, verbes, base)
+
+    # Sélection de la personne
             if personnes:
                 convert = {"2s": "tu", "1p": "nous", "2p": "vous"}
                 sujets_possibles = [convert[p] for p in personnes if p in convert]
             else:
                 sujets_possibles = imperatif_personnes
-        
+
             if not sujets_possibles:
                 sujets_possibles = imperatif_personnes
 
             sujet = random.choice(sujets_possibles)
 
+    # INDEX CORRECT pour l'impératif (actif et passif)
             idx = imperatif_personnes.index(sujet)
+
         
         else:
             if len(formes) == 1:
