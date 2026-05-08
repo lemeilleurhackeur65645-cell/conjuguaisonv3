@@ -400,7 +400,17 @@ def quiz():
             base=base,
             voix_question=voix_question
         )
+        # Vérification de cohérence voix
+        if ("voix passive" in question and base != PASSIF) or \
+           ("voix active" in question and base != ACTIF):
 
+            base = PASSIF if "voix passive" in question else ACTIF
+
+            verbe, mode_v, temps, sujet, bonne, question = generer_question(
+                modes, temps, personnes, verbes,
+                base=base,
+                voix_question="passive" if base == PASSIF else "active"
+            )   
     else:
         # Pour les modes entraînement et évaluation : choisir la voix au hasard
         base = random.choice([ACTIF, PASSIF])
