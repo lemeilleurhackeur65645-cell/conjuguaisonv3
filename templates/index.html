@@ -7,16 +7,29 @@
 </head>
 
 <button id="settings-gear" class="settings-gear" aria-expanded="false" aria-controls="settings-popup" aria-label="Paramètres">
-  <!-- SVG engrenage propre, symétrique et net -->
+  <!-- SVG engrenage symétrique, net et centré -->
   <svg viewBox="0 0 24 24" width="56" height="56" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" role="img">
-    <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-      <!-- dents régulières -->
-      <path d="M19.4 12.9a7.9 7.9 0 0 0 0-1.8l2-1.2a0.5 0.5 0 0 0 .2-0.6l-1.9-3.3a0.5 0.5 0 0 0-0.6-0.2l-2.3 0.9a7.7 7.7 0 0 0-1.5-0.9l-0.4-2.5A0.5 0.5 0 0 0 13.6 2h-3.2a0.5 0.5 0 0 0-0.5 0.4l-0.4 2.5a7.7 7.7 0 0 0-1.5 0.9l-2.3-0.9a0.5 0.5 0 0 0-0.6 0.2L2.5 9.4a0.5 0.5 0 0 0 .2 0.6l2 1.2a7.9 7.9 0 0 0 0 1.8l-2 1.2a0.5 0.5 0 0 0-.2 0.6l1.9 3.3c.12.2.36.28.56.18l2.3-0.9c.46.36.96.66 1.5.9l0.4 2.5c.05.28.3.48.58.48h3.2c.28 0 .53-0.2.58-0.48l0.4-2.5c.5-0.24 1-0.54 1.5-0.9l2.3 0.9c.2.08.44 0.02.56-0.18l1.9-3.3a0.5 0.5 0 0 0-.2-0.6l-2-1.2z"/>
-      <!-- centre -->
-      <circle cx="12" cy="12" r="3.2" />
+    <defs>
+      <linearGradient id="gear-grad" x1="0" x2="0" y1="0" y2="1">
+        <stop offset="0" stop-color="#6fd3ff"/>
+        <stop offset="1" stop-color="#0077e6"/>
+      </linearGradient>
+    </defs>
+
+    <!-- anneau extérieur dégradé -->
+    <circle cx="12" cy="12" r="11" fill="url(#gear-grad)"/>
+
+    <!-- centre blanc -->
+    <circle cx="12" cy="12" r="6.2" fill="#fff"/>
+
+    <!-- engrenage en trait, parfaitement symétrique -->
+    <g transform="translate(12,12) scale(1)" fill="none" stroke="#0077e6" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="0" cy="0" r="2.8"/>
+      <path d="M8.2 0 L6.2 0 M-8.2 0 L-6.2 0 M0 8.2 L0 6.2 M0 -8.2 L0 -6.2 M5.6 5.6 L4.2 4.2 M-5.6 -5.6 L-4.2 -4.2 M5.6 -5.6 L4.2 -4.2 M-5.6 5.6 L-4.2 4.2"/>
     </g>
   </svg>
 </button>
+
 
 
 
