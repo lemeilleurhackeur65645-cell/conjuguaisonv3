@@ -140,6 +140,7 @@ def generer_question(modes=None, temps=None, personnes=None, verbes=None, base=N
         mapping = ["je", "tu", "il", "nous", "vous", "ils"]
 
         if mode_v.lower() == "impératif":
+            # Ordre 
             imperatif_personnes = ["tu", "nous", "vous"]
 
             if personnes:
@@ -147,13 +148,14 @@ def generer_question(modes=None, temps=None, personnes=None, verbes=None, base=N
                 sujets_possibles = [convert[p] for p in personnes if p in convert]
             else:
                 sujets_possibles = imperatif_personnes
-
+        
             if not sujets_possibles:
                 sujets_possibles = imperatif_personnes
 
             sujet = random.choice(sujets_possibles)
-            idx = mapping.index(sujet)
 
+            idx = imperatif_personnes.index(sujet)
+        
         else:
             if len(formes) == 1:
                 sujet = "(forme impersonnelle)"
