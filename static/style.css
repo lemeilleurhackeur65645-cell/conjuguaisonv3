@@ -623,98 +623,55 @@ input:checked + .slider:before { transform: translateX(22px); }
         width: auto;
     }
 }
-/* Bloc paramètre */
-.setting-block {
-    margin-bottom: 18px;
-}
-
-.setting-label {
-    display: block;
-    font-size: 15px;
-    font-weight: 600;
-    margin-bottom: 8px;
-    color: #0077e6;
-}
+/* Switch block */
+.setting-block { margin-bottom: 14px; }
+.setting-label { display:block; font-weight:600; color:#0077e6; margin-bottom:8px; }
 
 /* Switch container */
-.interface-switch {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-}
+.interface-switch { display:flex; align-items:center; gap:10px; }
 
-/* Labels Mobile / PC */
-.interface-switch .switch-label {
-    font-size: 14px;
-    color: #333;
-}
+/* Labels */
+.switch-label { font-size:14px; color:#333; }
 
-/* Switch (reprend ton style existant) */
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 52px;
-    height: 28px;
-}
-
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
+/* Switch style */
+.switch { position:relative; display:inline-block; width:52px; height:28px; }
+.switch input { opacity:0; width:0; height:0; position:absolute; left:0; top:0; }
 .slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0; left: 0;
-    right: 0; bottom: 0;
-    background-color: #ccc;
-    transition: .3s;
-    border-radius: 34px;
+  position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0;
+  background:#d0d7de; border-radius:34px; transition:background .25s ease, box-shadow .25s;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.03);
 }
-
 .slider:before {
-    position: absolute;
-    content: "";
-    height: 22px;
-    width: 22px;
-    left: 3px;
-    bottom: 3px;
-    background-color: white;
-    transition: .3s;
-    border-radius: 50%;
+  content:""; position:absolute; height:22px; width:22px; left:3px; bottom:3px;
+  background:#fff; border-radius:50%; transition:transform .25s cubic-bezier(.2,.9,.2,1);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
 }
 
-input:checked + .slider {
-    background-color: #0077e6;
+/* Checked state = PC (par défaut) */
+#interface-toggle:checked + .slider { background:#0077e6; }
+#interface-toggle:checked + .slider:before { transform: translateX(24px); }
+
+/* Small note */
+.small-note { margin:8px 0 0 0; color:#666; font-size:13px; }
+
+/* MODE ADAPTATION : classes appliquées au body */
+body.mobile-mode .container { max-width: 380px; width: 92%; transition: width .28s ease, max-width .28s ease; }
+body.mobile-mode .menu-row { flex-direction: column !important; gap:18px !important; }
+body.mobile-mode .card { transform: none; } /* exemple : override si besoin */
+
+/* PC mode explicit (optionnel) */
+body.pc-mode .container { max-width: 1100px; width: 100%; transition: width .28s ease, max-width .28s ease; }
+body.pc-mode .menu-row { flex-direction: row !important; gap:32px !important; }
+
+/* Accessibilité focus */
+.switch input:focus + .slider { box-shadow: 0 0 0 6px rgba(0,119,230,0.12); outline:none; }
+
+/* Responsive tweak for popup placement if needed */
+@media (max-width:420px) {
+  .settings-popup { right:12px; left:12px; bottom:70px; width:auto; }
+  .settings-gear { right:12px; bottom:12px; }
 }
 
-input:checked + .slider:before {
-    transform: translateX(24px);
-}
-
-/* MODE MOBILE — active quand le slider est sur "Mobile" */
-body.mobile-mode .menu-row {
-    flex-direction: column !important;
-    gap: 24px !important;
-}
-
-body.mobile-mode .container {
-    width: 92% !important;
-    max-width: 380px;
-}
-
-/* MODE PC — active quand le slider est sur "PC" */
-body.pc-mode .menu-row {
-    flex-direction: row !important;
-    justify-content: center;
-    gap: 40px !important;
-}
-
-body.pc-mode .container {
-    width: 420px;
-}
 
 }
 
