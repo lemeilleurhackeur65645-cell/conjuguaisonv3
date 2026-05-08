@@ -70,34 +70,36 @@
             </div>
         {% endfor %}
 
-        <!-- MODES -->
-        <p class="analyse-title">Modes les moins réussis</p>
+      <!-- MODES -->
+<p class="analyse-title">Modes les moins réussis</p>
 
-        <div class="mode-chart">
-            {% set total_err_modes = 0 %}
-            {% for mode, nb in analyse.modes %}
-                {% set total_err_modes = total_err_modes + nb %}
-            {% endfor %}
+<div class="mode-chart">
 
-            {% for mode, nb in analyse.modes %}
-                {% if total_err_modes > 0 %}
-                    {% set pct = (nb * 100 / total_err_modes) | round(0, 'floor') %}
-                {% else %}
-                    {% set pct = 0 %}
-                {% endif %}
+    {% set total_err_modes = 0 %}
+    {% for mode, nb in analyse.modes_complet.items() %}
+        {% set total_err_modes = total_err_modes + nb %}
+    {% endfor %}
 
-                <div class="mode-row">
-                    <span class="mode-label">{{ mode }}</span>
+    {% for mode, nb in analyse.modes_complet.items() %}
+        {% if total_err_modes > 0 %}
+            {% set pct = (nb * 100 / total_err_modes) | round(0, 'floor') %}
+        {% else %}
+            {% set pct = 0 %}
+        {% endif %}
 
-                <div class="mode-bar-premium">
-                    <div class="mode-bar-fill-premium" style="width: {{ pct }}%;"></div>
-                </div>
+        <div class="mode-row">
+            <span class="mode-label">{{ mode }}</span>
 
-                <span class="mode-value">{{ pct }}%</span>
+            <div class="mode-bar-premium">
+                <div class="mode-bar-fill-premium" style="width: {{ pct }}%;"></div>
             </div>
-        {% endfor %}
 
+            <span class="mode-value">{{ pct }}%</span>
         </div>
+    {% endfor %}
+
+</div>
+
 
         <!-- TEMPS -->
         <p class="analyse-title">Temps les moins réussis</p>
