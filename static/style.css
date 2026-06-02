@@ -982,5 +982,7 @@ body.mobile-mode .container, body.mobile-mode .page {
 
 /* 11) Accessibilité : garder focus visible après ajustements */
 :focus { outline: 3px solid rgba(0,119,230,0.12); outline-offset: 2px; }
+.menu-row { gap: 28px !important; }
+.container { margin-bottom: 18px !important; }
 
 }
