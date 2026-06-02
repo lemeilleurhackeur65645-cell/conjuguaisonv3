@@ -5,7 +5,9 @@
     <title>Quiz de Conjugaison</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
+<body>
 
+<!-- BOUTON (inchangé visuellement) -->
 <button id="settings-gear" class="settings-gear" aria-expanded="false" aria-controls="settings-popup" aria-label="Paramètres">
   <svg viewBox="0 0 24 24" width="36" height="36" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" role="img">
     <path
@@ -60,6 +62,7 @@
   </svg>
 </button>
 
+<!-- POPUP (UN SEUL exemplaire, placé dans le body) -->
 <div id="settings-popup" class="settings-popup" role="dialog" aria-hidden="true" aria-labelledby="settings-title">
   <div class="settings-popup-inner">
     <h2 id="settings-title">Paramètres</h2>
@@ -87,47 +90,11 @@
     </div>
   </div>
 </div>
-<script src="{{ url_for('static', filename='js/settings.js') }}" defer></script>
 
-
-<!-- script settings (placer avant </body>) -->
-<script>
-(function(){
-  const gear = document.getElementById('settings-gear');
-  const popup = document.getElementById('settings-popup');
-  if (!gear || !popup) return;
-  function toggleSettings(){
-    const isOpen = popup.classList.toggle('open');
-    popup.setAttribute('aria-hidden', String(!isOpen));
-    gear.setAttribute('aria-expanded', String(isOpen));
-    gear.style.transform = isOpen ? 'rotate(90deg) scale(1.02)' : '';
-  }
-  gear.addEventListener('click', toggleSettings);
-  document.addEventListener('click', function(ev){
-    if (!popup.classList.contains('open')) return;
-    const t = ev.target;
-    if (gear.contains(t) || popup.contains(t)) return;
-    popup.classList.remove('open');
-    popup.setAttribute('aria-hidden','true');
-    gear.setAttribute('aria-expanded','false');
-    gear.style.transform = '';
-  });
-  document.addEventListener('keydown', function(ev){
-    if (ev.key === 'Escape' && popup.classList.contains('open')) {
-      popup.classList.remove('open');
-      popup.setAttribute('aria-hidden','true');
-      gear.setAttribute('aria-expanded','false');
-      gear.style.transform = '';
-    }
-  });
-})();
-</script>
-
-<body>
+<!-- CONTENU DE LA PAGE -->
 <div class="mini-card">
     Choisis ton mode d’apprentissage
 </div>
-
 <!-- ============================
      CARTE 1 — QUIZ CLASSIQUE
      ============================ -->
@@ -169,6 +136,6 @@
 <div class="menu-footer">
     <a href="/changelog" class="menu-link">Journal des modifications</a>
 </div>
-
+<script src="{{ url_for('static', filename='js/settings.js') }}" defer></script>
 </body>
 </html>
