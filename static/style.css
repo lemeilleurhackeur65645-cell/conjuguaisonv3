@@ -984,5 +984,62 @@ body.mobile-mode .container, body.mobile-mode .page {
 :focus { outline: 3px solid rgba(0,119,230,0.12); outline-offset: 2px; }
 .menu-row { gap: 28px !important; }
 .container { margin-bottom: 18px !important; }
+/* === Patch : réduire les grands espaces et resserrer la mise en page === */
+
+/* 1. Resserre les gaps entre cartes et colonnes */
+.menu-row { gap: 14px !important; }
+
+/* 2. Réduire marges verticales des containers */
+.container, .page {
+  margin-top: 18px !important;
+  margin-bottom: 18px !important;
+  padding: 18px !important;
+  box-sizing: border-box;
+}
+
+/* 3. Titres moins espacés (h1/h2) */
+.container h1, .container h2 {
+  margin-top: 6px !important;
+  margin-bottom: 8px !important;
+  line-height: 1.15;
+}
+
+/* 4. Boutons et actions : réduire l'espace autour */
+.btn, .start-btn, .menu-link {
+  margin-top: 8px !important;
+  margin-bottom: 8px !important;
+  padding: 10px 18px !important;
+}
+
+/* 5. Mini‑carte d'intro : moins haute */
+.mini-card {
+  margin: 0 auto 18px auto !important;
+  padding: 12px 16px !important;
+}
+
+/* 6. Footer : réduire le « blanc » sous les cartes */
+.menu-footer {
+  margin-top: 20px !important;
+  padding-bottom: 18px !important;
+}
+
+/* 7. Éviter min-height trop grand qui crée du vide */
+.container, .menu-row .container { min-height: 0 !important; }
+
+/* 8. Chips / listes : resserrer et autoriser retour à la ligne */
+.chips { gap: 8px !important; }
+.chip { padding: 8px 12px !important; }
+
+/* 9. Popup / gear : s'assurer qu'ils ne poussent pas le contenu */
+.settings-gear { position: fixed; }
+.settings-popup { position: fixed; }
+
+/* 10. Mobile specific: réduire vertical spacing on small screens */
+@media (max-width: 420px) {
+  .menu-row { gap: 12px !important; }
+  .container, .page { padding: 14px !important; margin-top: 12px !important; }
+  .mini-card { padding: 10px 12px !important; }
+  .menu-footer { margin-top: 14px !important; padding-bottom: 14px !important; }
+}
 
 }
