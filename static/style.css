@@ -647,6 +647,130 @@ body.pc-mode .menu-row { flex-direction: row !important; gap:32px !important; }
   .settings-gear { right:12px; bottom:12px; }
 }
 
+/* Responsive scale for settings-gear using a CSS variable
+   - default scale = 1 (desktop)
+   - small mobile <= 420px : scale x2
+   - extra small <= 320px : scale x3
+   This preserves the visual (same SVG, same colors) and keeps rotation animation working.
+*/
+
+/* Ensure base uses a scale variable and a composed transform */
+.settings-gear {
+  --sg-scale: 1;
+  transform: scale(var(--sg-scale));
+  transform-origin: center;
+  transition: transform 260ms cubic-bezier(.2,.9,.2,1), box-shadow 260ms cubic-bezier(.2,.9,.2,1), background 260ms ease;
+}
+
+/* When opened, rotate and slightly increase relative scale */
+.settings-gear.open {
+  transform: rotate(90deg) scale(calc(var(--sg-scale) * 1.05));
+}
+
+/* Hover/focus should respect the scale variable (use translate/scale composition) */
+.settings-gear:hover {
+  /* keep the same visual hover but composed with scale */
+  transform: translateY(-4px) scale(calc(var(--sg-scale) * 1.08));
+  box-shadow: 0 18px 40px rgba(0, 119, 230, 0.35);
+}
+
+/* Focus keyboard (visual ring) */
+.settings-gear:focus {
+  outline: none;
+  box-shadow: 0 0 0 6px rgba(0,119,230,0.25);
+}
+
+/* Media queries to change the scale variable on mobile */
+@media (max-width: 420px) {
+  /* Mobile small: double size */
+  .settings-gear {
+    --sg-scale: 2;
+    /* reposition slightly if needed to keep it visible */
+    right: 12px;
+    bottom: 12px;
+    z-index: 1500;
+  }
+
+  /* Optionally increase SVG natural size to keep crispness (not required) */
+  .settings-gear svg { width: 28px; height: 28px; }
+}
+
+@media (max-width: 320px) {
+  /* Extra small mobile: triple size */
+  .settings-gear {
+    --sg-scale: 3;
+    right: 10px;
+    bottom: 10px;
+    z-index: 1600;
+  }
+
+  .settings-gear svg { width: 28px; height: 28px; }
+}
+
+/* Ensure popup placement adapts when button grows */
+@media (max-width: 420px) {
+  .settings-popup {
+    right: calc(18px + (var(--sg-scale) - 1) * 28px); /* shift popup to avoid overlap */
+    bottom: calc(78px + (var(--sg-scale) - 1) * 28px);
+  }
+}
+/* Responsive scale for settings-gear: desktop = 1, mobile small = x2, extra small = x3 */
+:root { --settings-gear-base-size: 56px; }
+
+/* Use a scale variable so transforms compose with .open rotation */
+.settings-gear {
+  --sg-scale: 1;
+  transform-origin: center;
+  transform: scale(var(--sg-scale));
+  transition: transform 260ms cubic-bezier(.2,.9,.2,1), box-shadow 260ms cubic-bezier(.2,.9,.2,1), background 260ms ease;
+}
+
+/* Keep open state rotation composed with scale */
+.settings-gear.open {
+  transform: rotate(90deg) scale(calc(var(--sg-scale) * 1.05));
+}
+
+/* Hover respects the scale variable */
+.settings-gear:hover {
+  transform: translateY(-4px) scale(calc(var(--sg-scale) * 1.08));
+}
+
+/* Mobile small: double size */
+@media (max-width: 420px) {
+  .settings-gear {
+    --sg-scale: 2;
+    right: 12px;
+    bottom: 12px;
+    z-index: 1500;
+  }
+
+  /* Shift popup to avoid overlap with enlarged button */
+  .settings-popup {
+    right: calc(18px + (var(--sg-scale) - 1) * 28px);
+    bottom: calc(78px + (var(--sg-scale) - 1) * 28px);
+  }
+}
+
+/* Extra small mobile: triple size */
+@media (max-width: 320px) {
+  .settings-gear {
+    --sg-scale: 3;
+    right: 10px;
+    bottom: 10px;
+    z-index: 1600;
+  }
+
+  .settings-popup {
+    right: calc(18px + (var(--sg-scale) - 1) * 28px);
+    bottom: calc(78px + (var(--sg-scale) - 1) * 28px);
+  }
+}
+
+/* Optional: keep SVG crisp by increasing its intrinsic size (visual unchanged) */
+.settings-gear svg {
+  width: 28px;
+  height: 28px;
+}
 
 }
 
