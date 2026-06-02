@@ -1132,5 +1132,77 @@ body.pc-mode .menu-row[style] * {
   body.pc-mode .menu-row { flex-wrap: wrap; }
   body.pc-mode .menu-row .container { flex: 1 1 100%; width: 100%; max-width: 100%; }
 }
+/* === Réduction et rééquilibrage de la carte "Révision ciblée" en mode PC === */
+@media (min-width: 900px) {
+  /* Sélecteurs multiples pour couvrir les variantes possibles */
+  body.pc-mode .revision-card,
+  body.pc-mode .mini-card.revision,
+  body.pc-mode .mini-card,
+  body.pc-mode .bilan-block.revision,
+  body.pc-mode .container.revision {
+    max-width: 420px;            /* limite la largeur de la carte */
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px 18px;          /* réduit les paddings excessifs */
+    margin: 0;                   /* évite marges verticales trop grandes */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;     /* centre verticalement le contenu */
+    align-items: stretch;
+    min-height: auto;            /* supprime min-height trop grand */
+    height: auto;                /* laisse la hauteur s'ajuster au contenu */
+  }
+
+  /* Titre / description : réduire l'espacement et la taille si nécessaire */
+  body.pc-mode .mini-card h2,
+  body.pc-mode .revision-card h2,
+  body.pc-mode .mini-card .title {
+    font-size: 1.05rem;
+    margin: 6px 0 8px 0;
+    line-height: 1.18;
+  }
+  body.pc-mode .mini-card p,
+  body.pc-mode .revision-card p,
+  body.pc-mode .mini-card .desc {
+    font-size: 0.95rem;
+    margin: 0 0 10px 0;
+    color: #475569;
+  }
+
+  /* Bouton : centré, taille adaptée */
+  body.pc-mode .mini-card .btn,
+  body.pc-mode .revision-card .btn,
+  body.pc-mode .mini-card .start-btn {
+    align-self: center;
+    padding: 10px 18px;
+    font-size: 0.98rem;
+    margin-top: 10px;
+    max-width: 220px;
+    width: auto;
+  }
+
+  /* Si la carte contient un bloc d'icône ou badge, réduire son espace */
+  body.pc-mode .mini-card .badge,
+  body.pc-mode .revision-card .badge {
+    margin-bottom: 8px;
+    padding: 6px 12px;
+    font-size: 0.85rem;
+  }
+
+  /* Forcer le contenu à ne pas s'étirer verticalement */
+  body.pc-mode .mini-card > *:not(.btn),
+  body.pc-mode .revision-card > *:not(.btn) {
+    flex: 0 0 auto;
+  }
+
+  /* Si une image ou SVG est présent, limiter sa hauteur */
+  body.pc-mode .mini-card img,
+  body.pc-mode .revision-card img {
+    max-height: 84px;
+    width: auto;
+    object-fit: contain;
+    margin-bottom: 8px;
+  }
+}
 
 }
