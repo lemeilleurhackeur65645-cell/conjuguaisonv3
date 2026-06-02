@@ -697,4 +697,103 @@ body.pc-mode .menu-row { flex-direction: row !important; gap: 32px !important; }
   width: 28px;
   height: 28px;
 }
+
+/* ============================
+   Scale entire page when body.mobile-mode is active
+   ============================ */
+
+/* Default page scale */
+:root { --page-scale: 1; }
+
+/* When mobile-mode is active, increase the page scale.
+   We use media queries to choose x2 or x3 depending on viewport width. */
+body.mobile-mode { --page-scale: 2; }
+@media (max-width: 320px) {
+  body.mobile-mode { --page-scale: 3; }
+}
+
+/* Elements to scale (add selectors if you have other main wrappers) */
+body.mobile-mode .container,
+body.mobile-mode .page,
+body.mobile-mode .menu-row,
+body.mobile-mode .mini-card,
+body.mobile-mode .bilan-container,
+body.mobile-mode .menu-footer,
+body.mobile-mode .section,
+body.mobile-mode .chips,
+body.mobile-mode .bilan-block {
+  transform-origin: top center;
+  transform: scale(var(--page-scale));
+  transition: transform 260ms cubic-bezier(.2,.9,.2,1);
+}
+
+/* Prevent horizontal overflow when scaled */
+body.mobile-mode {
+  overflow-x: hidden;
+}
+
+/* Adjust spacing because scale reduces available space visually:
+   we increase margins/paddings slightly so layout stays readable */
+body.mobile-mode .container,
+body.mobile-mode .page {
+  margin-top: calc(30px * var(--page-scale));
+  padding: calc(20px * var(--page-scale));
+  border-radius: calc(20px * var(--page-scale));
+}
+
+/* Buttons and inputs scale visually but keep clickable area consistent:
+   we scale them visually but keep their layout flow by using transform only. */
+body.mobile-mode .btn,
+body.mobile-mode .start-btn,
+body.mobile-mode input[type="text"] {
+  transform-origin: center;
+  transform: scale(var(--page-scale));
+  transition: transform 260ms cubic-bezier(.2,.9,.2,1);
+}
+
+/* Fixed elements (settings gear + popup) must be repositioned to avoid overlap.
+   We reuse --page-scale to shift them away from the scaled content. */
+body { --sg-scale: 1; } /* existing variable for gear scale remains */
+.settings-gear {
+  /* compose gear scale with page scale so visual size is consistent */
+  transform: scale(calc(var(--sg-scale) * var(--page-scale)));
+  transform-origin: center;
+  transition: transform 260ms cubic-bezier(.2,.9,.2,1), right .26s, bottom .26s;
+}
+
+/* Move the gear a bit inward when page is scaled */
+body.mobile-mode .settings-gear {
+  right: calc(12px + (var(--page-scale) - 1) * 28px);
+  bottom: calc(12px + (var(--page-scale) - 1) * 28px);
+  z-index: 2000;
+}
+
+/* Shift popup so it doesn't sit under the enlarged gear */
+.settings-popup {
+  transition: right .26s, bottom .26s, transform .26s, opacity .26s;
+}
+body.mobile-mode .settings-popup {
+  right: calc(18px + (var(--page-scale) - 1) * 28px);
+  bottom: calc(78px + (var(--page-scale) - 1) * 28px);
+}
+
+/* Tweak text sizes if you want them proportionally larger (optional) */
+body.mobile-mode h1, body.mobile-mode h2, body.mobile-mode h3 {
+  transform: scale(var(--page-scale));
+  transform-origin: top center;
+}
+
+/* Accessibility: ensure focus outlines remain visible after scaling */
+body.mobile-mode :focus {
+  outline: 3px solid rgba(0,119,230,0.18);
+  outline-offset: 3px;
+}
+
+/* Safety: if some element overflows, allow vertical scroll */
+body.mobile-mode {
+  overflow-y: auto;
+}
+
+/* If you have other custom wrappers, add them to the selectors above */
+   
 }
