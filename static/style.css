@@ -1084,5 +1084,53 @@ body.pc-mode .container {
   .menu-row { flex-wrap: wrap; }
   .menu-row .container { flex: 1 1 100%; max-width: 100%; width: 100%; }
 }
+/* === Forcer layout côte-à-côte en mode PC (placer en fin de style.css) === */
+@media (min-width: 900px) {
+  /* menu-row en ligne */
+  body.pc-mode .menu-row {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    justify-content: center;
+    align-items: stretch;
+    gap: 20px !important;
+  }
+
+  /* chaque carte garde sa largeur fixe et ne prend pas 100% */
+  body.pc-mode .menu-row .container {
+    flex: 0 0 450px !important;   /* largeur fixe */
+    width: 450px !important;
+    max-width: 450px !important;
+    box-sizing: border-box;
+  }
+
+  /* neutraliser tout transform/scale qui casserait le flow */
+  body.pc-mode .menu-row,
+  body.pc-mode .menu-row .container,
+  body.pc-mode .container,
+  body.pc-mode .page {
+    transform: none !important;
+    transform-origin: initial !important;
+  }
+
+  /* s'assurer que les enfants ne forcent pas 100% */
+  body.pc-mode .menu-row .container * {
+    max-width: 100%;
+  }
+}
+
+/* Sécurité : si une règle mobile a été appliquée avec !important, on l'annule explicitement */
+body.pc-mode .menu-row[style],
+body.pc-mode .menu-row[style] * {
+  -webkit-flex-direction: row !important;
+  -ms-flex-direction: row !important;
+  flex-direction: row !important;
+}
+
+/* Optionnel : comportement responsive sous 900px (retour en colonne) */
+@media (max-width: 899px) {
+  body.pc-mode .menu-row { flex-wrap: wrap; }
+  body.pc-mode .menu-row .container { flex: 1 1 100%; width: 100%; max-width: 100%; }
+}
 
 }
