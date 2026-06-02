@@ -1204,5 +1204,61 @@ body.pc-mode .menu-row[style] * {
     margin-bottom: 8px;
   }
 }
+/* === Cible précise pour "Révision ciblée" en mode PC === */
+@media (min-width: 900px) {
+  /* Remplacez .revision-card par la classe exacte si nécessaire */
+  body.pc-mode .revision-card,
+  body.pc-mode .mini-card.revision,
+  body.pc-mode .mini-card--revision,
+  body.pc-mode .container.revision {
+    max-width: 420px !important;    /* largeur raisonnable */
+    width: 420px !important;
+    padding: 12px 16px !important;  /* moins d'espace vide */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;    /* ne pas étirer verticalement */
+    align-items: stretch;
+    min-height: 0 !important;       /* annule min-height trop grand */
+    height: auto !important;        /* hauteur s'ajuste au contenu */
+  }
+
+  /* Texte et titres */
+  body.pc-mode .revision-card h2,
+  body.pc-mode .mini-card.revision h2 {
+    font-size: 1.05rem;
+    margin: 6px 0 8px 0;
+    line-height: 1.18;
+  }
+  body.pc-mode .revision-card p,
+  body.pc-mode .mini-card.revision p {
+    font-size: 0.95rem;
+    margin: 0 0 10px 0;
+  }
+
+  /* Bouton : taille et position */
+  body.pc-mode .revision-card .btn,
+  body.pc-mode .mini-card.revision .btn {
+    align-self: center;
+    padding: 10px 16px;
+    margin-top: 8px;
+    max-width: 200px;
+    width: auto;
+  }
+
+  /* Empêcher images/illustrations d'étirer la carte */
+  body.pc-mode .revision-card img,
+  body.pc-mode .mini-card.revision img {
+    max-width: 100%;
+    max-height: 84px;
+    object-fit: contain;
+  }
+
+  /* Si la carte est dans une .menu-row, s'assurer que la colonne voisine garde sa taille */
+  body.pc-mode .menu-row .container:not(.revision) {
+    flex: 0 0 450px !important;
+    width: 450px !important;
+  }
+}
 
 }
