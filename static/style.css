@@ -924,5 +924,63 @@ body.mobile-mode .menu-footer {
 
 /* Accessibility: keep focus outlines visible after transforms */
 body.mobile-mode :focus { outline: 3px solid rgba(0,119,230,0.14); outline-offset: 3px; }
+/* === Fix organisation : désactiver scaling destructeur et restaurer espaces === */
+
+/* 1) Annuler transform scale sur les wrappers principaux si présent */
+.container, .page, .menu-row, .mini-card, .bilan-container, .bilan-block {
+  transform: none !important;
+  transform-origin: initial !important;
+  transition: none !important;
+}
+
+/* 2) Appliquer une montée de taille contrôlée via font-size et paddings (lisible, sans casser le flux) */
+body.mobile-mode {
+  font-size: 1.06rem; /* léger agrandissement global */
+}
+body.mobile-mode .container, body.mobile-mode .page {
+  padding: 20px; /* espace intérieur suffisant */
+  margin-top: 24px;
+}
+
+/* 3) Restaurer gaps et alignements */
+.menu-row { gap: 20px; display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; }
+.menu-row .container { width: 100%; max-width: 450px; box-sizing: border-box; }
+
+/* 4) Boutons visibles et accessibles */
+.btn, .start-btn, .menu-link, .back-button, .stop-button {
+  display: inline-block;
+  margin: 10px 0;
+  line-height: 1.2;
+  vertical-align: middle;
+}
+
+/* 5) Forcer visibilité des éléments masqués par overflow */
+.container, .page { overflow: visible; }
+
+/* 6) Footer et espace bas : garantir marge suffisante */
+.menu-footer { margin-top: 36px; padding-bottom: 36px; }
+
+/* 7) Eviter recouvrement par le bouton settings : popup au-dessus, gear au-dessous */
+.settings-gear { z-index: 1400; }
+.settings-popup { z-index: 1500; }
+
+/* 8) Popup placement sûr sur petits écrans */
+@media (max-width: 420px) {
+  .settings-popup { right: 12px; left: 12px; bottom: 92px; width: auto; }
+  .settings-gear { right: 12px; bottom: 12px; }
+}
+
+/* 9) Chips / listes : permettre retour à la ligne et espacement */
+.chips { gap: 10px; align-items: flex-start; }
+.chip { white-space: normal; }
+
+/* 10) Assurer min-height pour containers afin d'éviter tassement */
+.container { min-height: 160px; }
+@media (min-width: 900px) {
+  .menu-row .container { min-height: 260px; }
+}
+
+/* 11) Accessibilité : garder focus visible après ajustements */
+:focus { outline: 3px solid rgba(0,119,230,0.12); outline-offset: 2px; }
 
 }
