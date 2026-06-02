@@ -794,6 +794,76 @@ body.mobile-mode {
   overflow-y: auto;
 }
 
-/* If you have other custom wrappers, add them to the selectors above */
-   
+/* Subtil page scaling when body.mobile-mode is active */
+:root { --page-scale: 1; }
+
+/* Gentle scale for mobile mode (less aggressive) */
+body.mobile-mode { --page-scale: 1.15; } /* ~ +15% */
+@media (max-width: 360px) {
+  body.mobile-mode { --page-scale: 1.30; } /* ~ +30% on very small screens */
+}
+
+/* Elements to scale visually (transform only) */
+body.mobile-mode .container,
+body.mobile-mode .page,
+body.mobile-mode .menu-row,
+body.mobile-mode .mini-card,
+body.mobile-mode .bilan-container,
+body.mobile-mode .menu-footer,
+body.mobile-mode .section,
+body.mobile-mode .chips,
+body.mobile-mode .bilan-block {
+  transform-origin: top center;
+  transform: scale(var(--page-scale));
+  transition: transform 220ms cubic-bezier(.2,.9,.2,1);
+}
+
+/* Reduce spacing adjustments (smaller than before) */
+body.mobile-mode .container,
+body.mobile-mode .page {
+  margin-top: calc(18px * (var(--page-scale)));
+  padding: calc(16px * (var(--page-scale)));
+  border-radius: calc(16px * (var(--page-scale)));
+}
+
+/* Buttons and inputs scale visually but keep layout flow */
+body.mobile-mode .btn,
+body.mobile-mode .start-btn,
+body.mobile-mode input[type="text"] {
+  transform-origin: center;
+  transform: scale(var(--page-scale));
+  transition: transform 220ms cubic-bezier(.2,.9,.2,1);
+}
+
+/* Compose settings gear scale with page scale but keep gear size reasonable */
+.settings-gear {
+  --sg-scale: 1; /* base gear scale */
+  transform: scale(calc(var(--sg-scale) * var(--page-scale)));
+  transform-origin: center;
+  transition: transform 220ms cubic-bezier(.2,.9,.2,1), right .22s, bottom .22s;
+}
+
+/* Slight repositioning to avoid overlap (small offsets) */
+body.mobile-mode .settings-gear {
+  right: calc(12px + (var(--page-scale) - 1) * 12px);
+  bottom: calc(12px + (var(--page-scale) - 1) * 12px);
+  z-index: 2000;
+}
+
+/* Shift popup modestly so it doesn't sit under the gear */
+body.mobile-mode .settings-popup {
+  right: calc(18px + (var(--page-scale) - 1) * 12px);
+  bottom: calc(78px + (var(--page-scale) - 1) * 12px);
+}
+
+/* Text scaling (optional, subtle) */
+body.mobile-mode h1, body.mobile-mode h2, body.mobile-mode h3 {
+  transform: scale(var(--page-scale));
+  transform-origin: top center;
+}
+
+/* Keep scrolling and accessibility sane */
+body.mobile-mode { overflow-x: hidden; overflow-y: auto; }
+body.mobile-mode :focus { outline: 3px solid rgba(0,119,230,0.14); outline-offset: 3px; }
+
 }
