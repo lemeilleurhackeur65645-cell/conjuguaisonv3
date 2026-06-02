@@ -1041,5 +1041,48 @@ body.mobile-mode .container, body.mobile-mode .page {
   .mini-card { padding: 10px 12px !important; }
   .menu-footer { margin-top: 14px !important; padding-bottom: 14px !important; }
 }
+/* Forcer layout côte-à-côte en mode PC */
+body.pc-mode .menu-row {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  justify-content: center;
+  align-items: stretch;
+  gap: 20px !important;
+}
+
+/* Chaque carte garde sa largeur fixe en PC */
+body.pc-mode .menu-row .container {
+  width: 450px !important;
+  max-width: 45vw; /* sécurité responsive */
+  box-sizing: border-box;
+  flex: 0 0 450px; /* empêche l'étirement ou la réduction */
+}
+
+/* Si une règle mobile force la colonne, on l'annule explicitement */
+body.pc-mode .menu-row[style], /* inline styles */
+body.pc-mode .menu-row {
+  /* override possible mobile rules */
+  -webkit-flex-direction: row !important;
+  -ms-flex-direction: row !important;
+  flex-direction: row !important;
+}
+
+/* Assurer que les containers internes ne prennent pas 100% */
+body.pc-mode .menu-row .container * {
+  max-width: 100%;
+}
+
+/* Si tu utilises des transforms globaux, neutralise-les pour le layout */
+body.pc-mode .menu-row,
+body.pc-mode .container {
+  transform: none !important;
+}
+
+/* Optionnel : si tu veux que la deuxième colonne passe en dessous sous 900px */
+@media (max-width: 899px) {
+  .menu-row { flex-wrap: wrap; }
+  .menu-row .container { flex: 1 1 100%; max-width: 100%; width: 100%; }
+}
 
 }
