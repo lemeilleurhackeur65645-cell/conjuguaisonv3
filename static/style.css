@@ -704,7 +704,7 @@ body.pc-mode .menu-row { flex-direction: row; gap: 32px; }
    MOBILE: single variable controls ALL popup sizes
    - Change only --mobile-popup-scale inside body.mobile-mode
    ============================ */
-body.mobile-mode { --mobile-popup-scale: 1.25; } /* <-- change this single value to scale all popups in mobile */
+body.mobile-mode { --mobile-popup-scale: 1.5; } /* <-- change this single value to scale all popups in mobile */
 @media (max-width: 360px) { body.mobile-mode { --mobile-popup-scale: 1.25; } }
 
 /* Apply mobile-only popup scaling and safe placement */
@@ -777,7 +777,7 @@ body.mobile-mode .modal .modal-inner {
 
 /* --- Mode mobile : définir la seule variable à modifier --- */
 body.mobile-mode {
-  --mobile-popup-scale: 1.25; /* <-- changez CE nombre pour agrandir/réduire toutes les popups en mobile */
+  --mobile-popup-scale: 1.5; /* <-- changez CE nombre pour agrandir/réduire toutes les popups en mobile */
   overflow-x: hidden;
   overflow-y: auto;
   /* léger agrandissement typographique si souhaité (optionnel) */
@@ -786,7 +786,7 @@ body.mobile-mode {
 
 /* Très petits écrans : ajustement optionnel */
 @media (max-width: 360px) {
-  body.mobile-mode { --mobile-popup-scale: 1.25; }
+  body.mobile-mode { --mobile-popup-scale: 1.5; }
 }
 
 /* --- Réserver de l'espace bas sans min-height dépendant du scale --- */
