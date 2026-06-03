@@ -585,6 +585,9 @@ input:checked + .slider:before { transform: translateX(22px); }
 /* ---------------------------
    Switch block
    --------------------------- */
+/* ============================
+   SWITCH / TOGGLE
+   ============================ */
 .setting-block { margin-bottom: 14px; }
 .setting-label { display: block; font-weight: 600; color: #0077e6; margin-bottom: 8px; }
 .interface-switch { display: flex; align-items: center; gap: 10px; }
@@ -594,8 +597,9 @@ input:checked + .slider:before { transform: translateX(22px); }
 .switch { position: relative; display: inline-block; width: 52px; height: 28px; }
 .switch input { opacity: 0; width: 0; height: 0; position: absolute; left: 0; top: 0; }
 .slider {
-  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-  background: #d0d7de; border-radius: 34px; transition: background .25s ease, box-shadow .25s;
+  position: absolute; inset: 0;
+  background: #d0d7de; border-radius: 34px;
+  transition: background .25s ease, box-shadow .25s;
   box-shadow: inset 0 0 0 1px rgba(0,0,0,0.03);
 }
 .slider:before {
@@ -603,627 +607,342 @@ input:checked + .slider:before { transform: translateX(22px); }
   background: #fff; border-radius: 50%; transition: transform .25s cubic-bezier(.2,.9,.2,1);
   box-shadow: 0 2px 6px rgba(0,0,0,0.12);
 }
-/* checked = PC (par défaut) */
 #interface-toggle:checked + .slider { background: #0077e6; }
 #interface-toggle:checked + .slider:before { transform: translateX(24px); }
 .small-note { margin: 8px 0 0 0; color: #666; font-size: 13px; }
-
-/* Focus accessibility */
 .switch input:focus + .slider { box-shadow: 0 0 0 6px rgba(0,119,230,0.12); outline: none; }
 
-/* ---------------------------
-   Mode classes appliquées au body
-   --------------------------- */
+/* ============================
+   MODE CLASSES (mobile / pc)
+   ============================ */
 body.mobile-mode .container { max-width: 380px; width: 92%; transition: width .28s ease, max-width .28s ease; }
-body.mobile-mode .menu-row { flex-direction: column !important; gap: 18px !important; }
+body.mobile-mode .menu-row { flex-direction: column; gap: 18px; }
 body.pc-mode .container { max-width: 1100px; width: 100%; transition: width .28s ease, max-width .28s ease; }
-body.pc-mode .menu-row { flex-direction: row !important; gap: 32px !important; }
+body.pc-mode .menu-row { flex-direction: row; gap: 32px; }
 
-/* ---------------------------
-   Popup placement (small screens)
-   --------------------------- */
-@media (max-width: 420px) {
-  .settings-popup { right: 12px; left: 12px; bottom: 70px; width: auto; }
-  .settings-gear { right: 12px; bottom: 12px; }
+/* Ensure box sizing everywhere to avoid overflow surprises */
+.container, .menu-row, .mini-card, .bilan-block { box-sizing: border-box; }
+
+/* ============================
+   SETTINGS GEAR (responsive, consolidated)
+   ============================ */
+:root {
+  --settings-gear-size-desktop: 56px;
+  --settings-gear-svg: 28px;
+  --mobile-popup-scale: 1; /* <-- CHANGE THIS in body.mobile-mode to scale popups in mobile */
 }
-
-/* ---------------------------
-   Settings gear responsive scale (consolidated)
-   - desktop: scale 1
-   - <=420px: scale 2
-   - <=320px: scale 3
-   Uses a CSS variable --sg-scale so transforms compose cleanly.
-   --------------------------- */
-:root { --settings-gear-base-size: 56px; }
 
 .settings-gear {
-  --sg-scale: 1;
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  width: var(--settings-gear-size-desktop);
+  height: var(--settings-gear-size-desktop);
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4fb3ff, #0077e6);
+  border: 2px solid rgba(255,255,255,0.25);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; z-index: 1400; padding: 0;
+  box-shadow: 0 10px 26px rgba(0,119,230,0.25);
+  color: #fff;
   transform-origin: center;
-  transform: scale(var(--sg-scale));
   transition: transform 260ms cubic-bezier(.2,.9,.2,1), box-shadow 260ms cubic-bezier(.2,.9,.2,1), background 260ms ease;
 }
+.settings-gear svg { width: var(--settings-gear-svg); height: var(--settings-gear-svg); pointer-events: none; }
+.settings-gear:hover { transform: translateY(-4px) scale(1.08); box-shadow: 0 18px 40px rgba(0,119,230,0.35); background: linear-gradient(135deg, #6fd3ff, #0088ff); }
+.settings-gear:focus { outline: none; box-shadow: 0 0 0 6px rgba(0,119,230,0.25); }
+.settings-gear.open { transform: rotate(90deg) scale(1.05); box-shadow: 0 22px 48px rgba(0,119,230,0.40); }
 
-/* open state composes rotation with scale */
-.settings-gear.open {
-  transform: rotate(90deg) scale(calc(var(--sg-scale) * 1.05));
-  box-shadow: 0 22px 48px rgba(0,119,230,0.40);
-}
-
-/* hover composes translate + scale */
-.settings-gear:hover {
-  transform: translateY(-4px) scale(calc(var(--sg-scale) * 1.08));
-  box-shadow: 0 18px 40px rgba(0,119,230,0.35);
-}
-
-/* focus ring */
-.settings-gear:focus {
-  outline: none;
-  box-shadow: 0 0 0 6px rgba(0,119,230,0.25);
-}
-
-/* Mobile small: double size */
+/* Small adjustments for very small screens (keeps visual crisp, no global scale) */
 @media (max-width: 420px) {
-  .settings-gear {
-    --sg-scale: 2;
-    right: 12px;
-    bottom: 12px;
-    z-index: 1500;
-  }
-
-  /* shift popup to avoid overlap with enlarged button */
-  .settings-popup {
-    right: calc(18px + (var(--sg-scale) - 1) * 28px);
-    bottom: calc(78px + (var(--sg-scale) - 1) * 28px);
-  }
+  .settings-gear { right: 12px; bottom: 12px; width: 56px; height: 56px; }
 }
-
-/* Extra small mobile: triple size */
 @media (max-width: 320px) {
-  .settings-gear {
-    --sg-scale: 3;
-    right: 10px;
-    bottom: 10px;
-    z-index: 1600;
-  }
-
-  .settings-popup {
-    right: calc(18px + (var(--sg-scale) - 1) * 28px);
-    bottom: calc(78px + (var(--sg-scale) - 1) * 28px);
-  }
-}
-
-/* Keep SVG crisp (visual unchanged; scale handles size) */
-.settings-gear svg {
-  width: 28px;
-  height: 28px;
+  .settings-gear { right: 10px; bottom: 10px; width: 52px; height: 52px; }
 }
 
 /* ============================
-   Scale entire page when body.mobile-mode is active
+   POPUP / MODAL (desktop + mobile master variable)
+   - All popups use the same mobile scale variable
+   - Boxes adapt to text: height:auto, min-height:0, padding in clamp()
+   ============================ */
+.settings-popup,
+.popup,
+.modal,
+.mini-card,
+.bilan-block {
+  position: relative;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 18px 48px rgba(0,119,230,0.12);
+  overflow: hidden;
+  width: 100%;
+  max-width: 520px;
+  padding: 16px;
+  height: auto;
+  min-height: 0;
+  box-sizing: border-box;
+  transition: opacity 220ms ease, transform 220ms cubic-bezier(.2,.9,.2,1);
+}
+
+/* Desktop default popup placement */
+.settings-popup {
+  position: fixed;
+  right: 18px;
+  bottom: 78px;
+  width: 280px;
+  max-width: calc(100% - 40px);
+  opacity: 0;
+  transform: translateY(12px) scale(0.98);
+  pointer-events: none;
+  z-index: 1500;
+}
+.settings-popup.open { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+.settings-popup-inner { padding: 16px 18px; color: #222; }
+
+/* ============================
+   MOBILE: single variable controls ALL popup sizes
+   - Change only --mobile-popup-scale inside body.mobile-mode
+   ============================ */
+body.mobile-mode { --mobile-popup-scale: 1.25; } /* <-- change this single value to scale all popups in mobile */
+@media (max-width: 360px) { body.mobile-mode { --mobile-popup-scale: 1.25; } }
+
+/* Apply mobile-only popup scaling and safe placement */
+body.mobile-mode .settings-popup,
+body.mobile-mode .popup,
+body.mobile-mode .modal,
+body.mobile-mode .mini-card,
+body.mobile-mode .bilan-block {
+  transform-origin: top center;
+  transform: scale(var(--mobile-popup-scale));
+  max-width: calc(100% - 32px);
+  padding: clamp(10px, 3.5vw, 18px);
+  height: auto !important;
+  min-height: 0 !important;
+}
+
+/* Shift gear and popup to avoid overlap when mobile scale increases */
+body.mobile-mode .settings-gear {
+  right: calc(12px + (var(--mobile-popup-scale) - 1) * 12px);
+  bottom: calc(12px + (var(--mobile-popup-scale) - 1) * 12px);
+  z-index: 1600;
+}
+body.mobile-mode .settings-popup {
+  right: calc(12px + (var(--mobile-popup-scale) - 1) * 12px);
+  bottom: calc(70px + (var(--mobile-popup-scale) - 1) * 12px);
+  width: calc(92% - 24px);
+}
+
+/* Ensure popups adapt to text width (no fixed heights) */
+body.mobile-mode .settings-popup .settings-popup-inner,
+body.mobile-mode .popup .popup-inner,
+body.mobile-mode .modal .modal-inner {
+  height: auto;
+  min-height: 0;
+  padding: clamp(10px, 3.5vw, 18px);
+}
+
+/* ============================
+   LAYOUT SAFEGUARDS
+   - ensure menu-row behaves correctly in pc/mobile
+   ============================ */
+.menu-row { display: flex; gap: 20px; flex-wrap: wrap; align-items: flex-start; }
+.menu-row .container { width: 100%; max-width: 450px; box-sizing: border-box; }
+
+/* Force two-column layout in pc-mode on wide screens */
+@media (min-width: 900px) {
+  body.pc-mode .menu-row { flex-direction: row; flex-wrap: nowrap; justify-content: center; align-items: stretch; }
+  body.pc-mode .menu-row .container { flex: 0 0 450px; width: 450px; max-width: 450px; }
+}
+
+/* Accessibility */
+:focus { outline: 3px solid rgba(0,119,230,0.12); outline-offset: 2px; }
+/* ============================
+   Remplacement nettoyé — mobile scaling, gear, popups, espacements
+   Remplace la portion fournie par l'utilisateur (ne change pas le visuel desktop)
    ============================ */
 
-/* Default page scale */
-:root { --page-scale: 1; }
-
-/* When mobile-mode is active, increase the page scale.
-   We use media queries to choose x2 or x3 depending on viewport width. */
-body.mobile-mode { --page-scale: 2; }
-@media (max-width: 320px) {
-  body.mobile-mode { --page-scale: 3; }
+/* Master variable pour popups en mobile : changez UNE SEULE valeur ici */
+:root {
+  --mobile-popup-scale: 1; /* desktop default (no scale) */
 }
 
-/* Elements to scale (add selectors if you have other main wrappers) */
-body.mobile-mode .container,
-body.mobile-mode .page,
-body.mobile-mode .menu-row,
-body.mobile-mode .mini-card,
-body.mobile-mode .bilan-container,
-body.mobile-mode .menu-footer,
-body.mobile-mode .section,
-body.mobile-mode .chips,
-body.mobile-mode .bilan-block {
-  transform-origin: top center;
-  transform: scale(var(--page-scale));
-  transition: transform 260ms cubic-bezier(.2,.9,.2,1);
-}
-
-/* Prevent horizontal overflow when scaled */
-body.mobile-mode {
-  overflow-x: hidden;
-}
-
-/* Adjust spacing because scale reduces available space visually:
-   we increase margins/paddings slightly so layout stays readable */
-body.mobile-mode .container,
-body.mobile-mode .page {
-  margin-top: calc(30px * var(--page-scale));
-  padding: calc(20px * var(--page-scale));
-  border-radius: calc(20px * var(--page-scale));
-}
-
-/* Buttons and inputs scale visually but keep clickable area consistent:
-   we scale them visually but keep their layout flow by using transform only. */
-body.mobile-mode .btn,
-body.mobile-mode .start-btn,
-body.mobile-mode input[type="text"] {
-  transform-origin: center;
-  transform: scale(var(--page-scale));
-  transition: transform 260ms cubic-bezier(.2,.9,.2,1);
-}
-
-/* Fixed elements (settings gear + popup) must be repositioned to avoid overlap.
-   We reuse --page-scale to shift them away from the scaled content. */
-body { --sg-scale: 1; } /* existing variable for gear scale remains */
-.settings-gear {
-  /* compose gear scale with page scale so visual size is consistent */
-  transform: scale(calc(var(--sg-scale) * var(--page-scale)));
-  transform-origin: center;
-  transition: transform 260ms cubic-bezier(.2,.9,.2,1), right .26s, bottom .26s;
-}
-
-/* Move the gear a bit inward when page is scaled */
-body.mobile-mode .settings-gear {
-  right: calc(12px + (var(--page-scale) - 1) * 28px);
-  bottom: calc(12px + (var(--page-scale) - 1) * 28px);
-  z-index: 2000;
-}
-
-/* Shift popup so it doesn't sit under the enlarged gear */
-.settings-popup {
-  transition: right .26s, bottom .26s, transform .26s, opacity .26s;
-}
-body.mobile-mode .settings-popup {
-  right: calc(18px + (var(--page-scale) - 1) * 28px);
-  bottom: calc(78px + (var(--page-scale) - 1) * 28px);
-}
-
-/* Tweak text sizes if you want them proportionally larger (optional) */
-body.mobile-mode h1, body.mobile-mode h2, body.mobile-mode h3 {
-  transform: scale(var(--page-scale));
-  transform-origin: top center;
-}
-
-/* Accessibility: ensure focus outlines remain visible after scaling */
-body.mobile-mode :focus {
-  outline: 3px solid rgba(0,119,230,0.18);
-  outline-offset: 3px;
-}
-
-/* Safety: if some element overflows, allow vertical scroll */
-body.mobile-mode {
-  overflow-y: auto;
-}
-
-/* Subtil page scaling when body.mobile-mode is active */
-:root { --page-scale: 1; }
-
-/* Gentle scale for mobile mode (less aggressive) */
-body.mobile-mode { --page-scale: 1.15; } /* ~ +15% */
-@media (max-width: 360px) {
-  body.mobile-mode { --page-scale: 1.30; } /* ~ +30% on very small screens */
-}
-
-/* Elements to scale visually (transform only) */
-body.mobile-mode .container,
-body.mobile-mode .page,
-body.mobile-mode .menu-row,
-body.mobile-mode .mini-card,
-body.mobile-mode .bilan-container,
-body.mobile-mode .menu-footer,
-body.mobile-mode .section,
-body.mobile-mode .chips,
-body.mobile-mode .bilan-block {
-  transform-origin: top center;
-  transform: scale(var(--page-scale));
-  transition: transform 220ms cubic-bezier(.2,.9,.2,1);
-}
-
-/* Reduce spacing adjustments (smaller than before) */
-body.mobile-mode .container,
-body.mobile-mode .page {
-  margin-top: calc(18px * (var(--page-scale)));
-  padding: calc(16px * (var(--page-scale)));
-  border-radius: calc(16px * (var(--page-scale)));
-}
-
-/* Buttons and inputs scale visually but keep layout flow */
-body.mobile-mode .btn,
-body.mobile-mode .start-btn,
-body.mobile-mode input[type="text"] {
-  transform-origin: center;
-  transform: scale(var(--page-scale));
-  transition: transform 220ms cubic-bezier(.2,.9,.2,1);
-}
-
-/* Compose settings gear scale with page scale but keep gear size reasonable */
-.settings-gear {
-  --sg-scale: 1; /* base gear scale */
-  transform: scale(calc(var(--sg-scale) * var(--page-scale)));
-  transform-origin: center;
-  transition: transform 220ms cubic-bezier(.2,.9,.2,1), right .22s, bottom .22s;
-}
-
-/* Slight repositioning to avoid overlap (small offsets) */
-body.mobile-mode .settings-gear {
-  right: calc(12px + (var(--page-scale) - 1) * 12px);
-  bottom: calc(12px + (var(--page-scale) - 1) * 12px);
-  z-index: 2000;
-}
-
-/* Shift popup modestly so it doesn't sit under the gear */
-body.mobile-mode .settings-popup {
-  right: calc(18px + (var(--page-scale) - 1) * 12px);
-  bottom: calc(78px + (var(--page-scale) - 1) * 12px);
-}
-
-/* Text scaling (optional, subtle) */
-body.mobile-mode h1, body.mobile-mode h2, body.mobile-mode h3 {
-  transform: scale(var(--page-scale));
-  transform-origin: top center;
-}
-
-/* Keep scrolling and accessibility sane */
-body.mobile-mode { overflow-x: hidden; overflow-y: auto; }
-body.mobile-mode :focus { outline: 3px solid rgba(0,119,230,0.14); outline-offset: 3px; }
-/* === Scaling page (subtil) — correction du "tassé" en bas === */
-:root { --page-scale: 1; --page-translate-base: 40px; }
-
-/* gentle scale for mobile-mode */
-body.mobile-mode { --page-scale: 1.15; }
-@media (max-width: 360px) { body.mobile-mode { --page-scale: 1.30; } }
-
-/* compute a translate to push scaled content down so bottom isn't cut */
-body.mobile-mode { --page-translate: calc((var(--page-scale) - 1) * var(--page-translate-base)); }
-
-/* Apply composed transform: translateY then scale (keeps layout flow visually consistent) */
-body.mobile-mode .container,
-body.mobile-mode .page,
-body.mobile-mode .menu-row,
-body.mobile-mode .mini-card,
-body.mobile-mode .bilan-container,
-body.mobile-mode .section,
-body.mobile-mode .bilan-block {
-  transform-origin: top center;
-  transform: translateY(var(--page-translate)) scale(var(--page-scale));
-  transition: transform 220ms cubic-bezier(.2,.9,.2,1);
-}
-
-/* Ensure wrappers reserve enough vertical space after scaling */
-body.mobile-mode .container,
-body.mobile-mode .page {
-  min-height: calc(100vh / var(--page-scale)); /* évite que le contenu soit plus grand que l'espace visible */
-  padding-bottom: calc(80px * var(--page-scale)); /* espace pour footer / popup / gear */
-}
-
-/* Si tu as un footer fixe ou menu-footer, augmente son margin-top pour respirer */
-body.mobile-mode .menu-footer {
-  margin-top: calc(40px * var(--page-scale));
-}
-
-/* Déplacer le bouton settings et la popup pour éviter recouvrement */
-body.mobile-mode .settings-gear {
-  right: calc(12px + (var(--page-scale) - 1) * 12px);
-  bottom: calc(12px + (var(--page-scale) - 1) * 12px);
-  z-index: 2000;
-  transform: scale(calc(var(--page-scale))); /* compose visuel si tu veux */
-}
-
-body.mobile-mode .settings-popup {
-  right: calc(18px + (var(--page-scale) - 1) * 12px);
-  bottom: calc(78px + (var(--page-scale) - 1) * 12px);
-}
-
-/* Keep scrolling available and avoid hidden overflow */
-body.mobile-mode { overflow-x: hidden; overflow-y: auto; }
-
-/* Optional: exclude footer from scaling if you prefer it fixed and readable */
-body.mobile-mode .menu-footer {
-  transform: none;
-  transform-origin: initial;
-}
-
-/* Accessibility: keep focus outlines visible after transforms */
-body.mobile-mode :focus { outline: 3px solid rgba(0,119,230,0.14); outline-offset: 3px; }
-/* === Fix organisation : désactiver scaling destructeur et restaurer espaces === */
-
-/* 1) Annuler transform scale sur les wrappers principaux si présent */
+/* --- Neutraliser scaling destructeur sur wrappers --- */
 .container, .page, .menu-row, .mini-card, .bilan-container, .bilan-block {
   transform: none !important;
   transform-origin: initial !important;
   transition: none !important;
+  box-sizing: border-box;
 }
 
-/* 2) Appliquer une montée de taille contrôlée via font-size et paddings (lisible, sans casser le flux) */
+/* --- Mode mobile : définir la seule variable à modifier --- */
 body.mobile-mode {
-  font-size: 1.06rem; /* léger agrandissement global */
-}
-body.mobile-mode .container, body.mobile-mode .page {
-  padding: 20px; /* espace intérieur suffisant */
-  margin-top: 24px;
+  --mobile-popup-scale: 1.25; /* <-- changez CE nombre pour agrandir/réduire toutes les popups en mobile */
+  overflow-x: hidden;
+  overflow-y: auto;
+  /* léger agrandissement typographique si souhaité (optionnel) */
+  /* font-size: 1.06rem; */
 }
 
-/* 3) Restaurer gaps et alignements */
-.menu-row { gap: 20px; display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; }
+/* Très petits écrans : ajustement optionnel */
+@media (max-width: 360px) {
+  body.mobile-mode { --mobile-popup-scale: 1.25; }
+}
+
+/* --- Réserver de l'espace bas sans min-height dépendant du scale --- */
+body.mobile-mode .container,
+body.mobile-mode .page {
+  /* padding-bottom fixe pour laisser de la place au footer/popup/gear */
+  padding-bottom: 80px;
+  min-height: auto;
+}
+
+/* Footer spacing conservateur en mobile */
+body.mobile-mode .menu-footer {
+  margin-top: 36px;
+}
+
+/* --- Settings gear : position fixe, responsive, sans casser le flux --- */
+.settings-gear {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 1400;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  transform-origin: center;
+  transition: transform 260ms cubic-bezier(.2,.9,.2,1), box-shadow 260ms cubic-bezier(.2,.9,.2,1), background 260ms ease;
+}
+
+/* Décalage léger du gear en mobile pour éviter recouvrement (basé sur la variable unique) */
+body.mobile-mode .settings-gear {
+  right: calc(12px + (var(--mobile-popup-scale) - 1) * 12px);
+  bottom: calc(12px + (var(--mobile-popup-scale) - 1) * 12px);
+  z-index: 1600;
+}
+
+/* --- Popups / modals / mini-cards : base (desktop unchanged) --- */
+.settings-popup,
+.popup,
+.modal,
+.mini-card,
+.bilan-block {
+  position: relative;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 18px 48px rgba(0,119,230,0.12);
+  overflow: hidden;
+  width: 100%;
+  max-width: 520px;
+  padding: 16px;
+  height: auto;
+  min-height: 0;
+  box-sizing: border-box;
+  transition: opacity 220ms ease, transform 220ms cubic-bezier(.2,.9,.2,1);
+}
+
+/* Desktop placement settings-popup (inchangé) */
+.settings-popup {
+  position: fixed;
+  right: 18px;
+  bottom: 78px;
+  width: 280px;
+  max-width: calc(100% - 40px);
+  opacity: 0;
+  transform: translateY(12px) scale(0.98);
+  pointer-events: none;
+  z-index: 1500;
+}
+.settings-popup.open { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+.settings-popup-inner { padding: 16px 18px; color: #222; }
+
+/* --- MOBILE : appliquer la variable unique à toutes les popups (scale uniquement) --- */
+body.mobile-mode .settings-popup,
+body.mobile-mode .popup,
+body.mobile-mode .modal,
+body.mobile-mode .mini-card,
+body.mobile-mode .bilan-block {
+  transform-origin: top center;
+  transform: scale(var(--mobile-popup-scale));
+  max-width: calc(100% - 32px);
+  padding: clamp(10px, 3.5vw, 18px);
+  height: auto !important;
+  min-height: 0 !important;
+}
+
+/* Décaler la popup mobile pour éviter recouvrement avec le gear */
+body.mobile-mode .settings-popup {
+  right: calc(12px + (var(--mobile-popup-scale) - 1) * 12px);
+  bottom: calc(70px + (var(--mobile-popup-scale) - 1) * 12px);
+  width: calc(92% - 24px);
+}
+
+/* Assurer que le contenu interne s'adapte au texte */
+body.mobile-mode .settings-popup .settings-popup-inner,
+body.mobile-mode .popup .popup-inner,
+body.mobile-mode .modal .modal-inner {
+  height: auto;
+  min-height: 0;
+  padding: clamp(10px, 3.5vw, 18px);
+}
+
+/* --- Layout safeguards (desktop visuals preserved) --- */
+.menu-row { display: flex; gap: 20px; flex-wrap: wrap; align-items: flex-start; }
 .menu-row .container { width: 100%; max-width: 450px; box-sizing: border-box; }
 
-/* 4) Boutons visibles et accessibles */
-.btn, .start-btn, .menu-link, .back-button, .stop-button {
-  display: inline-block;
-  margin: 10px 0;
-  line-height: 1.2;
-  vertical-align: middle;
+/* Forcer deux colonnes en pc-mode (aucun changement visuel attendu) */
+@media (min-width: 900px) {
+  body.pc-mode .menu-row { flex-direction: row; flex-wrap: nowrap; justify-content: center; align-items: stretch; gap: 20px; }
+  body.pc-mode .menu-row .container { flex: 0 0 450px; width: 450px; max-width: 450px; box-sizing: border-box; }
 }
 
-/* 5) Forcer visibilité des éléments masqués par overflow */
-.container, .page { overflow: visible; }
-
-/* 6) Footer et espace bas : garantir marge suffisante */
-.menu-footer { margin-top: 36px; padding-bottom: 36px; }
-
-/* 7) Eviter recouvrement par le bouton settings : popup au-dessus, gear au-dessous */
-.settings-gear { z-index: 1400; }
-.settings-popup { z-index: 1500; }
-
-/* 8) Popup placement sûr sur petits écrans */
-@media (max-width: 420px) {
-  .settings-popup { right: 12px; left: 12px; bottom: 92px; width: auto; }
-  .settings-gear { right: 12px; bottom: 12px; }
-}
-
-/* 9) Chips / listes : permettre retour à la ligne et espacement */
+/* Chips / lists: wrapping and reasonable gaps */
 .chips { gap: 10px; align-items: flex-start; }
-.chip { white-space: normal; }
+.chip { white-space: normal; padding: 8px 12px; }
 
-/* 10) Assurer min-height pour containers afin d'éviter tassement */
-.container { min-height: 160px; }
-@media (min-width: 900px) {
-  .menu-row .container { min-height: 260px; }
-}
-
-/* 11) Accessibilité : garder focus visible après ajustements */
+/* Accessibility */
 :focus { outline: 3px solid rgba(0,119,230,0.12); outline-offset: 2px; }
-.menu-row { gap: 28px !important; }
-.container { margin-bottom: 18px !important; }
-/* === Patch : réduire les grands espaces et resserrer la mise en page === */
 
-/* 1. Resserre les gaps entre cartes et colonnes */
-.menu-row { gap: 14px !important; }
 
-/* 2. Réduire marges verticales des containers */
-.container, .page {
-  margin-top: 18px !important;
-  margin-bottom: 18px !important;
-  padding: 18px !important;
-  box-sizing: border-box;
-}
-
-/* 3. Titres moins espacés (h1/h2) */
-.container h1, .container h2 {
-  margin-top: 6px !important;
-  margin-bottom: 8px !important;
-  line-height: 1.15;
-}
-
-/* 4. Boutons et actions : réduire l'espace autour */
-.btn, .start-btn, .menu-link {
-  margin-top: 8px !important;
-  margin-bottom: 8px !important;
-  padding: 10px 18px !important;
-}
-
-/* 5. Mini‑carte d'intro : moins haute */
-.mini-card {
-  margin: 0 auto 18px auto !important;
-  padding: 12px 16px !important;
-}
-
-/* 6. Footer : réduire le « blanc » sous les cartes */
-.menu-footer {
-  margin-top: 20px !important;
-  padding-bottom: 18px !important;
-}
-
-/* 7. Éviter min-height trop grand qui crée du vide */
-.container, .menu-row .container { min-height: 0 !important; }
-
-/* 8. Chips / listes : resserrer et autoriser retour à la ligne */
-.chips { gap: 8px !important; }
-.chip { padding: 8px 12px !important; }
-
-/* 9. Popup / gear : s'assurer qu'ils ne poussent pas le contenu */
-.settings-gear { position: fixed; }
-.settings-popup { position: fixed; }
-
-/* 10. Mobile specific: réduire vertical spacing on small screens */
-@media (max-width: 420px) {
-  .menu-row { gap: 12px !important; }
-  .container, .page { padding: 14px !important; margin-top: 12px !important; }
-  .mini-card { padding: 10px 12px !important; }
-  .menu-footer { margin-top: 14px !important; padding-bottom: 14px !important; }
-}
-/* Forcer layout côte-à-côte en mode PC */
-body.pc-mode .menu-row {
-  display: flex !important;
-  flex-direction: row !important;
-  flex-wrap: nowrap !important;
-  justify-content: center;
-  align-items: stretch;
-  gap: 20px !important;
-}
-
-/* Chaque carte garde sa largeur fixe en PC */
-body.pc-mode .menu-row .container {
-  width: 450px !important;
-  max-width: 45vw; /* sécurité responsive */
-  box-sizing: border-box;
-  flex: 0 0 450px; /* empêche l'étirement ou la réduction */
-}
-
-/* Si une règle mobile force la colonne, on l'annule explicitement */
-body.pc-mode .menu-row[style], /* inline styles */
-body.pc-mode .menu-row {
-  /* override possible mobile rules */
-  -webkit-flex-direction: row !important;
-  -ms-flex-direction: row !important;
-  flex-direction: row !important;
-}
-
-/* Assurer que les containers internes ne prennent pas 100% */
-body.pc-mode .menu-row .container * {
-  max-width: 100%;
-}
-
-/* Si tu utilises des transforms globaux, neutralise-les pour le layout */
-body.pc-mode .menu-row,
-body.pc-mode .container {
-  transform: none !important;
-}
-
-/* Optionnel : si tu veux que la deuxième colonne passe en dessous sous 900px */
-@media (max-width: 899px) {
-  .menu-row { flex-wrap: wrap; }
-  .menu-row .container { flex: 1 1 100%; max-width: 100%; width: 100%; }
-}
-/* === Forcer layout côte-à-côte en mode PC (placer en fin de style.css) === */
+/* === Révision ciblée — règles consolidées pour mode PC === */
 @media (min-width: 900px) {
-  /* menu-row en ligne */
-  body.pc-mode .menu-row {
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: nowrap !important;
-    justify-content: center;
-    align-items: stretch;
-    gap: 20px !important;
-  }
-
-  /* chaque carte garde sa largeur fixe et ne prend pas 100% */
-  body.pc-mode .menu-row .container {
-    flex: 0 0 450px !important;   /* largeur fixe */
-    width: 450px !important;
-    max-width: 450px !important;
-    box-sizing: border-box;
-  }
-
-  /* neutraliser tout transform/scale qui casserait le flow */
-  body.pc-mode .menu-row,
-  body.pc-mode .menu-row .container,
-  body.pc-mode .container,
-  body.pc-mode .page {
-    transform: none !important;
-    transform-origin: initial !important;
-  }
-
-  /* s'assurer que les enfants ne forcent pas 100% */
-  body.pc-mode .menu-row .container * {
-    max-width: 100%;
-  }
-}
-
-/* Sécurité : si une règle mobile a été appliquée avec !important, on l'annule explicitement */
-body.pc-mode .menu-row[style],
-body.pc-mode .menu-row[style] * {
-  -webkit-flex-direction: row !important;
-  -ms-flex-direction: row !important;
-  flex-direction: row !important;
-}
-
-/* Optionnel : comportement responsive sous 900px (retour en colonne) */
-@media (max-width: 899px) {
-  body.pc-mode .menu-row { flex-wrap: wrap; }
-  body.pc-mode .menu-row .container { flex: 1 1 100%; width: 100%; max-width: 100%; }
-}
-/* === Réduction et rééquilibrage de la carte "Révision ciblée" en mode PC === */
-@media (min-width: 900px) {
-  /* Sélecteurs multiples pour couvrir les variantes possibles */
-  body.pc-mode .revision-card,
-  body.pc-mode .mini-card.revision,
-  body.pc-mode .mini-card,
-  body.pc-mode .bilan-block.revision,
-  body.pc-mode .container.revision {
-    max-width: 420px;            /* limite la largeur de la carte */
-    width: 100%;
-    box-sizing: border-box;
-    padding: 14px 18px;          /* réduit les paddings excessifs */
-    margin: 0;                   /* évite marges verticales trop grandes */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;     /* centre verticalement le contenu */
-    align-items: stretch;
-    min-height: auto;            /* supprime min-height trop grand */
-    height: auto;                /* laisse la hauteur s'ajuster au contenu */
-  }
-
-  /* Titre / description : réduire l'espacement et la taille si nécessaire */
-  body.pc-mode .mini-card h2,
-  body.pc-mode .revision-card h2,
-  body.pc-mode .mini-card .title {
-    font-size: 1.05rem;
-    margin: 6px 0 8px 0;
-    line-height: 1.18;
-  }
-  body.pc-mode .mini-card p,
-  body.pc-mode .revision-card p,
-  body.pc-mode .mini-card .desc {
-    font-size: 0.95rem;
-    margin: 0 0 10px 0;
-    color: #475569;
-  }
-
-  /* Bouton : centré, taille adaptée */
-  body.pc-mode .mini-card .btn,
-  body.pc-mode .revision-card .btn,
-  body.pc-mode .mini-card .start-btn {
-    align-self: center;
-    padding: 10px 18px;
-    font-size: 0.98rem;
-    margin-top: 10px;
-    max-width: 220px;
-    width: auto;
-  }
-
-  /* Si la carte contient un bloc d'icône ou badge, réduire son espace */
-  body.pc-mode .mini-card .badge,
-  body.pc-mode .revision-card .badge {
-    margin-bottom: 8px;
-    padding: 6px 12px;
-    font-size: 0.85rem;
-  }
-
-  /* Forcer le contenu à ne pas s'étirer verticalement */
+  /* Empêcher l'étirement vertical des éléments internes (sauf boutons) */
   body.pc-mode .mini-card > *:not(.btn),
   body.pc-mode .revision-card > *:not(.btn) {
     flex: 0 0 auto;
   }
 
-  /* Si une image ou SVG est présent, limiter sa hauteur */
+  /* Limiter la taille des images/illustrations pour ne pas étirer la carte */
   body.pc-mode .mini-card img,
   body.pc-mode .revision-card img {
+    max-width: 100%;
     max-height: 84px;
     width: auto;
     object-fit: contain;
     margin-bottom: 8px;
+    display: block;
   }
-}
-/* === Cible précise pour "Révision ciblée" en mode PC === */
-@media (min-width: 900px) {
-  /* Remplacez .revision-card par la classe exacte si nécessaire */
+
+  /* Cible précise pour "Révision ciblée" — largeur et hauteur adaptées au contenu */
   body.pc-mode .revision-card,
   body.pc-mode .mini-card.revision,
   body.pc-mode .mini-card--revision,
   body.pc-mode .container.revision {
-    max-width: 420px !important;    /* largeur raisonnable */
-    width: 420px !important;
-    padding: 12px 16px !important;  /* moins d'espace vide */
+    max-width: 420px;
+    width: 420px;
     box-sizing: border-box;
+    padding: 12px 16px;
+    margin: 0;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;    /* ne pas étirer verticalement */
+    justify-content: flex-start; /* ne pas centrer verticalement */
     align-items: stretch;
-    min-height: 0 !important;       /* annule min-height trop grand */
-    height: auto !important;        /* hauteur s'ajuste au contenu */
+    min-height: 0; /* s'ajuste au contenu */
+    height: auto;
   }
 
-  /* Texte et titres */
+  /* Titres et paragraphes : espacement et taille harmonisés */
   body.pc-mode .revision-card h2,
   body.pc-mode .mini-card.revision h2 {
     font-size: 1.05rem;
@@ -1234,9 +953,10 @@ body.pc-mode .menu-row[style] * {
   body.pc-mode .mini-card.revision p {
     font-size: 0.95rem;
     margin: 0 0 10px 0;
+    color: #475569;
   }
 
-  /* Bouton : taille et position */
+  /* Bouton : centré et proportionné */
   body.pc-mode .revision-card .btn,
   body.pc-mode .mini-card.revision .btn {
     align-self: center;
@@ -1246,19 +966,11 @@ body.pc-mode .menu-row[style] * {
     width: auto;
   }
 
-  /* Empêcher images/illustrations d'étirer la carte */
-  body.pc-mode .revision-card img,
-  body.pc-mode .mini-card.revision img {
-    max-width: 100%;
-    max-height: 84px;
-    object-fit: contain;
-  }
-
-  /* Si la carte est dans une .menu-row, s'assurer que la colonne voisine garde sa taille */
+  /* Si la carte est dans une .menu-row, préserver la largeur de la colonne voisine */
   body.pc-mode .menu-row .container:not(.revision) {
-    flex: 0 0 450px !important;
-    width: 450px !important;
+    flex: 0 0 450px;
+    width: 450px;
+    box-sizing: border-box;
   }
 }
 
-}
