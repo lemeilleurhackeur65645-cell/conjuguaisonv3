@@ -75,3 +75,50 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+// Robust attach: si le bouton est ajouté plus tard, on l'attache via mutation observer
+(function attachSettingsWhenReady() {
+  const tryAttach = () => {
+    const gear = document.getElementById("settings-gear");
+    const popup = document.getElementById("settings-popup");
+    const toggle = document.getElementById("interface-toggle");
+    if (!gear) return false;
+
+    // ensure aria attributes exist
+    gear.setAttribute("aria-expanded", gear.getAttribute("aria-expanded") || "false");
+    if (popup) popup.setAttribute("aria-hidden", popup.getAttribute("aria-hidden") || "true");
+
+    // re-attach click handler if none
+    if (!gear.__settingsAttached) {
+      gear.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (!popup) return;
+        const isOpen = popup.classList.toggle("open");
+        popup.setAttribute("aria-hidden", String(!isOpen));
+        gear.setAttribute("aria-expanded", String(isOpen));
+      });
+      gear.__settingsAttached = true;
+    }
+
+    // ensure toggle handler exists
+    if (toggle && !toggle.__settingsAttached) {
+      toggle.addEventListener("change", () => {
+        const mode = toggle.checked ? "pc" : "mobile";
+        document.body.classList.toggle("pc-mode", toggle.checked);
+        document.body.classList.toggle("mobile-mode", !toggle.checked);
+        localStorage.setItem("site_interface_mode", mode);
+      });
+      toggle.__settingsAttached = true;
+    }
+
+    return true;
+  };
+
+  if (!tryAttach()) {
+    // observe DOM additions for the gear/popup
+    const mo = new MutationObserver((mutations, obs) => {
+      if (tryAttach()) obs.disconnect();
+    });
+    mo.observe(document.documentElement || document.body, { childList: true, subtree: true });
+  }
+})();
+
