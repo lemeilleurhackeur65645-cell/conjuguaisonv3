@@ -1019,6 +1019,27 @@ body * {
   /* remove/comment this block after debug */
   /* outline: 0.5px dashed rgba(255,0,0,0.06); */
 }
+/* === Fix clickability settings gear (fin de style.css) === */
+#settings-gear, .settings-gear {
+  position: fixed !important;
+  right: 18px !important;
+  bottom: 18px !important;
+  z-index: 99999 !important;
+  pointer-events: auto !important;
+  background: transparent;
+}
+
+/* Popup sous le gear, ne capte pas les clics quand fermé */
+#settings-popup, .settings-popup {
+  position: fixed !important;
+  z-index: 99998 !important;
+  pointer-events: auto;
+}
+.settings-popup[aria-hidden="true"] {
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(6px) scale(0.995);
+}
 
 }
 
