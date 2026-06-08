@@ -985,6 +985,40 @@ body.mobile-mode .modal .modal-inner {
    body.mobile-mode {
      background: #ffffff; /* ou transparent si tu préfères */
    }
+/* === Fix clickability settings gear (place at end of style.css) === */
+
+/* Assurer que le gear est au-dessus de tout et cliquable */
+#settings-gear,
+.settings-gear {
+  position: fixed !important;
+  right: 18px !important;
+  bottom: 18px !important;
+  z-index: 99999 !important;      /* très haut pour éviter recouvrement */
+  pointer-events: auto !important;/* s'assurer que les clics passent */
+  background: transparent;        /* ne change pas le visuel si déjà stylé */
+}
+
+/* Popup juste en dessous du gear (ouvre au-dessus quand nécessaire) */
+#settings-popup,
+.settings-popup {
+  position: fixed !important;
+  z-index: 99998 !important;
+  pointer-events: auto;           /* quand ouvert, on veut interagir */
+}
+
+/* Quand popup fermé, s'assurer qu'il ne capte pas les clics invisibles */
+.settings-popup[aria-hidden="true"] {
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(6px) scale(0.995);
+}
+
+/* Sécurité : empêcher qu'un parent avec z-index élevé masque le gear */
+body * {
+  /* n'applique pas globalement, juste pour debug si nécessaire */
+  /* remove/comment this block after debug */
+  /* outline: 0.5px dashed rgba(255,0,0,0.06); */
+}
 
 }
 
