@@ -972,5 +972,19 @@ body.mobile-mode .modal .modal-inner {
     width: 450px;
     box-sizing: border-box;
   }
+
+   /* === Fond spécial uniquement en mode PC === */
+   body.pc-mode {
+     background-image: url("/static/img/fond.png"); 
+     background-size: cover;
+     background-position: center;
+     background-repeat: no-repeat;
+   }
+
+/* === En mode mobile : fond normal === */
+   body.mobile-mode {
+     background: #ffffff; /* ou transparent si tu préfères */
+   }
+
 }
 
