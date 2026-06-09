@@ -90,34 +90,7 @@
     </div>
   </div>
 </div>
-<!-- POPUP (UN SEUL exemplaire, placé dans le body) -->
-<div id="settings-popup" class="settings-popup" role="dialog" aria-hidden="true" aria-labelledby="settings-title">
-  <div class="settings-popup-inner">
-    <h2 id="settings-title">Paramètres</h2>
 
-    <!-- Interface switch -->
-    <div class="setting-block">
-      <label class="setting-label">Interface</label>
-
-      <div class="switch-container interface-switch" role="group" aria-label="Interface mobile ou PC">
-        <span class="switch-label">Mobile</span>
-
-        <label class="switch" aria-hidden="true">
-          <input type="checkbox" id="interface-toggle" aria-checked="true" />
-          <span class="slider" aria-hidden="true"></span>
-        </label>
-
-        <span class="switch-label">PC</span>
-      </div>
-
-      <p class="muted small-note">Active Mobile pour adapter l'interface à ton téléphone.</p>
-    </div>
-
-    <div class="setting-block">
-      <p class="muted">Cliquez de nouveau sur l'engrenage pour fermer.</p>
-    </div>
-  </div>
-</div>
 <div class="container bilan-container">
 
     <h1>Bilan de la session</h1>
@@ -220,6 +193,11 @@
 
         <!-- VOIX -->
         <p class="analyse-title">Voix les moins réussies</p>
+        {% if total_voix > 0 %}
+            {{ (erreurs_voix[voix] / total_voix * 100)|round(1) }}%
+        {% else %}
+            0%
+        {% endif %}
 
         {% set total_voix = analyse.voix.active + analyse.voix.passive %}
         {% set pct_active = (analyse.voix.active * 100 / total_voix) | round(0, 'floor') %}
