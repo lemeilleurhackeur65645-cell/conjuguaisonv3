@@ -1156,7 +1156,7 @@ body, h1, h2, h3, .logo-card {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: var(--logo-wrapper-size);
+  width: 150px;
   height: auto;
   box-sizing: border-box;
   z-index: 30;
