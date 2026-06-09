@@ -836,9 +836,6 @@ body.mobile-mode .modal .modal-inner {
    }
 /* === Fix clickability settings gear (place at end of style.css) === */
 
-/* Assurer que le gear est au-dessus de tout et cliquable */
-#settings-gear,
-
 
 /* Quand popup fermé, s'assurer qu'il ne capte pas les clics invisibles */
 .settings-popup[aria-hidden="true"] {
