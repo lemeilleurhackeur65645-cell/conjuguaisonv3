@@ -5,6 +5,32 @@
     <title>Quiz de Conjugaison</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
+
+<script>
+(function(){
+  function applyMobileOffsets(){
+    const vw = window.innerWidth;
+    if(vw <= 899){
+      // exemple : abaissement proportionnel au logo
+      const logoSize = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--logo-size')) || 120;
+      const mobileVert = Math.max(8, Math.round(logoSize * 0.12)) + 'px';
+      document.documentElement.style.setProperty('--logo-vert-mobile', mobileVert);
+      // pousse la carte droite si nécessaire
+      const push = Math.max(0, Math.round(logoSize * 0.08)) + 'px';
+      document.querySelectorAll('.card-right').forEach(el => el.style.marginTop = push);
+    } else {
+      // reset mobile-specific inline styles
+      document.documentElement.style.removeProperty('--logo-vert-mobile');
+      document.querySelectorAll('.card-right').forEach(el => el.style.marginTop = '');
+    }
+  }
+
+  window.addEventListener('resize', applyMobileOffsets);
+  document.addEventListener('DOMContentLoaded', applyMobileOffsets);
+  applyMobileOffsets();
+})();
+</script>
+
 <body>
 
 <button id="settings-gear" class="settings-gear" aria-expanded="false" aria-controls="settings-popup" aria-label="Paramètres">
