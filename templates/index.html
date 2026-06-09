@@ -171,5 +171,21 @@
     <a href="/changelog" class="menu-link">Journal des modifications</a>
 </div>
 <script src="{{ url_for('static', filename='js/settings.js') }}" defer></script>
+
+<script>
+  window.setLogo = function(x, size){
+    if(x) { document.documentElement.style.setProperty('--logo-x', x); localStorage.setItem('logo_x', x); }
+    if(size) { document.documentElement.style.setProperty('--logo-size', size); localStorage.setItem('logo_size', size); }
+    console.log('logo updated', x, size);
+  };
+  // restore saved values on load
+  (function(){
+    const savedX = localStorage.getItem('logo_x');
+    const savedSize = localStorage.getItem('logo_size');
+    if(savedX) document.documentElement.style.setProperty('--logo-x', savedX);
+    if(savedSize) document.documentElement.style.setProperty('--logo-size', savedSize);
+  })();
+</script>
+
 </body>
 </html>
