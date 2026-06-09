@@ -1148,7 +1148,7 @@ body, h1, h2, h3, .logo-card {
 :root {
   --logo-x: 0px;        /* contrôle horizontal de l'image seule */
   --logo-size: 140px;   /* nouvelle taille par défaut de l'image (réduite) */
-  --logo-wrapper-size: calc(var(--logo-size) + 24px);
+  --logo-wrapper-size: 150px;
 }
 
 /* Wrapper : reste centré, n'impose pas la taille de l'image */
