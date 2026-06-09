@@ -191,33 +191,43 @@
             </div>
         {% endfor %}
 
-        <!-- VOIX -->
-        <p class="analyse-title">Voix les moins réussies</p>
-        {% if total_voix > 0 %}
-            {{ (erreurs_voix[voix] / total_voix * 100)|round(1) }}%
-        {% else %}
-            0%
-        {% endif %}
+<!-- VOIX -->
+<p class="analyse-title">Voix les moins réussies</p>
 
-        {% set total_voix = analyse.voix.active + analyse.voix.passive %}
-        {% set pct_active = (analyse.voix.active * 100 / total_voix) | round(0, 'floor') %}
-        {% set pct_passive = (analyse.voix.passive * 100 / total_voix) | round(0, 'floor') %}
+{# Définitions sûres côté template #}
+{% set voix_data = voix if voix is defined else (analyse.get('voix') if analyse is defined else {}) %}
+{% set active = (voix_data.active if voix_data is mapping and 'active' in voix_data else (voix_data.get('active', 0) if voix_data is mapping else 0)) %}
+{% set passive = (voix_data.passive if voix_data is mapping and 'passive' in voix_data else (voix_data.get('passive', 0) if voix_data is mapping else 0)) %}
+{% set total_voix = total_voix|default(active + passive) %}
 
-        <div class="mode-row">
-            <span class="mode-label">Active</span>
-            <div class="mode-bar-premium">
-                <div class="mode-bar-fill-premium" style="width: {{ pct_active }}%;"></div>
-            </div>
-            <span class="mode-value">{{ pct_active }}%</span>
-        </div>
+{# Affichage résumé voix (pourcentage sécurisé) #}
+{% if total_voix|int > 0 %}
+    {% set pct_active = ((active * 100) / total_voix) | round(0, 'floor') %}
+    {% set pct_passive = ((passive * 100) / total_voix) | round(0, 'floor') %}
+{% else %}
+    {% set pct_active = 0 %}
+    {% set pct_passive = 0 %}
+{% endif %}
 
-        <div class="mode-row">
-            <span class="mode-label">Passive</span>
-            <div class="mode-bar-premium">
-                <div class="mode-bar-fill-premium" style="width: {{ pct_passive }}%;"></div>
-            </div>
-            <span class="mode-value">{{ pct_passive }}%</span>
-        </div>
+<div class="mode-row">
+    <span class="mode-label">Active</span>
+    <div class="mode-bar-premium">
+        <div class="mode-bar-fill-premium" style="width: {{ pct_active }}%;"></div>
+    </div>
+    <span class="mode-value">{{ pct_active }}%</span>
+</div>
+
+<div class="mode-row">
+    <span class="mode-label">Passive</span>
+    <div class="mode-bar-premium">
+        <div class="mode-bar-fill-premium" style="width: {{ pct_passive }}%;"></div>
+    </div>
+    <span class="mode-value">{{ pct_passive }}%</span>
+</div>
+
+{# Optionnel : afficher counts si disponibles #}
+<p class="muted">Active : {{ active }} erreur(s) — Passive : {{ passive }} erreur(s)</p>
+
 
         <!-- SUGGESTION -->
         <h3>Suggestion de révision</h3>
