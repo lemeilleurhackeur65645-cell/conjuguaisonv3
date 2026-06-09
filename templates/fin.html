@@ -200,7 +200,7 @@
 {% set passive = (voix_data.passive if voix_data is mapping and 'passive' in voix_data else (voix_data.get('passive', 0) if voix_data is mapping else 0)) %}
 {% set total_voix = total_voix|default(active + passive) %}
 
-{# Affichage résumé voix (pourcentage sécurisé) #}
+{# Calculs sécurisés #}
 {% if total_voix|int > 0 %}
     {% set pct_active = ((active * 100) / total_voix) | round(0, 'floor') %}
     {% set pct_passive = ((passive * 100) / total_voix) | round(0, 'floor') %}
@@ -225,9 +225,7 @@
     <span class="mode-value">{{ pct_passive }}%</span>
 </div>
 
-{# Optionnel : afficher counts si disponibles #}
 <p class="muted">Active : {{ active }} erreur(s) — Passive : {{ passive }} erreur(s)</p>
-
 
         <!-- SUGGESTION -->
         <h3>Suggestion de révision</h3>
