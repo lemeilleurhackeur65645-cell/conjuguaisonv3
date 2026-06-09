@@ -15,8 +15,6 @@ body {
 }
 :root{
   /* layout / logo / popup / gear */
-  --logo-x: 0px;
-  --logo-size: 120px;
   --gap-cards-desktop: 180px;
   --gap-cards-mobile: 28px;
   --logo-vert-desktop: 0px;
@@ -1132,4 +1130,18 @@ body, h1, h2, h3, .logo-card {
 
 /* Ensure caption doesn't scale with popups and uses site font */
 .logo-card, .logo-caption { font-family: var(--font-sans); }
+/* Image sizing and horizontal control (affecte uniquement l'image) */
+:root {
+  --logo-x: 0px;       /* valeur par défaut, change en px ou % */
+  --logo-size: 240px;  /* taille par défaut de l'image */
+}
+
+.logo-card img {
+  width: var(--logo-size);
+  height: auto;
+  display: block;
+  transform: translateX(var(--logo-x));
+  transition: transform 220ms ease, width 220ms ease;
+  will-change: transform, width;
+}
 
