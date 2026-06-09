@@ -53,7 +53,7 @@ body {
     display: inline-block;
     padding: 14px 28px;
     background: linear-gradient(135deg, #007bff, #0056d6);
-    color: white !important;
+    color: white ;
     text-decoration: none;
     border-radius: 12px;
     font-size: 1rem;
@@ -228,7 +228,7 @@ input:checked + .slider:before { transform: translateX(22px); }
     font-size: 1rem;
     font-weight: 600;
     background: linear-gradient(135deg, #007bff, #0056d6);
-    color: #fff !important;
+    color: #fff;
     box-shadow: 0 8px 20px rgba(0, 123, 255, 0.3);
     transition: 0.2s ease;
     text-align: center;
@@ -594,8 +594,8 @@ body.mobile-mode .bilan-block {
   transform: scale(var(--mobile-popup-scale));
   max-width: calc(100% - 32px);
   padding: clamp(10px, 3.5vw, 18px);
-  height: auto !important;
-  min-height: 0 !important;
+  height: auto ;
+  min-height: 0 ;
 }
 
 /* Shift gear and popup to avoid overlap when mobile scale increases */
@@ -644,9 +644,9 @@ body.mobile-mode .modal .modal-inner {
 
 /* --- Neutraliser scaling destructeur sur wrappers --- */
 .container, .page, .menu-row, .mini-card, .bilan-container, .bilan-block {
-  transform: none !important;
-  transform-origin: initial !important;
-  transition: none !important;
+  transform: none 
+  transform-origin: initial ;
+  transition: none ;
   box-sizing: border-box;
 }
 
@@ -718,8 +718,8 @@ body.mobile-mode .bilan-block {
   transform: scale(var(--mobile-popup-scale));
   max-width: calc(100% - 32px);
   padding: clamp(10px, 3.5vw, 18px);
-  height: auto !important;
-  min-height: 0 !important;
+  height: auto ;
+  min-height: 0 ;
 }
 
 /* Décaler la popup mobile pour éviter recouvrement avec le gear */
@@ -854,7 +854,7 @@ body.mobile-mode .modal .modal-inner {
 
 /* Popup sous le gear, ne capte pas les clics quand fermé */
 #settings-popup, .settings-popup {
-  position: fixed !important;
+  position: fixed ;
   z-index: 99998 !important;
   pointer-events: auto;
 }
@@ -1032,6 +1032,21 @@ body, h1, h2, h3, .logo-card {
 .settings-popup.open { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
 
 
+/* Base */
+.menu-row { display: flex; gap: 20px; flex-wrap: wrap; align-items: flex-start; }
+.menu-row .container { width: 100%; max-width: 450px; box-sizing: border-box; }
+
+/* Desktop forced two-column */
+@media (min-width: 900px) {
+  body.pc-mode .menu-row { flex-direction: row; flex-wrap: nowrap; justify-content: center; align-items: stretch; gap: var(--gap-cards-desktop); }
+  body.pc-mode .menu-row .container { flex: 0 0 450px; width: 450px; max-width: 450px; }
+}
+
+/* Mobile */
+@media (max-width: 899px) {
+  body.mobile-mode .menu-row { flex-direction: column; gap: var(--gap-cards-mobile); }
+  body.mobile-mode .menu-row .container { width: 100%; max-width: none; }
+}
 
 }
 
