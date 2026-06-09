@@ -1164,10 +1164,7 @@ body * {
   box-shadow: 0 12px 30px rgba(0,0,0,0.10);
 }
 
-/* Police pour le site */
-body, h1, h2, h3, .logo-card {
-  font-family: var(arial);
-}
+
 
 
 }
