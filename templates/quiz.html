@@ -105,7 +105,7 @@
     </div>
     {% endif %}
 
-    {% if mode == "evaluation" and session.questions_restantes is defined %}
+    {% if session.get("questions_restantes") %}
         
         <div class="progress-container">
             <div class="progress-bar" style="width: {{ (10 - session.questions_restantes) * 10 }}%;"></div>
