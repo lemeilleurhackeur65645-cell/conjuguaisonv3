@@ -1116,17 +1116,6 @@ body, h1, h2, h3, .logo-card {
 .settings-gear:focus { outline: none; box-shadow: 0 0 0 6px rgba(0,119,230,0.25); }
 .settings-gear.open { transform: rotate(90deg) scale(1.05); box-shadow: 0 22px 48px rgba(0,119,230,0.40); }
 
-/* Caption under logo */
-.logo-caption {
-  margin-top: 8px;
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: #0f172a;
-  text-align: center;
-  letter-spacing: 0.2px;
-  display: block;
-  width: 100%;
-}
 
 /* Ensure caption doesn't scale with popups and uses site font */
 .logo-card, .logo-caption { font-family: var(--font-sans); }
@@ -1136,36 +1125,29 @@ body, h1, h2, h3, .logo-card {
   --logo-size: 240px;  /* taille par défaut de l'image */
 }
 
-.logo-card img {
-  width: var(--logo-size);
-  height: auto;
-  display: block;
-  transform: translateX(var(--logo-x));
-  transition: transform 220ms ease, width 220ms ease;
-  will-change: transform, width;
-}
-
+/* ---------- Logo card : stable, caption sous l'image ---------- */
 :root {
-  --logo-x: 0px;        /* contrôle horizontal de l'image seule */
-  --logo-size: 140px;   /* nouvelle taille par défaut de l'image (réduite) */
-  --logo-wrapper-size: 150px;
+  --logo-x: 0px;        /* translation horizontale de l'image SEULE */
+  --logo-size: 140px;   /* largeur de l'image */
+  --logo-wrapper-size: calc(var(--logo-size) + 24px);
 }
 
-/* Wrapper : reste centré, n'impose pas la taille de l'image */
+/* wrapper : taille fixe, ne change pas quand l'image bouge */
 .logo-card-wrapper {
+  width: var(--logo-wrapper-size);
+  height: auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 150px;
-  height: auto;
   box-sizing: border-box;
   z-index: 30;
+  pointer-events: none; /* wrapper ne capte pas les clics, l'image/caption peuvent */
 }
 
-/* Carte du logo : colonne pour que le texte soit sous l'image */
+/* carte : colonne pour caption sous l'image, pointer-events rétabli sur la carte */
 .logo-card {
   display: flex;
-  flex-direction: column; /* important : image au-dessus, caption en dessous */
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   background: #fff;
@@ -1174,9 +1156,13 @@ body, h1, h2, h3, .logo-card {
   box-shadow: 0 8px 20px rgba(0,0,0,0.08);
   transition: transform .18s ease, box-shadow .18s ease;
   font-family: var(--font-sans);
+  pointer-events: auto; /* carte cliquable si besoin */
+  overflow: visible;    /* important : laisse l'image se translater sans forcer overflow:hidden */
+  width: var(--logo-wrapper-size); /* fixe la largeur de la carte pour éviter l'extension */
+  max-width: 100%;
 }
 
-/* Image : seule l'image est déplacée et redimensionnée */
+/* image : SEULE l'image est transformée et redimensionnée */
 .logo-card img {
   width: var(--logo-size);
   max-width: 100%;
@@ -1186,22 +1172,26 @@ body, h1, h2, h3, .logo-card {
   transform: translateX(var(--logo-x));
   transition: transform 220ms ease, width 220ms ease;
   will-change: transform, width;
+  pointer-events: auto; /* permet interactions si nécessaire */
 }
 
-/* Légende sous l'image */
+/* caption sous l'image */
 .logo-caption {
   margin-top: 10px;
   font-size: 0.95rem;
   font-weight: 700;
   color: #0f172a;
   text-align: center;
-  letter-spacing: 0.2px;
-  display: block;
   width: 100%;
+  pointer-events: none;
 }
 
-/* Mobile tweak : réduire logo si écran petit */
+/* Desktop : si tu veux que la carte garde une hauteur fixe, tu peux décommenter */
+/* .logo-card { min-height: calc(var(--logo-size) + 48px); } */
+
+/* Mobile : réduire la taille si écran petit */
 @media (max-width: 420px) {
   :root { --logo-size: 110px; }
   .logo-card-wrapper { width: calc(var(--logo-size) + 24px); }
+  .logo-card { width: calc(var(--logo-size) + 24px); }
 }
