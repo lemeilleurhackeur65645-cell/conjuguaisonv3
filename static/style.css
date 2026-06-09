@@ -1211,3 +1211,35 @@ body, h1, h2, h3, .logo-card {
   .settings-popup { z-index: 300000; }
   #settings-gear, .settings-gear { z-index: 300001; pointer-events: auto; }
 }
+/* 1) wrapper fixe : ne se translate pas */
+.logo-card-wrapper {
+  position: relative;
+  margin: 0 auto;
+  width: calc(var(--logo-size, 140px) + 24px);
+  pointer-events: none; /* wrapper ne capte pas les clics */
+  overflow: visible;
+}
+
+/* 2) image : SEULE l'image est transformée horizontalement */
+.logo-card img {
+  width: var(--logo-size, 140px);
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  transform: translateX(var(--logo-x, 0px));
+  transition: transform 220ms ease, width 220ms ease;
+  will-change: transform, width;
+  pointer-events: auto;
+}
+
+/* 3) mobile : réserver de l'espace vertical entre les deux cartes */
+@media (max-width: 899px) {
+  :root { --logo-vertical-gap: calc(var(--logo-size,140px) / 2 + 12px); }
+  .card-left { margin-bottom: var(--logo-vertical-gap); }
+  .card-right { margin-top: var(--logo-vertical-gap); }
+
+  /* s'assurer que popups/gear restent au-dessus */
+  .settings-popup { z-index: 300000 !important; }
+  #settings-gear, .settings-gear { z-index: 300001 !important; pointer-events: auto !important; }
+}
