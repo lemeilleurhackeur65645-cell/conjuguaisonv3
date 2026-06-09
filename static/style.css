@@ -1100,7 +1100,7 @@ body * {
   padding: 8px;
   box-shadow: 0 8px 20px rgba(0,0,0,0.08);
   transition: transform .18s ease, box-shadow .18s ease;
-  font-family: var(--font-hirondelle);
+  font-family: var(--font-sans);
 }
 
 /* Image */
@@ -1177,7 +1177,7 @@ body * {
 
 /* Police pour le site */
 body, h1, h2, h3, .logo-card {
-  font-family: var(--font-hirondelle);
+  font-family:var(--font-sans);
 }
 
 
