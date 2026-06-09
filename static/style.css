@@ -16,7 +16,7 @@ body {
 :root{
   /* layout / logo / popup / gear */
   --gap-cards-desktop: 180px;
-  --gap-cards-mobile: 28px;
+  --gap-cards-mobile: 40px;
   --logo-vert-desktop: 0px;
   --logo-vert-mobile: 12px;
   --card-min: 260px;
