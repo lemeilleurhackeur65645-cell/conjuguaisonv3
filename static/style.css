@@ -13,6 +13,24 @@ body {
     color: #0f172a;
     margin: 0;
 }
+:root{
+  /* layout / logo / popup / gear */
+  --logo-x: 0px;
+  --logo-size: 240px;
+  --gap-cards-desktop: 120px;
+  --gap-cards-mobile: 28px;
+  --logo-vert-desktop: 0px;
+  --logo-vert-mobile: 12px;
+  --card-min: 260px;
+
+  /* popups / gear */
+  --mobile-popup-scale: 2;
+  --settings-gear-size-desktop: 56px;
+  --settings-gear-svg: 28px;
+
+  /* fonts */
+  --font-sans: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
 
 .container, .page {
     width: 450px;
@@ -627,11 +645,6 @@ body.pc-mode .menu-row { flex-direction: row; gap: 32px; }
 /* ============================
    SETTINGS GEAR (responsive, consolidated)
    ============================ */
-:root {
-  --settings-gear-size-desktop: 56px;
-  --settings-gear-svg: 28px;
-  --mobile-popup-scale: 2; /* <-- CHANGE THIS in body.mobile-mode to scale popups in mobile */
-}
 
 .settings-gear {
   position: fixed;
@@ -764,9 +777,7 @@ body.mobile-mode .modal .modal-inner {
    ============================ */
 
 /* Master variable pour popups en mobile : changez UNE SEULE valeur ici */
-:root {
-  --mobile-popup-scale: 2; /* desktop default (no scale) */
-}
+
 
 /* --- Neutraliser scaling destructeur sur wrappers --- */
 .container, .page, .menu-row, .mini-card, .bilan-container, .bilan-block {
@@ -1041,16 +1052,7 @@ body * {
   opacity: 0;
   transform: translateY(6px) scale(0.995);
 }
-:root{
-  --logo-x: 0px;                 /* contrôle horizontal */
-  --logo-size: 120px;            /* taille du logo */
-  --gap-cards-desktop: 120px;    /* espace entre cartes en desktop (augmente pour laisser place au logo) */
-  --gap-cards-mobile: 28px;      /* espace entre cartes en mobile */
-  --logo-vert-desktop: 0px;      /* ajustement vertical du logo en desktop (si besoin) */
-  --logo-vert-mobile: 12px;      /* décale le logo vers le bas en mobile */
-  --card-min: 260px;
-  --font-hirondelle: "Hirondelle Conjugaison", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-}
+
 
 /* Layout général */
 .menu-row {
