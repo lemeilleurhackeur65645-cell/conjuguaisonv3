@@ -447,18 +447,29 @@ def quiz():
 # ============================================================
 # ROUTE DU BILAN
 # ============================================================
-
 @app.route("/fin")
 def fin():
     end = time.time()
-    duree = round(end - session["start"], 1)
-    total = session["total"]
-    score = session["score"]
+    # sécuriser l'existence des clés dans session
+    start = session.get("start", end)
+    duree = round(end - start, 1)
+
+    total = int(session.get("total", 0))
+    score = int(session.get("score", 0))
     taux = round(score / total * 100, 1) if total else 0
     temps_moyen = round(duree / total, 2) if total else 0
     erreurs = session.get("erreurs", [])
 
-    analyse = None
+    # Par défaut, analyse vide (structure stable)
+    analyse = {
+        "verbes": [],
+        "modes": [],
+        "modes_complet": {},
+        "temps": [],
+        "temps_complet": {},
+        "voix": {"active": 0, "passive": 0},
+        "suggestion": None
+    }
 
     if erreurs:
         # --- STATS ---
@@ -468,14 +479,17 @@ def fin():
         stats_voix = {"active": 0, "passive": 0}
 
         for e in erreurs:
-            verbe = e["verbe"]
-            mode = e["mode"]
-            temps = e["temps"]
-            voix = e["voix"]
+            verbe = e.get("verbe")
+            mode = e.get("mode")
+            temps = e.get("temps")
+            voix = e.get("voix")
 
-            stats_verbes[verbe] = stats_verbes.get(verbe, 0) + 1
-            stats_modes[mode]   = stats_modes.get(mode, 0) + 1
-            stats_temps[temps]  = stats_temps.get(temps, 0) + 1
+            if verbe:
+                stats_verbes[verbe] = stats_verbes.get(verbe, 0) + 1
+            if mode:
+                stats_modes[mode] = stats_modes.get(mode, 0) + 1
+            if temps:
+                stats_temps[temps] = stats_temps.get(temps, 0) + 1
             if voix in stats_voix:
                 stats_voix[voix] += 1
 
@@ -483,39 +497,43 @@ def fin():
             return sorted(d.items(), key=lambda x: x[1], reverse=True)[:3]
 
         top_verbes = top(stats_verbes)
-        top_modes  = top(stats_modes)
-        top_temps  = top(stats_temps)
+        top_modes = top(stats_modes)
+        top_temps = top(stats_temps)
 
-        # CORRECTION : garde contre IndexError sur suggestion
         suggestion = None
         if top_verbes and top_modes and top_temps:
             suggestion = f"{top_verbes[0][0]} — {top_modes[0][0]} — {top_temps[0][0]}"
 
-        # --- ANALYSE ---
         analyse = {
-            "verbes":        top_verbes,
-            "modes":         top_modes,
-            "modes_complet": stats_modes,
-            "temps":         top_temps,
-            "temps_complet": stats_temps,
-            "voix":          stats_voix,
-            "suggestion":    suggestion
+            "verbes": top_verbes,
+            "modes": top_modes,
+            "modes_complet": {k: int(v or 0) for k, v in stats_modes.items()},
+            "temps": top_temps,
+            "temps_complet": {k: int(v or 0) for k, v in stats_temps.items()},
+            "voix": {"active": int(stats_voix.get("active", 0)), "passive": int(stats_voix.get("passive", 0))},
+            "suggestion": suggestion
         }
 
-        # Garanties pour modes_complet envoyées au template
-        modes_complet = analyse.get("modes_complet", {})
-        analyse["modes_complet"] = {k: int(v or 0) for k, v in modes_complet.items()}
-
-        # Garantir la présence des principaux modes (même à 0)
+        # garantir clés principales
         for m in ["indicatif", "conditionnel", "subjonctif", "impératif"]:
             analyse["modes_complet"].setdefault(m, 0)
 
-        # Version triée
         analyse["modes_sorted"] = sorted(
             analyse["modes_complet"].items(),
             key=lambda x: x[1],
             reverse=True
         )
+
+    # Calculs sûrs pour la template
+    voix = analyse.get("voix", {"active": 0, "passive": 0})
+    active_voix = int(voix.get("active", 0))
+    passive_voix = int(voix.get("passive", 0))
+    total_voix = active_voix + passive_voix
+
+    erreurs_voix = {
+        "active": active_voix,
+        "passive": passive_voix
+    }
 
     return render_template(
         "fin.html",
@@ -525,7 +543,10 @@ def fin():
         duree=duree,
         temps_moyen=temps_moyen,
         erreurs=erreurs,
-        analyse=analyse
+        analyse=analyse,
+        total_voix=total_voix,
+        erreurs_voix=erreurs_voix,
+        voix={"active": active_voix, "passive": passive_voix}
     )
 
 # ============================================================
