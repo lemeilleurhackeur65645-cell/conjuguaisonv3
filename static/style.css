@@ -557,7 +557,6 @@ body.pc-mode .menu-row { flex-direction: row; gap: 32px; }
 .settings-popup,
 .popup,
 .modal,
-.mini-card,
 .bilan-block {
   position: relative;
   background: #ffffff;
@@ -586,7 +585,6 @@ body.mobile-mode { --mobile-popup-scale: 2; } /* <-- change this single value to
 body.mobile-mode .settings-popup,
 body.mobile-mode .popup,
 body.mobile-mode .modal,
-body.mobile-mode .mini-card,
 body.mobile-mode .bilan-block {
   transform-origin: top center;
   transform: scale(var(--mobile-popup-scale));
@@ -710,7 +708,6 @@ body.mobile-mode .settings-gear {
 body.mobile-mode .settings-popup,
 body.mobile-mode .popup,
 body.mobile-mode .modal,
-body.mobile-mode .mini-card,
 body.mobile-mode .bilan-block {
   transform-origin: top center;
   transform: scale(var(--mobile-popup-scale));
