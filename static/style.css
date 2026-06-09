@@ -320,29 +320,7 @@ input:checked + .slider:before { transform: translateX(22px); }
 /* ============================
    ALIGNEMENT PC — DEUX CARTES
    ============================ */
-@media (min-width: 900px) {
 
-    .menu-row {
-        display: flex;
-        justify-content: center;
-        align-items: stretch; /* égalise automatiquement les hauteurs */
-        gap: 20px; /* espace horizontal */
-    }
-
-    /* Les deux cartes gardent leur largeur */
-    .menu-row .container {
-        width: 450px;
-        display: flex;
-        flex-direction: column;
-    }
-
-    /* Empêche le bouton de s'étirer */
-    .menu-row .container .btn {
-        width: auto;
-        align-self: center;
-        margin-top: auto; /* pousse le bouton en bas proprement */
-    }
-}
    /* ============================
    MINI-CARTE D'INTRO
    ============================ */
@@ -623,10 +601,6 @@ body.mobile-mode .modal .modal-inner {
 .menu-row .container { width: 100%; max-width: 450px; box-sizing: border-box; }
 
 /* Force two-column layout in pc-mode on wide screens */
-@media (min-width: 900px) {
-  body.pc-mode .menu-row { flex-direction: row; flex-wrap: nowrap; justify-content: center; align-items: stretch; }
-  body.pc-mode .menu-row .container { flex: 0 0 450px; width: 450px; max-width: 450px; }
-}
 
 /* Accessibility */
 :focus { outline: 3px solid rgba(0,119,230,0.12); outline-offset: 2px; }
@@ -737,11 +711,7 @@ body.mobile-mode .modal .modal-inner {
 .menu-row { display: flex; gap: 20px; flex-wrap: wrap; align-items: flex-start; }
 .menu-row .container { width: 100%; max-width: 450px; box-sizing: border-box; }
 
-/* Forcer deux colonnes en pc-mode (aucun changement visuel attendu) */
-@media (min-width: 900px) {
-  body.pc-mode .menu-row { flex-direction: row; flex-wrap: nowrap; justify-content: center; align-items: stretch; gap: 20px; }
-  body.pc-mode .menu-row .container { flex: 0 0 450px; width: 450px; max-width: 450px; box-sizing: border-box; }
-}
+
 
 /* Chips / lists: wrapping and reasonable gaps */
 .chips { gap: 10px; align-items: flex-start; }
@@ -752,12 +722,7 @@ body.mobile-mode .modal .modal-inner {
 
 
 /* === Révision ciblée — règles consolidées pour mode PC === */
-@media (min-width: 900px) {
-  /* Empêcher l'étirement vertical des éléments internes (sauf boutons) */
-  body.pc-mode .mini-card > *:not(.btn),
-  body.pc-mode .revision-card > *:not(.btn) {
-    flex: 0 0 auto;
-  }
+
 
   /* Limiter la taille des images/illustrations pour ne pas étirer la carte */
   body.pc-mode .mini-card img,
@@ -910,37 +875,7 @@ body.mobile-mode .modal .modal-inner {
 }
 
 /* Desktop : espace plus large et logo positionné visuellement entre les cartes */
-@media (min-width: 900px) {
-  .menu-row {
-    gap: var(--gap-cards-desktop);
-    align-items: center;
-    flex-wrap: nowrap;
-  }
 
-  .menu-row > .card {
-    flex: 1 1 0;
-    min-width: var(--card-min);
-  }
-
-  /* Position absolue du logo, centré horizontalement, ajustable via --logo-x et --logo-vert-desktop */
-   .logo-card-wrapper {
-     position: relative;
-     margin: 0 auto;
-     width: calc(var(--logo-size) + 24px);
-     pointer-events: none; /* wrapper ne capte pas les clics */
-     overflow: visible;
-   }
-
-
-  /* Réserver visuellement l'espace du logo pour éviter chevauchement */
-  .menu-row::before,
-  .menu-row::after {
-    content: "";
-    display: block;
-    width: calc(var(--logo-size) / 2 + 24px);
-    flex: 0 0 auto;
-  }
-}
 
 /* Mobile : stack vertical, logo s'intercale et est légèrement abaissé; la carte droite (révision) est repoussée si besoin */
 @media (max-width: 899px) {
@@ -1007,10 +942,7 @@ body, h1, h2, h3, .logo-card {
 .menu-row .container { width: 100%; max-width: 450px; box-sizing: border-box; }
 
 /* Desktop forced two-column */
-@media (min-width: 900px) {
-  body.pc-mode .menu-row { flex-direction: row; flex-wrap: nowrap; justify-content: center; align-items: stretch; gap: var(--gap-cards-desktop); }
-  body.pc-mode .menu-row .container { flex: 0 0 450px; width: 450px; max-width: 450px; }
-}
+
 
 /* Mobile */
 @media (max-width: 899px) {
@@ -1242,4 +1174,48 @@ body, h1, h2, h3, .logo-card {
   /* s'assurer que popups/gear restent au-dessus */
   .settings-popup { z-index: 300000 !important; }
   #settings-gear, .settings-gear { z-index: 300001 !important; pointer-events: auto !important; }
+}
+@media (min-width: 900px) {
+  /* deux colonnes fixes et espacement desktop */
+  .menu-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: stretch;
+    gap: var(--gap-cards-desktop, 180px);
+    position: relative; /* nécessaire pour positionner le logo en absolu */
+  }
+
+  /* colonnes fixes (comme avant) */
+  .menu-row .container,
+  .menu-row > .card,
+  .menu-row .card-left,
+  .menu-row .card-right {
+    flex: 0 0 450px;
+    width: 450px;
+    max-width: 450px;
+    box-sizing: border-box;
+  }
+
+  /* Positionner le logo visuellement entre les deux cartes (au centre) */
+  .logo-card-wrapper {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(calc(-50% + var(--logo-x, 0px)), calc(-50% + var(--logo-vert-desktop, 0px)));
+    width: calc(var(--logo-size, 140px) + 24px);
+    pointer-events: none; /* wrapper n'intercepte pas les clics */
+    z-index: 30;
+    overflow: visible;
+  }
+
+  /* réserver visuellement l'espace du logo pour éviter chevauchement */
+  .menu-row::before,
+  .menu-row::after {
+    content: "";
+    display: block;
+    width: calc(var(--logo-size,140px) / 2 + 24px);
+    flex: 0 0 auto;
+  }
 }
