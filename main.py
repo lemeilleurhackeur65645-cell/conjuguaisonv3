@@ -59,7 +59,8 @@ def index():
 
 @app.route("/revision")
 def revision():
-    return render_template("revision.html")
+    erreurs = session.get("erreurs", [])
+    return render_template("revision.html", erreurs=erreurs)
 
 @app.route("/parametres")
 def parametres():
