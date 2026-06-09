@@ -17,7 +17,7 @@ body {
   /* layout / logo / popup / gear */
   --logo-x: 0px;
   --logo-size: 120px;
-  --gap-cards-desktop: 120px;
+  --gap-cards-desktop: 180px;
   --gap-cards-mobile: 28px;
   --logo-vert-desktop: 0px;
   --logo-vert-mobile: 12px;
