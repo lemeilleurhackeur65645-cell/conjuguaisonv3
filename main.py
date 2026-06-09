@@ -57,6 +57,9 @@ def index():
     session.clear()
     return render_template("index.html")
 
+@app.route("/revision")
+def revision():
+    return render_template("revision.html")
 
 @app.route("/parametres")
 def parametres():
