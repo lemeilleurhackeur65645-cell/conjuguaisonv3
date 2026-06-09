@@ -879,16 +879,12 @@ body.mobile-mode .modal .modal-inner {
   min-width: var(--card-min);
   box-sizing: border-box;
 }
-
-/* Wrapper du logo (flow element) */
 .logo-card-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: relative;
+  margin: 0 auto;
   width: calc(var(--logo-size) + 24px);
-  height: calc(var(--logo-size) + 24px);
-  box-sizing: border-box;
-  z-index: 30;
+  pointer-events: none; /* wrapper ne capte pas les clics */
+  overflow: visible;
 }
 
 /* Carte visible du logo */
@@ -927,14 +923,14 @@ body.mobile-mode .modal .modal-inner {
   }
 
   /* Position absolue du logo, centré horizontalement, ajustable via --logo-x et --logo-vert-desktop */
-  .logo-card-wrapper {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(calc(-50% + var(--logo-x)), calc(-50% + var(--logo-vert-desktop)));
-    pointer-events: auto;
-    margin: 0;
-  }
+   .logo-card-wrapper {
+     position: relative;
+     margin: 0 auto;
+     width: calc(var(--logo-size) + 24px);
+     pointer-events: none; /* wrapper ne capte pas les clics */
+     overflow: visible;
+   }
+
 
   /* Réserver visuellement l'espace du logo pour éviter chevauchement */
   .menu-row::before,
@@ -959,12 +955,14 @@ body.mobile-mode .modal .modal-inner {
     min-width: auto;
   }
 
-  .logo-card-wrapper {
-    position: relative;
-    transform: translateX(var(--logo-x)) translateY(var(--logo-vert-mobile));
-    margin: 0 auto;
-    width: auto;
-  }
+   .logo-card-wrapper {
+     position: relative;
+     margin: 0 auto;
+     width: calc(var(--logo-size) + 24px);
+     pointer-events: none; /* wrapper ne capte pas les clics */
+     overflow: visible;
+   }
+
 
   /* Si tu veux pousser la carte droite (révision) vers le bas pour laisser plus d'espace visuel */
   .card-right {
@@ -1108,15 +1106,13 @@ body, h1, h2, h3, .logo-card {
 
 /* wrapper : taille fixe, ne change pas quand l'image bouge */
 .logo-card-wrapper {
-  width: var(--logo-wrapper-size);
-  height: auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-sizing: border-box;
-  z-index: 30;
-  pointer-events: none; /* wrapper ne capte pas les clics, l'image/caption peuvent */
+  position: relative;
+  margin: 0 auto;
+  width: calc(var(--logo-size) + 24px);
+  pointer-events: none; /* wrapper ne capte pas les clics */
+  overflow: visible;
 }
+
 
 /* carte : colonne pour caption sous l'image, pointer-events rétabli sur la carte */
 .logo-card {
@@ -1136,7 +1132,7 @@ body, h1, h2, h3, .logo-card {
   max-width: 100%;
 }
 
-/* image : SEULE l'image est transformée et redimensionnée */
+/* seule l'image se translate horizontalement */
 .logo-card img {
   width: var(--logo-size);
   max-width: 100%;
@@ -1146,8 +1142,9 @@ body, h1, h2, h3, .logo-card {
   transform: translateX(var(--logo-x));
   transition: transform 220ms ease, width 220ms ease;
   will-change: transform, width;
-  pointer-events: auto; /* permet interactions si nécessaire */
+  pointer-events: auto;
 }
+
 
 /* caption sous l'image */
 .logo-caption {
@@ -1203,3 +1200,14 @@ body, h1, h2, h3, .logo-card {
 #settings-gear:hover, .settings-gear:hover { transform: translateY(-4px) scale(1.08); box-shadow: 0 18px 40px rgba(0,119,230,0.35); }
 #settings-gear:focus, .settings-gear:focus { outline: none; box-shadow: 0 0 0 6px rgba(0,119,230,0.25); }
 #settings-gear.open, .settings-gear.open { transform: rotate(90deg) scale(1.05); box-shadow: 0 22px 48px rgba(0,119,230,0.40); }
+@media (max-width: 899px) {
+  :root { --logo-vertical-gap: calc(var(--logo-size,140px) / 2 + 12px); }
+
+  /* si tes containers n'ont pas ces classes, ajoute-les en HTML (voir étape 4) */
+  .card-left { margin-bottom: var(--logo-vertical-gap); }
+  .card-right { margin-top: var(--logo-vertical-gap); }
+
+  /* s'assurer que popups et gear restent au-dessus */
+  .settings-popup { z-index: 300000; }
+  #settings-gear, .settings-gear { z-index: 300001; pointer-events: auto; }
+}
