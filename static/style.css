@@ -1042,9 +1042,12 @@ body * {
   transform: translateY(6px) scale(0.995);
 }
 :root{
-  --logo-x: 0px;        /* change ici pour déplacer le logo horizontalement */
-  --logo-size: 120px;   /* taille du logo */
-  --gap-cards: 28px;    /* espace entre cartes */
+  --logo-x: 0px;                 /* contrôle horizontal */
+  --logo-size: 120px;            /* taille du logo */
+  --gap-cards-desktop: 120px;    /* espace entre cartes en desktop (augmente pour laisser place au logo) */
+  --gap-cards-mobile: 28px;      /* espace entre cartes en mobile */
+  --logo-vert-desktop: 0px;      /* ajustement vertical du logo en desktop (si besoin) */
+  --logo-vert-mobile: 12px;      /* décale le logo vers le bas en mobile */
   --card-min: 260px;
   --font-hirondelle: "Hirondelle Conjugaison", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
 }
@@ -1052,7 +1055,7 @@ body * {
 /* Layout général */
 .menu-row {
   display: flex;
-  gap: var(--gap-cards);
+  gap: var(--gap-cards-mobile);
   align-items: flex-start;
   justify-content: center;
   position: relative;
@@ -1061,7 +1064,7 @@ body * {
   padding: 24px;
 }
 
-/* Cartes gauche/droite */
+/* Cartes */
 .menu-row > .card {
   background: #fff;
   border-radius: 12px;
@@ -1080,7 +1083,7 @@ body * {
   width: calc(var(--logo-size) + 24px);
   height: calc(var(--logo-size) + 24px);
   box-sizing: border-box;
-  z-index: 20;
+  z-index: 30;
 }
 
 /* Carte visible du logo */
@@ -1105,29 +1108,30 @@ body * {
   display: block;
 }
 
-/* Desktop : position visuelle entre les deux cartes */
+/* Desktop : espace plus large et logo positionné visuellement entre les cartes */
 @media (min-width: 900px) {
   .menu-row {
+    gap: var(--gap-cards-desktop);
+    align-items: center;
     flex-wrap: nowrap;
   }
 
-  /* Les cartes prennent de la place, mais on réserve visuellement l'espace du logo */
   .menu-row > .card {
     flex: 1 1 0;
-    margin: 0;
+    min-width: var(--card-min);
   }
 
-  /* On positionne le wrapper du logo en absolu centré horizontalement */
+  /* Position absolue du logo, centré horizontalement, ajustable via --logo-x et --logo-vert-desktop */
   .logo-card-wrapper {
     position: absolute;
     left: 50%;
     top: 50%;
-    transform: translate(calc(-50% + var(--logo-x)), -50%);
+    transform: translate(calc(-50% + var(--logo-x)), calc(-50% + var(--logo-vert-desktop)));
     pointer-events: auto;
     margin: 0;
   }
 
-  /* On ajoute des paddings invisibles pour préserver l'espace entre cartes */
+  /* Réserver visuellement l'espace du logo pour éviter chevauchement */
   .menu-row::before,
   .menu-row::after {
     content: "";
@@ -1137,11 +1141,11 @@ body * {
   }
 }
 
-/* Mobile : stack vertical, logo s'intercale naturellement (DOM order) */
+/* Mobile : stack vertical, logo s'intercale et est légèrement abaissé; la carte droite (révision) est repoussée si besoin */
 @media (max-width: 899px) {
   .menu-row {
     flex-direction: column;
-    gap: var(--gap-cards);
+    gap: var(--gap-cards-mobile);
     align-items: stretch;
   }
 
@@ -1152,9 +1156,14 @@ body * {
 
   .logo-card-wrapper {
     position: relative;
-    transform: translateX(var(--logo-x));
+    transform: translateX(var(--logo-x)) translateY(var(--logo-vert-mobile));
     margin: 0 auto;
     width: auto;
+  }
+
+  /* Si tu veux pousser la carte droite (révision) vers le bas pour laisser plus d'espace visuel */
+  .card-right {
+    margin-top: calc(var(--logo-size) / 6); /* ajuste si tu veux plus d'espace */
   }
 }
 
@@ -1162,6 +1171,11 @@ body * {
 .logo-card:hover {
   transform: translateY(-4px) scale(1.01);
   box-shadow: 0 12px 30px rgba(0,0,0,0.10);
+}
+
+/* Police pour le site */
+body, h1, h2, h3, .logo-card {
+  font-family: var(--font-hirondelle);
 }
 
 
