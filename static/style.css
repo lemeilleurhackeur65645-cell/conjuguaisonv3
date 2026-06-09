@@ -1149,10 +1149,6 @@ body * {
   box-shadow: 0 10px 30px rgba(0,0,0,0.09);
 }
 
-/* Ensure the site font for headings and logo label */
-h1, h2, .logo-card {
-  font-family: var(--font-hirondelle);
-}
 
 }
 
