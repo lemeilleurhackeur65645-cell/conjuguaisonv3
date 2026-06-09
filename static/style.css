@@ -508,98 +508,6 @@ input:checked + .slider:before { transform: translateX(22px); }
     flex-direction: column;
     gap: 16px;
 }
-/* Bouton settings — bleu, circulaire, compact, animé */
-.settings-gear {
-    position: fixed;
-    right: 18px;
-    bottom: 18px;
-
-    /* Taille plus petite */
-    width: 56px;
-    height: 56px;
-
-    /* Forme circulaire */
-    border-radius: 50%;
-
-    /* Fond bleu moderne */
-    background: linear-gradient(135deg, #4fb3ff, #0077e6);
-
-    /* Bordure subtile */
-    border: 2px solid rgba(255,255,255,0.25);
-
-    /* Centrage du SVG */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    cursor: pointer;
-    z-index: 1400;
-    padding: 0;
-
-    /* Animation douce */
-    transition:
-        transform 260ms cubic-bezier(.2,.9,.2,1),
-        box-shadow 260ms cubic-bezier(.2,.9,.2,1),
-        background 260ms ease;
-
-    /* Ombre moderne */
-    box-shadow: 0 10px 26px rgba(0, 119, 230, 0.25);
-
-    /* Icône en blanc */
-    color: #ffffff;
-}
-
-/* Taille du SVG */
-.settings-gear svg {
-    width: 28px;
-    height: 28px;
-    display: block;
-    pointer-events: none;
-}
-
-/* Hover : élévation + glow bleu */
-.settings-gear:hover {
-    transform: translateY(-4px) scale(1.08);
-    box-shadow: 0 18px 40px rgba(0, 119, 230, 0.35);
-    background: linear-gradient(135deg, #6fd3ff, #0088ff);
-}
-
-/* Focus clavier */
-.settings-gear:focus {
-    outline: none;
-    box-shadow: 0 0 0 6px rgba(0,119,230,0.25);
-}
-
-/* Animation ouverture (rotation douce) */
-.settings-gear.open {
-    transform: rotate(90deg) scale(1.05);
-    box-shadow: 0 22px 48px rgba(0,119,230,0.40);
-}
-
-
-/* Popup */
-.settings-popup {
-  position: fixed;
-  right: 18px;
-  bottom: 78px;
-  width: 280px;
-  max-width: calc(100% - 40px);
-  background: #ffffff;
-  border-radius: 14px;
-  box-shadow: 0 18px 48px rgba(0,119,230,0.18);
-  opacity: 0;
-  transform: translateY(12px) scale(0.96);
-  pointer-events: none;
-  transition: opacity 260ms ease, transform 260ms cubic-bezier(.2,.9,.2,1);
-  z-index: 1300;
-  overflow: hidden;
-}
-.settings-popup.open {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-  pointer-events: auto;
-}
-.settings-popup-inner { padding: 16px 18px; color: #222; }
 
 /* ---------------------------
    Switch block
@@ -642,38 +550,6 @@ body.pc-mode .menu-row { flex-direction: row; gap: 32px; }
 /* Ensure box sizing everywhere to avoid overflow surprises */
 .container, .menu-row, .mini-card, .bilan-block { box-sizing: border-box; }
 
-/* ============================
-   SETTINGS GEAR (responsive, consolidated)
-   ============================ */
-
-.settings-gear {
-  position: fixed;
-  right: 18px;
-  bottom: 18px;
-  width: var(--settings-gear-size-desktop);
-  height: var(--settings-gear-size-desktop);
-  border-radius: 50%;
-  background: linear-gradient(135deg, #4fb3ff, #0077e6);
-  border: 2px solid rgba(255,255,255,0.25);
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; z-index: 1400; padding: 0;
-  box-shadow: 0 10px 26px rgba(0,119,230,0.25);
-  color: #fff;
-  transform-origin: center;
-  transition: transform 260ms cubic-bezier(.2,.9,.2,1), box-shadow 260ms cubic-bezier(.2,.9,.2,1), background 260ms ease;
-}
-.settings-gear svg { width: var(--settings-gear-svg); height: var(--settings-gear-svg); pointer-events: none; }
-.settings-gear:hover { transform: translateY(-4px) scale(1.08); box-shadow: 0 18px 40px rgba(0,119,230,0.35); background: linear-gradient(135deg, #6fd3ff, #0088ff); }
-.settings-gear:focus { outline: none; box-shadow: 0 0 0 6px rgba(0,119,230,0.25); }
-.settings-gear.open { transform: rotate(90deg) scale(1.05); box-shadow: 0 22px 48px rgba(0,119,230,0.40); }
-
-/* Small adjustments for very small screens (keeps visual crisp, no global scale) */
-@media (max-width: 420px) {
-  .settings-gear { right: 12px; bottom: 12px; width: 56px; height: 56px; }
-}
-@media (max-width: 320px) {
-  .settings-gear { right: 10px; bottom: 10px; width: 52px; height: 52px; }
-}
 
 /* ============================
    POPUP / MODAL (desktop + mobile master variable)
@@ -699,20 +575,7 @@ body.pc-mode .menu-row { flex-direction: row; gap: 32px; }
   transition: opacity 220ms ease, transform 220ms cubic-bezier(.2,.9,.2,1);
 }
 
-/* Desktop default popup placement */
-.settings-popup {
-  position: fixed;
-  right: 18px;
-  bottom: 78px;
-  width: 280px;
-  max-width: calc(100% - 40px);
-  opacity: 0;
-  transform: translateY(12px) scale(0.98);
-  pointer-events: none;
-  z-index: 1500;
-}
-.settings-popup.open { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
-.settings-popup-inner { padding: 16px 18px; color: #222; }
+
 
 /* ============================
    MOBILE: single variable controls ALL popup sizes
@@ -815,17 +678,6 @@ body.mobile-mode .menu-footer {
 }
 
 /* --- Settings gear : position fixe, responsive, sans casser le flux --- */
-.settings-gear {
-  position: fixed;
-  right: 18px;
-  bottom: 18px;
-  z-index: 1400;
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  transform-origin: center;
-  transition: transform 260ms cubic-bezier(.2,.9,.2,1), box-shadow 260ms cubic-bezier(.2,.9,.2,1), background 260ms ease;
-}
 
 /* Décalage léger du gear en mobile pour éviter recouvrement (basé sur la variable unique) */
 body.mobile-mode .settings-gear {
@@ -855,19 +707,6 @@ body.mobile-mode .settings-gear {
 }
 
 /* Desktop placement settings-popup (inchangé) */
-.settings-popup {
-  position: fixed;
-  right: 18px;
-  bottom: 78px;
-  width: 280px;
-  max-width: calc(100% - 40px);
-  opacity: 0;
-  transform: translateY(12px) scale(0.98);
-  pointer-events: none;
-  z-index: 1500;
-}
-.settings-popup.open { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
-.settings-popup-inner { padding: 16px 18px; color: #222; }
 
 /* --- MOBILE : appliquer la variable unique à toutes les popups (scale uniquement) --- */
 body.mobile-mode .settings-popup,
@@ -1001,22 +840,7 @@ body.mobile-mode .modal .modal-inner {
 
 /* Assurer que le gear est au-dessus de tout et cliquable */
 #settings-gear,
-.settings-gear {
-  position: fixed !important;
-  right: 18px !important;
-  bottom: 18px !important;
-  z-index: 99999 !important;      /* très haut pour éviter recouvrement */
-  pointer-events: auto !important;/* s'assurer que les clics passent */
-  background: transparent;        /* ne change pas le visuel si déjà stylé */
-}
 
-/* Popup juste en dessous du gear (ouvre au-dessus quand nécessaire) */
-#settings-popup,
-.settings-popup {
-  position: fixed !important;
-  z-index: 99998 !important;
-  pointer-events: auto;           /* quand ouvert, on veut interagir */
-}
 
 /* Quand popup fermé, s'assurer qu'il ne capte pas les clics invisibles */
 .settings-popup[aria-hidden="true"] {
@@ -1025,21 +849,8 @@ body.mobile-mode .modal .modal-inner {
   transform: translateY(6px) scale(0.995);
 }
 
-/* Sécurité : empêcher qu'un parent avec z-index élevé masque le gear */
-body * {
-  /* n'applique pas globalement, juste pour debug si nécessaire */
-  /* remove/comment this block after debug */
-  /* outline: 0.5px dashed rgba(255,0,0,0.06); */
-}
+
 /* === Fix clickability settings gear (fin de style.css) === */
-#settings-gear, .settings-gear {
-  position: fixed !important;
-  right: 18px !important;
-  bottom: 18px !important;
-  z-index: 99999 !important;
-  pointer-events: auto !important;
-  background: transparent;
-}
 
 /* Popup sous le gear, ne capte pas les clics quand fermé */
 #settings-popup, .settings-popup {
@@ -1180,6 +991,45 @@ body, h1, h2, h3, .logo-card {
   font-family:var(--font-sans);
 }
 
+/* Consolidated settings gear */
+.settings-gear {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  width: var(--settings-gear-size-desktop);
+  height: var(--settings-gear-size-desktop);
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4fb3ff, #0077e6);
+  border: 2px solid rgba(255,255,255,0.25);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; z-index: 99999; padding: 0;
+  box-shadow: 0 10px 26px rgba(0,119,230,0.25);
+  color: #fff;
+  transition: transform 260ms cubic-bezier(.2,.9,.2,1), box-shadow 260ms cubic-bezier(.2,.9,.2,1), background 260ms ease;
+}
+.settings-gear svg { width: var(--settings-gear-svg); height: var(--settings-gear-svg); pointer-events: none; }
+.settings-gear:hover { transform: translateY(-4px) scale(1.08); box-shadow: 0 18px 40px rgba(0,119,230,0.35); }
+.settings-gear:focus { outline: none; box-shadow: 0 0 0 6px rgba(0,119,230,0.25); }
+.settings-gear.open { transform: rotate(90deg) scale(1.05); box-shadow: 0 22px 48px rgba(0,119,230,0.40); }
+
+/* Consolidated popup */
+.settings-popup {
+  position: fixed;
+  right: 18px;
+  bottom: calc(78px + 0px);
+  width: 280px;
+  max-width: calc(100% - 40px);
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 18px 48px rgba(0,119,230,0.18);
+  opacity: 0;
+  transform: translateY(12px) scale(0.98);
+  pointer-events: none;
+  transition: opacity 260ms ease, transform 260ms cubic-bezier(.2,.9,.2,1);
+  z-index: 99998;
+  overflow: hidden;
+}
+.settings-popup.open { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
 
 
 
