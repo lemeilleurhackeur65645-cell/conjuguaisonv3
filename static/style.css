@@ -1219,3 +1219,54 @@ body, h1, h2, h3, .logo-card {
     flex: 0 0 auto;
   }
 }
+@media (min-width: 900px) {
+  /* Restauré : disposition PC d'origine — deux colonnes fixes et logo centré visuellement */
+  .menu-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: stretch;
+    gap: var(--gap-cards-desktop, 180px);
+    position: relative; /* nécessaire pour positionner le logo en absolu */
+  }
+
+  /* Colonnes fixes comme avant (450px) */
+  .menu-row .container,
+  .menu-row > .card,
+  .menu-row .card-left,
+  .menu-row .card-right {
+    flex: 0 0 450px;
+    width: 450px;
+    max-width: 450px;
+    box-sizing: border-box;
+  }
+
+  /* Empêcher le bouton de s'étirer dans les colonnes */
+  .menu-row .container .btn {
+    width: auto;
+    align-self: center;
+    margin-top: auto;
+  }
+
+  /* Positionner le logo visuellement entre les deux cartes (absolu) */
+  .logo-card-wrapper {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(calc(-50% + var(--logo-x, 0px)), calc(-50% + var(--logo-vert-desktop, 0px)));
+    width: calc(var(--logo-size, 140px) + 24px);
+    pointer-events: none;
+    z-index: 30;
+    overflow: visible;
+  }
+
+  /* Réserver visuellement l'espace du logo pour éviter chevauchement */
+  .menu-row::before,
+  .menu-row::after {
+    content: "";
+    display: block;
+    width: calc(var(--logo-size,140px) / 2 + 24px);
+    flex: 0 0 auto;
+  }
+}
